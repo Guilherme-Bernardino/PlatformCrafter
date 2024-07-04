@@ -1,7 +1,7 @@
 # PlatformCrafter - by Guilherme B.
 
-# Unity package for 2D platformer and platformer-like games.
-# Meant for unexperienced and experienced game devs that want an easy way to create game experiences.
+Unity package for 2D platformer and platformer-like games.
+Meant for unexperienced and experienced game devs that want an easy way to create game experiences.
 
 
 # Change Log
