@@ -7,13 +7,13 @@
 # Change Log
 All notable changes of the project
  
-## [Unreleased] - yyyy-mm-dd
+## [0.1] - 2024-07-04
  
 ### Added
-- [PROJECTNAME-XXXX](http://tickets.projectname.com/browse/PROJECTNAME-XXXX)
-  MINOR Ticket title goes here.
-- [PROJECTNAME-YYYY](http://tickets.projectname.com/browse/PROJECTNAME-YYYY)
-  PATCH Ticket title goes here.
+- Added controller for PlatformerCrafter.
+- Added horizontal movement enabler and basic walking functionality.
+- Added run movement enabler and basic running functionality (left shift for testing).
+- Added jump enabler and basic jumping functionality.
  
 ### Changed
  
