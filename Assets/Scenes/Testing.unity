@@ -421,14 +421,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5390726646710143768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: canRun
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5390726646710143768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: canJump
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name
       value: Platformer

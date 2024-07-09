@@ -7,7 +7,19 @@
 # Change Log
 All notable changes of the project
  
-## [0.1] - 2024-07-04
+## [0.2] - 09-07-2024
+ 
+### Added
+- Added double jump to Toggle Feature.
+- Added basic Modular controller structure for PlatformerCrafter.
+- Added basic Horizontal Movement Module.
+- Added basic Jump Module.
+
+### Changed
+- Changed old controller to now be named Toggle Feature.
+- Changed Jump button and logic on Toggle Feature.
+
+## [0.1] - 04-07-2024
  
 ### Added
 - Added controller for PlatformerCrafter.
@@ -15,6 +27,3 @@ All notable changes of the project
 - Added run movement enabler and basic running functionality (left shift for testing).
 - Added jump enabler and basic jumping functionality.
  
-### Changed
- 
-### Fixed
