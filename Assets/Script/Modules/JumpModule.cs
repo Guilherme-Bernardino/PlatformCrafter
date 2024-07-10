@@ -32,6 +32,8 @@ namespace PlatformCrafter
 
         public override void UpdateModule()
         {
+            if (!active) return;
+
             if (CheckGrounded())
             {
                 jumpCount = 0;
