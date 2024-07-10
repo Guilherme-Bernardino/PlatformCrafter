@@ -52,6 +52,7 @@ MonoBehaviour:
   canJump: 1
   canRun: 1
   canDoubleJump: 1
+  canShoot: 0
   movementAttributes:
     walkSpeed: 4
     runSpeed: 8
@@ -70,6 +71,10 @@ MonoBehaviour:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
+  shootingAttributes:
+    projectile: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
+    shootingSpeed: 16.8
+    shootingDistance: 4
 --- !u!114 &7307272757358876768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +90,7 @@ MonoBehaviour:
   modules:
   - {fileID: 11400000, guid: 4cafafd57a25c4541ba58b1d802cccc1, type: 2}
   - {fileID: 11400000, guid: dce229338aede974ca4c81a5e7b4e7fb, type: 2}
+  - {fileID: 11400000, guid: ecd5859f9f908944292ee941e2ffafa6, type: 2}
 --- !u!212 &7127116229475881017
 SpriteRenderer:
   m_ObjectHideFlags: 0

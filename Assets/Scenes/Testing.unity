@@ -421,6 +421,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5390726646710143768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: canShoot
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5390726646710143768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: ecd5859f9f908944292ee941e2ffafa6, type: 2}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name
       value: Platformer

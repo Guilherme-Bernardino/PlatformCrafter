@@ -28,6 +28,7 @@ namespace PlatformCrafter
         {
             if (!active) return;
 
+
             horizontalInput = Input.GetAxis("Horizontal");
 
             float moveSpeed = (Input.GetKey(KeyCode.LeftShift) && canRun) ? runSpeed : speed;

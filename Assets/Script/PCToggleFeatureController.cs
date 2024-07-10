@@ -26,6 +26,10 @@ namespace PlatformCrafter
         [Label("Can Double Jump")]
         public bool canDoubleJump;
 
+        [BoxGroup("Mechanic Toggles (Enable or disable player functionalities)")]
+        [Label("Can Shoot")]
+        public bool canShoot;
+
         [BoxGroup("Attributes")]
         [ShowIf("canMoveHorizontally")]
         public MovementProperties movementAttributes;
@@ -37,6 +41,10 @@ namespace PlatformCrafter
         [BoxGroup("Attributes")]
         [ShowIf("canDoubleJump")]
         public DoubleJumpProperties doubleJumpAttributes;
+
+        [BoxGroup("Attributes")]
+        [ShowIf("canShoot")]
+        public ShootingProperties shootingAttributes;
 
         // Attributes
         private float horizontalInput;
@@ -74,6 +82,11 @@ namespace PlatformCrafter
                     Jump();
                 }
             }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+            }
         }
 
         public void FixedUpdate()
@@ -98,7 +111,19 @@ namespace PlatformCrafter
             float jumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * (jumpCount == 0 ? verticalAttributes.JumpHeight : doubleJumpAttributes.JumpHeight));
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             jumpCount++;
+        }
 
+        private void Shoot()
+        {
+            if (!canShoot)
+            {
+                return;
+            }
+
+            Vector3 shootDirection = transform.right;
+            GameObject projectile = Instantiate(shootingAttributes.projectile, transform.position + shootDirection, Quaternion.identity);
+            Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
+            projectileRb.velocity = shootDirection * shootingAttributes.ShootingSpeed;
         }
     }
 
@@ -145,5 +170,20 @@ namespace PlatformCrafter
 
         public float JumpHeight => jumpHeight;
         public int NumberOfJumps => numberOfJumps;
+    }
+
+    [System.Serializable]
+    public class ShootingProperties
+    {
+        [SerializeField]
+        public GameObject projectile;
+
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float shootingSpeed;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float shootingDistance;
+
+        public float ShootingSpeed => shootingSpeed;
+        public float ShootingDistance => shootingDistance;
     }
 }
