@@ -12,6 +12,7 @@ All notable changes of the project
 ### Added
 - Added basic shooting mechanic to Toggle Feature (mouse 0 for testing).
 - Added basic shooting mechanic to Modular (mouse 0 for testing).
+- Added basic animation on both controllers for Idle, Walking and Running.
 
 ## [0.2] - 09-07-2024
  

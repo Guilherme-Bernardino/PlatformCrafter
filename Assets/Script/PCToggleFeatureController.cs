@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -48,20 +49,22 @@ namespace PlatformCrafter
 
         // Attributes
         private float horizontalInput;
-        private float verticalInput;
         private Rigidbody2D rb;
         private bool isGrounded;
         private int jumpCount;
+        private Animator animator;
+        private SpriteRenderer spriteRenderer;
 
         public void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         public void Update()
         {
             horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
 
             if (canJump)
             {
@@ -87,6 +90,8 @@ namespace PlatformCrafter
             {
                 Shoot();
             }
+
+            PlayAnimations();
         }
 
         public void FixedUpdate()
@@ -124,6 +129,26 @@ namespace PlatformCrafter
             GameObject projectile = Instantiate(shootingAttributes.projectile, transform.position + shootDirection, Quaternion.identity);
             Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
             projectileRb.velocity = shootDirection * shootingAttributes.ShootingSpeed;
+        }
+
+        private void PlayAnimations()
+        {
+            if (horizontalInput > 0)
+            {
+                if (canRun && Input.GetKey(KeyCode.LeftShift)) animator.Play("Running");
+                else animator.Play("Walking");
+                spriteRenderer.flipX = true;
+            }
+            else if (horizontalInput < 0)
+            {
+                spriteRenderer.flipX = false;
+                if (canRun && Input.GetKey(KeyCode.LeftShift)) animator.Play("Running");
+                else animator.Play("Walking");
+            }
+            else
+            {
+                animator.Play("Idle");
+            }
         }
     }
 
