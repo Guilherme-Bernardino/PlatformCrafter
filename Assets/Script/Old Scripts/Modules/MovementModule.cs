@@ -16,6 +16,8 @@ namespace PlatformCrafter
 
         [SerializeField] private bool canRun;
 
+        [SerializeField] private Input input;
+
         private Rigidbody2D rb;
         private float horizontalInput;
 

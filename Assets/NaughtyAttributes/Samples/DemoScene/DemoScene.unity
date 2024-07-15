@@ -2664,6 +2664,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4cafafd57a25c4541ba58b1d802cccc1, type: 2}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: dce229338aede974ca4c81a5e7b4e7fb, type: 2}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: ecd5859f9f908944292ee941e2ffafa6, type: 2}
+    - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: modules.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 390659490bd195446af6bce3af826ca4, type: 2}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name
       value: Platformer
