@@ -9,11 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 540978068380232213}
-  - component: {fileID: 5390726646710143768}
   - component: {fileID: 7307272757358876768}
+  - component: {fileID: 2382293500059001820}
   - component: {fileID: 7127116229475881017}
   - component: {fileID: 3244442297419460967}
   - component: {fileID: 4750528949413741044}
+  - component: {fileID: 6262888339081423142}
+  - component: {fileID: 8508396845526573025}
   m_Layer: 0
   m_Name: Platformer
   m_TagString: Untagged
@@ -31,50 +33,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.64, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5390726646710143768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8848904959969383487}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b532d7b4752277541ba4e8378ce6dea9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canMoveHorizontally: 1
-  canJump: 1
-  canRun: 1
-  canDoubleJump: 1
-  canShoot: 0
-  movementAttributes:
-    walkSpeed: 4
-    runSpeed: 8
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-  verticalAttributes:
-    jumpHeight: 2
-    groundCheckLimit: 0.181
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-  doubleJumpAttributes:
-    jumpHeight: 2
-    numberOfJumps: 1
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-  shootingAttributes:
-    projectile: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
-    shootingSpeed: 16.8
-    shootingDistance: 4
 --- !u!114 &7307272757358876768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +54,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4cafafd57a25c4541ba58b1d802cccc1, type: 2}
   - {fileID: 11400000, guid: dce229338aede974ca4c81a5e7b4e7fb, type: 2}
   - {fileID: 11400000, guid: ecd5859f9f908944292ee941e2ffafa6, type: 2}
+  - {fileID: 11400000, guid: 390659490bd195446af6bce3af826ca4, type: 2}
+--- !u!114 &2382293500059001820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848904959969383487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modules:
+  - {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
+  - {fileID: 11400000, guid: 025e630db232f3a49aea6076e3beeee5, type: 2}
+  - {fileID: 11400000, guid: 1d33fc92eada0ae4a9000a1cd183a421, type: 2}
+  - {fileID: 11400000, guid: 029e40fdb02d3d44487ec4632ee7956d, type: 2}
+  - {fileID: 11400000, guid: fe9b507cf3cfeb847a3787abcc25daaf, type: 2}
+  - {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
 --- !u!212 &7127116229475881017
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -132,12 +115,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -926381715, guid: e982e12fce8559d45abcde6b8b07784e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -202,16 +185,76 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.16352761}
   m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.2, y: 0.2}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.16, y: 0.3361012}
   m_EdgeRadius: 0
+--- !u!95 &6262888339081423142
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848904959969383487}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ea39491c4113ab74e8e10670f084b26d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8508396845526573025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848904959969383487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b532d7b4752277541ba4e8378ce6dea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canMoveHorizontally: 1
+  canJump: 0
+  canRun: 0
+  canDoubleJump: 0
+  canShoot: 0
+  movementAttributes:
+    walkSpeed: 0
+    runSpeed: 0
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 0
+  verticalAttributes:
+    jumpHeight: 0
+    groundCheckLimit: 0
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 0
+  doubleJumpAttributes:
+    jumpHeight: 0
+    numberOfJumps: 0
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 0
+  shootingAttributes:
+    projectile: {fileID: 0}
+    shootingSpeed: 0
+    shootingDistance: 0

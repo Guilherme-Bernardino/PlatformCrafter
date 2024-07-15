@@ -7,11 +7,22 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.3] - 15-07-2024
+
+## Added
+- Added Modular Brain System component.
+- Added Modular Brain Editor.
+
+## Changed
+- Changed modular structure to allow module types.
+- Changed module mechanics to actions structs.
+
 ## [0.2.1] - 10-07-2024
  
 ### Added
 - Added basic shooting mechanic to Toggle Feature (mouse 0 for testing).
 - Added basic shooting mechanic to Modular (mouse 0 for testing).
+- Added basic animation on both controllers for Idle, Walking and Running.
 
 ## [0.2] - 09-07-2024
  

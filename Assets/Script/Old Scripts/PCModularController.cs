@@ -13,7 +13,7 @@ namespace PlatformCrafter {
         {
             foreach (var module in modules)
             {
-                module.Initialize(this);
+                //module.Initialize(this);
             }
         }
 
@@ -53,14 +53,29 @@ namespace PlatformCrafter {
                     if (module != null)
                     {
                         EditorGUILayout.Space();
+                        DrawModuleBackground(i);
                         EditorGUILayout.LabelField(module.GetType().Name, EditorStyles.boldLabel);
                         Editor moduleEditor = CreateEditor(module);
                         moduleEditor.OnInspectorGUI();
+                        EditorGUILayout.Space();
                     }
                 }
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DrawModuleBackground(int index)
+        {
+            Color[] colors = { new Color32(0, 197, 255, 128), Color.magenta, Color.yellow, Color.green };
+            Color backgroundColor = colors[index % colors.Length];
+            Rect rect = GUILayoutUtility.GetRect(0, 0, GUILayout.ExpandWidth(true), GUILayout.Height(0));
+
+            rect.x -= 15;
+            rect.width += 30;
+            rect.height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            EditorGUI.DrawRect(rect, backgroundColor);
         }
     }
 }
