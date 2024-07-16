@@ -9,13 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 540978068380232213}
-  - component: {fileID: 7307272757358876768}
   - component: {fileID: 2382293500059001820}
   - component: {fileID: 7127116229475881017}
   - component: {fileID: 3244442297419460967}
   - component: {fileID: 4750528949413741044}
   - component: {fileID: 6262888339081423142}
-  - component: {fileID: 8508396845526573025}
   m_Layer: 0
   m_Name: Platformer
   m_TagString: Untagged
@@ -38,23 +36,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7307272757358876768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8848904959969383487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2e9b0b058d2c164495da1ebb3aa6820, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modules:
-  - {fileID: 11400000, guid: 4cafafd57a25c4541ba58b1d802cccc1, type: 2}
-  - {fileID: 11400000, guid: dce229338aede974ca4c81a5e7b4e7fb, type: 2}
-  - {fileID: 11400000, guid: ecd5859f9f908944292ee941e2ffafa6, type: 2}
-  - {fileID: 11400000, guid: 390659490bd195446af6bce3af826ca4, type: 2}
 --- !u!114 &2382293500059001820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,42 +200,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8508396845526573025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8848904959969383487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b532d7b4752277541ba4e8378ce6dea9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canMoveHorizontally: 1
-  canJump: 0
-  canRun: 0
-  canDoubleJump: 0
-  canShoot: 0
-  movementAttributes:
-    walkSpeed: 0
-    runSpeed: 0
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 0
-  verticalAttributes:
-    jumpHeight: 0
-    groundCheckLimit: 0
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 0
-  doubleJumpAttributes:
-    jumpHeight: 0
-    numberOfJumps: 0
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 0
-  shootingAttributes:
-    projectile: {fileID: 0}
-    shootingSpeed: 0
-    shootingDistance: 0

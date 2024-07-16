@@ -12,11 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091208a9ef59154418063146089116a1, type: 3}
   m_Name: HMModule
   m_EditorClassIdentifier: 
-  walk:
-    inputs: 
-    speed: 0
-    acceleration: 0
-  run:
-    inputs: 
-    speed: 0
-    acceleration: 0
+  mode: 0
+  rightKey: 275
+  leftKey: 276
+  constantSpeedSettings:
+    sprintInput: 304
+    walkSpeed: 14.7
+    runSpeed: 29.8
+  accelerationSpeedSettings:
+    speed: 50
+    maxSpeed: 11.5
+    acceleration: 12.9
+    deceleration: 12.8
+  vehicleLikeSettings:
+    brakeInput: 304
+    speed: 40.4
+    maxSpeed: 50
+    acceleration: 33
+    deceleration: 21.6
+    brakeForce: 9.6
