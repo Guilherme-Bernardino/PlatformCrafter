@@ -687,9 +687,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281a85803caf74a459439020a0840fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene0: SampleScene
+  scene0: Testing
   nest1:
-    scene1: SampleScene
+    scene1: Testing
     nest2:
       scene2: 0
 --- !u!1 &933563384
