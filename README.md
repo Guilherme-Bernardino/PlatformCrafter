@@ -7,6 +7,12 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.3.1] - 18-07-2024
+
+## Added
+- Added Horizontal Movement Type Module V1.0.
+- Added Walk, Sprint and Dash as ModuleActions for said module.
+
 ## [0.3] - 15-07-2024
 
 ## Added
