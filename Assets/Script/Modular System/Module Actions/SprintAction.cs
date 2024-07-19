@@ -10,6 +10,7 @@ namespace PlatformCrafterModularSystem
     public class SprintAction : ModuleAction
     {
         [SerializeField] private KeyCode sprintKey;
+        [SerializeField] private bool allowDoubleTap;
 
         private Rigidbody2D rb;
 
@@ -25,11 +26,17 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private MovementMode mode;
 
         [ShowIf("mode", MovementMode.ConstantSpeed)]
+        [AllowNesting]
         [SerializeField] private ConstantSpeed constantSpeedSettings;
 
         [ShowIf("mode", MovementMode.AccelerationSpeed)]
+        [AllowNesting]
         [SerializeField] private AcceleratingSpeed acceleratingSpeedSettings;
         public KeyCode SprintKey => sprintKey;
+
+        private float lastRightKeyPressTime;
+        private float lastLeftKeyPressTime;
+        private bool isSprinting;
 
         public override void Initialize(Module module)
         {
@@ -40,63 +47,97 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateAction()
         {
-            switch (mode)
+            if (allowDoubleTap)
             {
-                case MovementMode.ConstantSpeed:
-                    HandleConstantSpeed();
-                    break;
-                case MovementMode.AccelerationSpeed:
-                    HandleAccelerationSpeed();
-                    break;
+                HandleDoubleTap();
+            }
+
+            if (Input.GetKey(sprintKey))
+            {
+                isSprinting = true;
+            }
+
+            if (isSprinting)
+            {
+                switch (mode)
+                {
+                    case MovementMode.ConstantSpeed:
+                        HandleConstantSpeed();
+                        break;
+                    case MovementMode.AccelerationSpeed:
+                        HandleAccelerationSpeed();
+                        break;
+                }
+
+                if (!Input.GetKey(sprintKey) && !Input.GetKey(rightKey) && !Input.GetKey(leftKey))
+                {
+                    isSprinting = false;
+                }
             }
         }
 
         private void HandleConstantSpeed()
         {
-            if (Input.GetKey(sprintKey))
+            float targetSpeed = 0f;
+
+            if (Input.GetKey(rightKey))
             {
-                float targetSpeed = 0f;
-
-                if (Input.GetKey(rightKey))
-                {
-                    targetSpeed = constantSpeedSettings.Speed;
-                }
-                else if (Input.GetKey(leftKey))
-                {
-                    targetSpeed = -constantSpeedSettings.Speed;
-                }
-
-                rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
+                targetSpeed = constantSpeedSettings.Speed;
             }
+            else if (Input.GetKey(leftKey))
+            {
+                targetSpeed = -constantSpeedSettings.Speed;
+            }
+
+            rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
         }
 
         private void HandleAccelerationSpeed()
         {
-            if (Input.GetKey(sprintKey))
+            float targetSpeed = 0f;
+
+            if (Input.GetKey(rightKey))
             {
-                float targetSpeed = 0f;
+                targetSpeed = acceleratingSpeedSettings.Speed;
+            }
+            else if (Input.GetKey(leftKey))
+            {
+                targetSpeed = -acceleratingSpeedSettings.Speed;
+            }
 
-                if (Input.GetKey(rightKey))
-                {
-                    targetSpeed = acceleratingSpeedSettings.Speed;
-                }
-                else if (Input.GetKey(leftKey))
-                {
-                    targetSpeed = -acceleratingSpeedSettings.Speed;
-                }
+            float currentSpeed = rb.velocity.x;
 
-                float currentSpeed = rb.velocity.x;
+            if (targetSpeed != 0)
+            {
+                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleratingSpeedSettings.Acceleration * Time.deltaTime);
+            }
+            else
+            {
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, acceleratingSpeedSettings.Deceleration * Time.deltaTime);
+            }
 
-                if (targetSpeed != 0)
-                {
-                    currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleratingSpeedSettings.Acceleration * Time.deltaTime);
-                }
-                else
-                {
-                    currentSpeed = Mathf.MoveTowards(currentSpeed, 0, acceleratingSpeedSettings.Deceleration * Time.deltaTime);
-                }
+            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -acceleratingSpeedSettings.MaxSpeed, acceleratingSpeedSettings.MaxSpeed), rb.velocity.y);
+        }
 
-                rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -acceleratingSpeedSettings.MaxSpeed, acceleratingSpeedSettings.MaxSpeed), rb.velocity.y);
+        private void HandleDoubleTap()
+        {
+            float currentTime = Time.time;
+
+            if (Input.GetKeyDown(rightKey))
+            {
+                if (currentTime - lastRightKeyPressTime < 0.3f)
+                {
+                    isSprinting = true;
+                }
+                lastRightKeyPressTime = currentTime;
+            }
+            else if (Input.GetKeyDown(leftKey))
+            {
+                if (currentTime - lastLeftKeyPressTime < 0.3f)
+                {
+                    isSprinting = true;
+                }
+                lastLeftKeyPressTime = currentTime;
             }
         }
     }

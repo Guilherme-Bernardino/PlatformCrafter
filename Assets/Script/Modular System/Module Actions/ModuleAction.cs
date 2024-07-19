@@ -7,4 +7,6 @@ public abstract class ModuleAction
 {
     public abstract void Initialize(Module module);
     public abstract void UpdateAction();
+
+    public bool IsActive { get; }
 }

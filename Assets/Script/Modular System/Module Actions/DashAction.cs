@@ -9,6 +9,7 @@ namespace PlatformCrafterModularSystem
     public class DashAction : ModuleAction
     {
         [SerializeField] private KeyCode dashKey;
+        [SerializeField] private bool allowDoubleTap;
 
         private KeyCode rightKey;
         private KeyCode leftKey;
@@ -16,6 +17,14 @@ namespace PlatformCrafterModularSystem
         private Rigidbody2D rb;
         private float dashCooldownTimer;
         private int dashesLeft;
+
+        private float lastRightKeyPressTime;
+        private float lastLeftKeyPressTime;
+        private bool isDashing;
+        private bool isActive;
+
+        private float dashStartTime;
+        private float dashDirection;
 
         public enum MovementMode
         {
@@ -43,66 +52,110 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateAction()
         {
-            switch (mode)
+            dashCooldownTimer += Time.deltaTime;
+
+            if (allowDoubleTap)
             {
-                case MovementMode.Dash:
-                    HandleDash();
-                    break;
-                case MovementMode.MultipleDashes:
-                    HandleMultipleDashes();
-                    break;
+                HandleDoubleTap();
+            }
+
+            if (Input.GetKeyDown(dashKey))
+            {
+                Activate();
+            }
+
+            if (isActive)
+            {
+                if (isDashing)
+                {
+                    UpdateDash();
+                }
+                else
+                {
+                    switch (mode)
+                    {
+                        case MovementMode.Dash:
+                            HandleDash();
+                            break;
+                        case MovementMode.MultipleDashes:
+                            HandleMultipleDashes();
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void Activate()
+        {
+            if (!isDashing && dashCooldownTimer >= cooldown)
+            {
+                isDashing = true;
+                isActive = true;
+                dashStartTime = Time.time;
+                dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
+                rb.velocity = new Vector2(dashDirection * dashSpeed, rb.velocity.y);
+            }
+        }
+
+        public void Deactivate()
+        {
+            isDashing = false;
+            isActive = false;
+            rb.velocity = Vector2.zero;
+        }
+
+        private void UpdateDash()
+        {
+            float dashDuration = dashDistance / dashSpeed;
+            if (Time.time - dashStartTime >= dashDuration)
+            {
+                Deactivate();
             }
         }
 
         private void HandleDash()
         {
-            if (Input.GetKeyDown(dashKey) && dashCooldownTimer >= cooldown)
+            if (dashCooldownTimer >= cooldown && Input.GetKeyDown(dashKey))
             {
-                float dashDirection = 0f;
-
-                if (Input.GetKey(rightKey))
-                {
-                    dashDirection = 1f;
-                }
-                else if (Input.GetKey(leftKey))
-                {
-                    dashDirection = -1f;
-                }
-
-                rb.velocity = new Vector2(dashDirection * dashSpeed * dashDistance, rb.velocity.y);
+                Activate();
                 dashCooldownTimer = 0;
             }
-
-            dashCooldownTimer += Time.deltaTime;
         }
 
         private void HandleMultipleDashes()
         {
-            if (Input.GetKeyDown(dashKey) && dashesLeft > 0)
+            if (dashesLeft > 0 && Input.GetKeyDown(dashKey))
             {
-                float dashDirection = 0f;
-
-                if (Input.GetKey(rightKey))
-                {
-                    dashDirection = 1f;
-                }
-                else if (Input.GetKey(leftKey))
-                {
-                    dashDirection = -1f;
-                }
-
-                rb.velocity = new Vector2(dashDirection * dashSpeed * dashDistance, rb.velocity.y);
+                Activate();
                 dashesLeft--;
             }
 
-            if (dashesLeft < numberOfDashes)
+            if (dashesLeft < numberOfDashes && dashCooldownTimer >= cooldown)
             {
-                dashCooldownTimer += Time.deltaTime;
-                if (dashCooldownTimer >= cooldown)
+                dashCooldownTimer = 0;
+                dashesLeft++;
+            }
+        }
+
+        private void HandleDoubleTap()
+        {
+            float currentTime = Time.time;
+
+            if (Input.GetKeyDown(rightKey))
+            {
+                if (currentTime - lastRightKeyPressTime < 0.3f)
                 {
-                    dashCooldownTimer = 0;
-                    dashesLeft++;
+                    Activate();
                 }
+                lastRightKeyPressTime = currentTime;
+            }
+            else if (Input.GetKeyDown(leftKey))
+            {
+                if (currentTime - lastLeftKeyPressTime < 0.3f)
+                {
+                    Activate();
+                }
+                lastLeftKeyPressTime = currentTime;
             }
         }
     }
