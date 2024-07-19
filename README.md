@@ -7,19 +7,28 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.3.2] - 19-07-2024
+
+### Added
+- Added double tap feature for Sprint and Dash actions.
+- Added a way to activate/deactivate extra actions through flagging.
+
+### Fixed
+- Fixed nesting modes for the actions.
+
 ## [0.3.1] - 18-07-2024
 
-## Added
+### Added
 - Added Horizontal Movement Type Module V1.0.
 - Added Walk, Sprint and Dash as ModuleActions for said module.
 
 ## [0.3] - 15-07-2024
 
-## Added
+### Added
 - Added Modular Brain System component.
 - Added Modular Brain Editor.
 
-## Changed
+### Changed
 - Changed modular structure to allow module types.
 - Changed module mechanics to actions structs.
 
