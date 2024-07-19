@@ -24,12 +24,15 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private WalkMovementMode walkMode;
 
         [ShowIf("walkMode", WalkMovementMode.ConstantSpeed)]
+        [AllowNesting]
         [SerializeField] private ConstantSpeed constantSpeedSettings;
 
         [ShowIf("walkMode", WalkMovementMode.AccelerationSpeed)]
+        [AllowNesting]
         [SerializeField] private AcceleratingSpeed acceleratingSpeedSettings;
 
         [ShowIf("walkMode", WalkMovementMode.VehicleLike)]
+        [AllowNesting]
         [SerializeField] private VehicleLike vehicleLikeSettings;
 
         public override void Initialize(Module module)
