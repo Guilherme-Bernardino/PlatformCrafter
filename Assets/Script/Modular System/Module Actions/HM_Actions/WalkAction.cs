@@ -1,7 +1,4 @@
 using NaughtyAttributes;
-using PlatformCrafterModularSystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlatformCrafterModularSystem
@@ -20,6 +17,10 @@ namespace PlatformCrafterModularSystem
             AccelerationSpeed,
             VehicleLike
         }
+
+        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float groundCheckRange = 0.1f;
+        [SerializeField] private bool canMoveOnAir;
 
         [SerializeField] private WalkMovementMode walkMode;
 
@@ -44,6 +45,11 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateAction()
         {
+            if (!canMoveOnAir && !IsGrounded())
+            {
+                return;
+            }
+
             switch (walkMode)
             {
                 case WalkMovementMode.ConstantSpeed:
@@ -129,6 +135,18 @@ namespace PlatformCrafterModularSystem
             }
 
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -vehicleLikeSettings.MaxSpeed, vehicleLikeSettings.MaxSpeed), rb.velocity.y);
+        }
+
+        private bool IsGrounded()
+        {
+            Vector2 rayOrigin = rb.position;
+            Vector2 rayDirection = Vector2.down;
+            float rayLength = groundCheckRange;
+
+            Debug.DrawRay(rayOrigin, rayDirection * rayLength, Color.red);
+
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, groundLayer);
+            return hit.collider != null;
         }
     }
 }

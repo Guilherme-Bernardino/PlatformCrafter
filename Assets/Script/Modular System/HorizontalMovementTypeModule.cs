@@ -33,7 +33,6 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private DashAction dash;
 
         private Rigidbody2D rigidbody;
-
         public Rigidbody2D Rigidbody => rigidbody;
 
         protected override void InitializeModule()
