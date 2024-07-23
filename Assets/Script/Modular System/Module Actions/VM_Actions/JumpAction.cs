@@ -7,13 +7,16 @@ namespace PlatformCrafterModularSystem
     public class JumpAction : ModuleAction
     {
         private Rigidbody2D rb;
-
         private KeyCode jumpKey;
+        private bool isJumping;
+        private float jumpTime;
 
         public enum VerticalMovementMode
         {
             SingleJump,
-            MultipleJumps
+            MultipleJumps,
+            ConstantHeightJump,
+            DerivativeHeightJump
         }
 
         [SerializeField] private LayerMask groundLayer;
@@ -21,21 +24,24 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private VerticalMovementMode jumpMode;
 
-        [ShowIf("jumpMode", VerticalMovementMode.SingleJump)]
+        [ShowIf("jumpMode", VerticalMovementMode.ConstantHeightJump)]
         [AllowNesting]
-        [SerializeField] private SingleJump singleJumpSettings;
+        [SerializeField] private ConstantHeightJump constantHeightJumpSettings;
 
-        [ShowIf("jumpMode", VerticalMovementMode.MultipleJumps)]
+        [ShowIf("jumpMode", VerticalMovementMode.DerivativeHeightJump)]
         [AllowNesting]
-        [SerializeField] private MultipleJumps multipleJumpsSettings;
+        [SerializeField] private DerivativeHeightJump derivativeHeightJumpSettings;
 
         private int remainingJumps;
         private bool isGrounded;
+        private float defaultGravityScale ; 
 
         public override void Initialize(Module module)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             jumpKey = ((VerticalMovementTypeModule)module).JumpKey;
+
+            defaultGravityScale = rb.gravityScale;
         }
 
         public override void UpdateAction()
@@ -44,58 +50,68 @@ namespace PlatformCrafterModularSystem
 
             switch (jumpMode)
             {
-                case VerticalMovementMode.SingleJump:
-                    HandleSingleJump();
+                case VerticalMovementMode.ConstantHeightJump:
+                    HandleConstantHeightJump();
                     break;
-                case VerticalMovementMode.MultipleJumps:
-                    HandleMultipleJumps();
+                case VerticalMovementMode.DerivativeHeightJump:
+                    HandleDerivativeHeightJump();
                     break;
             }
-        }
-        private void HandleSingleJump()
-        {
-            //if (isGrounded && Input.GetKeyDown(jumpKey))
-            //{
-            //    float jumpSpeed = CalculateJumpVelocity(singleJumpSettings.JumpHeight, singleJumpSettings.JumpDuration);
-            //    rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-            //}
 
+            if (!isJumping)
+            {
+                rb.gravityScale = defaultGravityScale;
+            }
+
+            if (!isGrounded) isJumping = true;
+            else isJumping = false;
+        }
+
+        private void HandleConstantHeightJump()
+        {
             if (isGrounded && Input.GetKeyDown(jumpKey))
             {
-                float jumpSpeed = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * singleJumpSettings.JumpHeight);
-                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-                rb.gravityScale = 1 / singleJumpSettings.JumpSpeedMultiplier; // Adjust gravity scale for jump speed
+                rb.gravityScale = constantHeightJumpSettings.GravityScale;
+                float jumpForce = Mathf.Sqrt(constantHeightJumpSettings.JumpHeight * (Physics2D.gravity.y * rb.gravityScale) * -2) * rb.mass;
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
-
-            // Reset gravity scale when falling or grounded
-            if (rb.velocity.y <= 0 || isGrounded)
+            if (isJumping)
             {
-                rb.gravityScale = 1;
-            }
-        }
-
-        private void HandleMultipleJumps()
-        {
-            if (isGrounded)
-            {
-                remainingJumps = multipleJumpsSettings.ExtraJumps;
-            }
-
-            if (Input.GetKeyDown(jumpKey) && remainingJumps > 0)
-            {
-                float jumpSpeed;
-
-                if (isGrounded || !multipleJumpsSettings.DifferentExtraJumps)
+                if (rb.velocity.y > 0)
                 {
-                    jumpSpeed = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * multipleJumpsSettings.JumpHeight);
+                    rb.gravityScale = constantHeightJumpSettings.GravityScale;
                 }
                 else
                 {
-                    jumpSpeed = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * multipleJumpsSettings.ExtraJumpSpeed);
+                    rb.gravityScale = constantHeightJumpSettings.FallGravityScale;
+                }
+            }
+        }
+
+        private void HandleDerivativeHeightJump()
+        {
+            if (isGrounded && Input.GetKeyDown(jumpKey))
+            {
+                jumpTime = 0;
+                rb.velocity = new Vector2(rb.velocity.x, derivativeHeightJumpSettings.InitialJumpForce);
+            }
+
+            if (isJumping)
+            {
+                if (Input.GetKey(jumpKey) && jumpTime < derivativeHeightJumpSettings.MaxJumpDuration)
+                {
+                    jumpTime += Time.deltaTime;
+                    rb.velocity = new Vector2(rb.velocity.x, derivativeHeightJumpSettings.InitialJumpForce);
                 }
 
-                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-                remainingJumps--;
+                if (rb.velocity.y > 0 && isJumping)
+                {
+                    rb.gravityScale = derivativeHeightJumpSettings.GravityScale;
+                }
+                else
+                {
+                    rb.gravityScale = derivativeHeightJumpSettings.FallGravityScale;
+                }
             }
         }
 

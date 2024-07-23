@@ -19,7 +19,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    jumpMode: 0
+    jumpMode: 3
     singleJumpSettings:
       jumpHeight: 7
       jumpSpeedMultiplier: 50
@@ -30,3 +30,12 @@ MonoBehaviour:
       extraJumpDuration: 0
       extraJumps: 10
       differentExtraJumps: 1
+    constantHeightJumpSettings:
+      jumpHeight: 1.2
+      gravityScale: 6
+      fallGravityScale: 9
+    derivativeHeightJumpSettings:
+      initialJumpForce: 3.6
+      gravityScale: 6
+      fallGravityScale: 14.4
+      maxJumpDuration: 0.14

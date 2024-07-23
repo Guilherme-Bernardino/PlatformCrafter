@@ -65,44 +65,41 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct SingleJump
+    public struct ConstantHeightJump
     {
         [Range(0.0f, 50.0f)]
         [SerializeField] private float jumpHeight;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float jumpSpeedMultiplier;
+        [SerializeField] private float gravityScale;
+
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float fallGravityScale;
 
         public float JumpHeight => jumpHeight;
-        public float JumpSpeedMultiplier => jumpSpeedMultiplier;
+        public float GravityScale => gravityScale;
+        public float FallGravityScale => fallGravityScale;
     }
 
     [System.Serializable]
-    public struct MultipleJumps
+    public struct DerivativeHeightJump
     {
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float jumpHeight;
+        [SerializeField] private float initialJumpForce;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float jumpDuration;
+        [SerializeField] private float gravityScale;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float extraJumpSpeed;
+        [SerializeField] private float fallGravityScale;
 
-        [Range(0.0f, 50.0f)]
-        [SerializeField] private float extraJumpDuration;
+        [Range(0.0f, 2.0f)]
+        [SerializeField] private float maxJumpDuration;
 
-        [Range(1, 10)]
-        [SerializeField] private int extraJumps;
-
-        [SerializeField] private bool differentExtraJumps;
-
-        public float JumpHeight => jumpHeight;
-        public float JumpDuration => jumpDuration;
-        public float ExtraJumpSpeed => extraJumpSpeed;
-        public float ExtraJumpDuration => extraJumpDuration;
-        public int ExtraJumps => extraJumps;
-        public bool DifferentExtraJumps => differentExtraJumps;
+        public float InitialJumpForce => initialJumpForce;
+        public float GravityScale => gravityScale;
+        public float FallGravityScale => fallGravityScale;
+        public float MaxJumpDuration => maxJumpDuration;
     }
 
     [Flags]
