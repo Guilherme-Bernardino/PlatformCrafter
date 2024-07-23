@@ -17,19 +17,19 @@ namespace PlatformCrafterModularSystem
         private KeyCode rightKey;
         private KeyCode leftKey;
 
-        public enum MovementMode
+        public enum SprintMovementMode
         {
             ConstantSpeed,
             AccelerationSpeed,
         }
 
-        [SerializeField] private MovementMode mode;
+        [SerializeField] private SprintMovementMode mode;
 
-        [ShowIf("mode", MovementMode.ConstantSpeed)]
+        [ShowIf("mode", SprintMovementMode.ConstantSpeed)]
         [AllowNesting]
         [SerializeField] private ConstantSpeed constantSpeedSettings;
 
-        [ShowIf("mode", MovementMode.AccelerationSpeed)]
+        [ShowIf("mode", SprintMovementMode.AccelerationSpeed)]
         [AllowNesting]
         [SerializeField] private AcceleratingSpeed acceleratingSpeedSettings;
         public KeyCode SprintKey => sprintKey;
@@ -61,10 +61,10 @@ namespace PlatformCrafterModularSystem
             {
                 switch (mode)
                 {
-                    case MovementMode.ConstantSpeed:
+                    case SprintMovementMode.ConstantSpeed:
                         HandleConstantSpeed();
                         break;
-                    case MovementMode.AccelerationSpeed:
+                    case SprintMovementMode.AccelerationSpeed:
                         HandleAccelerationSpeed();
                         break;
                 }

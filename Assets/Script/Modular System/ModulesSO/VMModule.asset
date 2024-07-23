@@ -13,29 +13,36 @@ MonoBehaviour:
   m_Name: VMModule
   m_EditorClassIdentifier: 
   jumpKey: 273
-  extraActions: 0
+  extraActions: 1
   jump:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    jumpMode: 3
-    singleJumpSettings:
-      jumpHeight: 7
-      jumpSpeedMultiplier: 50
-    multipleJumpsSettings:
-      jumpHeight: 7.7
-      jumpDuration: 0
-      extraJumpSpeed: 1.3
-      extraJumpDuration: 0
-      extraJumps: 10
-      differentExtraJumps: 1
+    jumpMode: 1
     constantHeightJumpSettings:
-      jumpHeight: 1.2
+      jumpHeight: 1.8
       gravityScale: 6
       fallGravityScale: 9
     derivativeHeightJumpSettings:
-      initialJumpForce: 3.6
+      initialJumpForce: 12.6
       gravityScale: 6
       fallGravityScale: 14.4
-      maxJumpDuration: 0.14
+      maxJumpDuration: 0.34
+  airJump:
+    airJumpKey: 32
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.1
+    maxExtraJumps: 2
+    airJumpMode: 0
+    constantHeightJumpSettings:
+      jumpHeight: 4.8
+      gravityScale: 6
+      fallGravityScale: 9
+    derivativeHeightJumpSettings:
+      initialJumpForce: 16.9
+      gravityScale: 6
+      fallGravityScale: 12
+      maxJumpDuration: 0.29

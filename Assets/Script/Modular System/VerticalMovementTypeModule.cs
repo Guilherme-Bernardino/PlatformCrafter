@@ -19,6 +19,11 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private JumpAction jump = new();
 
+
+        [ShowIf("extraActions", VMActions.AirJump)]
+        [AllowNesting]
+        [SerializeField] private AirJumpAction airJump;
+
         [ShowIf("extraActions", VMActions.Crouch)]
         [AllowNesting]
         [SerializeField] private CrouchAction crouch;
@@ -44,6 +49,11 @@ namespace PlatformCrafterModularSystem
             {
                 climb.Initialize(this);
             }
+
+            if (extraActions.HasFlag(VMActions.AirJump))
+            {
+                airJump.Initialize(this);
+            }
         }
 
         public override void UpdateModule()
@@ -59,6 +69,11 @@ namespace PlatformCrafterModularSystem
                 if (extraActions.HasFlag(VMActions.Climb))
                 {
                     climb.UpdateAction();
+                }
+
+                if (extraActions.HasFlag(VMActions.AirJump))
+                {
+                    airJump.UpdateAction();
                 }
             }
         }
@@ -105,9 +120,10 @@ namespace PlatformCrafterModularSystem
     [Flags]
     public enum VMActions
     {
-        None = 0,
-        Crouch = 1,
-        Climb = 2,
+        None,
+        AirJump,
+        Crouch,
+        Climb
     }
 }
 

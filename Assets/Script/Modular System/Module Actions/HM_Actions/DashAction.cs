@@ -26,13 +26,13 @@ namespace PlatformCrafterModularSystem
         private float dashStartTime;
         private float dashDirection;
 
-        public enum MovementMode
+        public enum DashMovementMode
         {
             Dash,
             MultipleDashes
         }
 
-        [SerializeField] private MovementMode mode;
+        [SerializeField] private DashMovementMode mode;
         public KeyCode DashKey => dashKey;
 
         [Range(0.0f, 50.0f)]
@@ -74,10 +74,10 @@ namespace PlatformCrafterModularSystem
                 {
                     switch (mode)
                     {
-                        case MovementMode.Dash:
+                        case DashMovementMode.Dash:
                             HandleDash();
                             break;
-                        case MovementMode.MultipleDashes:
+                        case DashMovementMode.MultipleDashes:
                             HandleMultipleDashes();
                             break;
                     }

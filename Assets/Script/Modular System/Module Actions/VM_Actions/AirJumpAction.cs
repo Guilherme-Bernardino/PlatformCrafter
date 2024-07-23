@@ -1,17 +1,23 @@
 using NaughtyAttributes;
+using PlatformCrafterModularSystem;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    public class JumpAction : ModuleAction
+    public class AirJumpAction : ModuleAction
     {
+        [SerializeField] private KeyCode airJumpKey;
+
         private Rigidbody2D rb;
         private KeyCode jumpKey;
+        private int remainingJumps;
         private bool isJumping;
         private float jumpTime;
 
-        public enum JumpMovementMode
+        public enum AirJumpMode
         {
             ConstantHeightJump,
             DerivativeHeightJump
@@ -20,25 +26,24 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float groundCheckRange;
 
-        [SerializeField] private JumpMovementMode jumpMode;
+        [SerializeField] private int maxExtraJumps;
+        [SerializeField] private AirJumpMode airJumpMode;
 
-        [ShowIf("jumpMode", JumpMovementMode.ConstantHeightJump)]
+        [ShowIf("airJumpMode", AirJumpMode.ConstantHeightJump)]
         [AllowNesting]
         [SerializeField] private ConstantHeightJump constantHeightJumpSettings;
 
-        [ShowIf("jumpMode", JumpMovementMode.DerivativeHeightJump)]
+        [ShowIf("airJumpMode", AirJumpMode.DerivativeHeightJump)]
         [AllowNesting]
         [SerializeField] private DerivativeHeightJump derivativeHeightJumpSettings;
 
-        private int remainingJumps;
         private bool isGrounded;
-        private float defaultGravityScale ; 
+        private float defaultGravityScale;
 
         public override void Initialize(Module module)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             jumpKey = ((VerticalMovementTypeModule)module).JumpKey;
-
             defaultGravityScale = rb.gravityScale;
         }
 
@@ -46,14 +51,23 @@ namespace PlatformCrafterModularSystem
         {
             isGrounded = CheckGround();
 
-            switch (jumpMode)
+            if (isGrounded)
             {
-                case JumpMovementMode.ConstantHeightJump:
-                    HandleConstantHeightJump();
-                    break;
-                case JumpMovementMode.DerivativeHeightJump:
-                    HandleDerivativeHeightJump();
-                    break;
+                remainingJumps = maxExtraJumps;
+                isJumping = false;
+            }
+
+            if (!isGrounded)
+            {
+                switch (airJumpMode)
+                {
+                    case AirJumpMode.ConstantHeightJump:
+                        HandleConstantHeightAirJump();
+                        break;
+                    case AirJumpMode.DerivativeHeightJump:
+                        HandleDerivativeHeightAirJump();
+                        break;
+                }
             }
 
             if (!isJumping)
@@ -65,14 +79,17 @@ namespace PlatformCrafterModularSystem
             else isJumping = false;
         }
 
-        private void HandleConstantHeightJump()
+        private void HandleConstantHeightAirJump()
         {
-            if (isGrounded && Input.GetKeyDown(jumpKey))
+            if (remainingJumps > 0 && Input.GetKeyDown(airJumpKey))
             {
+                isJumping = true;
                 rb.gravityScale = constantHeightJumpSettings.GravityScale;
                 float jumpForce = Mathf.Sqrt(constantHeightJumpSettings.JumpHeight * (Physics2D.gravity.y * rb.gravityScale) * -2) * rb.mass;
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                remainingJumps--;
             }
+
             if (isJumping)
             {
                 if (rb.velocity.y > 0)
@@ -86,17 +103,19 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        private void HandleDerivativeHeightJump()
+        private void HandleDerivativeHeightAirJump()
         {
-            if (isGrounded && Input.GetKeyDown(jumpKey))
+            if (remainingJumps > 0 && Input.GetKeyDown(airJumpKey))
             {
+                isJumping = true;
                 jumpTime = 0;
                 rb.velocity = new Vector2(rb.velocity.x, derivativeHeightJumpSettings.InitialJumpForce);
+                remainingJumps--;
             }
 
             if (isJumping)
             {
-                if (Input.GetKey(jumpKey) && jumpTime < derivativeHeightJumpSettings.MaxJumpDuration)
+                if (Input.GetKey(airJumpKey) && jumpTime < derivativeHeightJumpSettings.MaxJumpDuration)
                 {
                     jumpTime += Time.deltaTime;
                     rb.velocity = new Vector2(rb.velocity.x, derivativeHeightJumpSettings.InitialJumpForce);
@@ -115,15 +134,10 @@ namespace PlatformCrafterModularSystem
 
         private bool CheckGround()
         {
-            Vector2 rayOrigin = rb.position;
-            Vector2 rayDirection = Vector2.down;
-            float rayLength = groundCheckRange;
-
-            Debug.DrawRay(rayOrigin, rayDirection * rayLength, Color.red);
-
-            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, groundLayer);
+            RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.down, groundCheckRange, groundLayer);
+            Debug.DrawRay(rb.position, Vector2.down * groundCheckRange, Color.red);
             return hit.collider != null;
         }
-
     }
 }
+
