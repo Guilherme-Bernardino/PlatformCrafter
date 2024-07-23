@@ -7,6 +7,16 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.4] - 23-07-2024
+
+### Added
+- Added Verical Movement Type Module V1.0.
+- Added Jump and AirJump as ModuleActions for said module.
+- Added Constant Height and Derivative Height for both actions.
+
+### Changed
+- Changed the way walking works by checking ground and allowing horizontal air movement if needed.
+
 ## [0.3.2] - 19-07-2024
 
 ### Added
