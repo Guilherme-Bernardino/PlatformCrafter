@@ -12,4 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c543a5938ca9614eb74b37636fd8409, type: 3}
   m_Name: VMModule
   m_EditorClassIdentifier: 
-  isActive: 0
+  jumpKey: 273
+  extraActions: 1
+  jump:
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.1
+    jumpMode: 1
+    constantHeightJumpSettings:
+      jumpHeight: 1.8
+      gravityScale: 6
+      fallGravityScale: 9
+    derivativeHeightJumpSettings:
+      initialJumpForce: 12.6
+      gravityScale: 6
+      fallGravityScale: 14.4
+      maxJumpDuration: 0.34
+  airJump:
+    airJumpKey: 32
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.1
+    maxExtraJumps: 2
+    airJumpMode: 0
+    constantHeightJumpSettings:
+      jumpHeight: 4.8
+      gravityScale: 6
+      fallGravityScale: 9
+    derivativeHeightJumpSettings:
+      initialJumpForce: 16.9
+      gravityScale: 6
+      fallGravityScale: 12
+      maxJumpDuration: 0.29

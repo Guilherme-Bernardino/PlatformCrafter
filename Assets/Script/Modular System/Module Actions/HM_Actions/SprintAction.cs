@@ -7,33 +7,36 @@ using UnityEngine;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    public class WalkAction : ModuleAction
+    public class SprintAction : ModuleAction
     {
+        [SerializeField] private KeyCode sprintKey;
+        [SerializeField] private bool allowDoubleTap;
+
         private Rigidbody2D rb;
 
         private KeyCode rightKey;
         private KeyCode leftKey;
 
-        public enum WalkMovementMode
+        public enum SprintMovementMode
         {
             ConstantSpeed,
             AccelerationSpeed,
-            VehicleLike
         }
 
-        [SerializeField] private WalkMovementMode walkMode;
+        [SerializeField] private SprintMovementMode mode;
 
-        [ShowIf("walkMode", WalkMovementMode.ConstantSpeed)]
+        [ShowIf("mode", SprintMovementMode.ConstantSpeed)]
         [AllowNesting]
         [SerializeField] private ConstantSpeed constantSpeedSettings;
 
-        [ShowIf("walkMode", WalkMovementMode.AccelerationSpeed)]
+        [ShowIf("mode", SprintMovementMode.AccelerationSpeed)]
         [AllowNesting]
         [SerializeField] private AcceleratingSpeed acceleratingSpeedSettings;
+        public KeyCode SprintKey => sprintKey;
 
-        [ShowIf("walkMode", WalkMovementMode.VehicleLike)]
-        [AllowNesting]
-        [SerializeField] private VehicleLike vehicleLikeSettings;
+        private float lastRightKeyPressTime;
+        private float lastLeftKeyPressTime;
+        private bool isSprinting;
 
         public override void Initialize(Module module)
         {
@@ -44,17 +47,32 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateAction()
         {
-            switch (walkMode)
+            if (allowDoubleTap)
             {
-                case WalkMovementMode.ConstantSpeed:
-                    HandleConstantSpeed();
-                    break;
-                case WalkMovementMode.AccelerationSpeed:
-                    HandleAccelerationSpeed();
-                    break;
-                case WalkMovementMode.VehicleLike:
-                    HandleVehicleLike();
-                    break;
+                HandleDoubleTap();
+            }
+
+            if (Input.GetKey(sprintKey))
+            {
+                isSprinting = true;
+            }
+
+            if (isSprinting)
+            {
+                switch (mode)
+                {
+                    case SprintMovementMode.ConstantSpeed:
+                        HandleConstantSpeed();
+                        break;
+                    case SprintMovementMode.AccelerationSpeed:
+                        HandleAccelerationSpeed();
+                        break;
+                }
+
+                if (!Input.GetKey(sprintKey) && !Input.GetKey(rightKey) && !Input.GetKey(leftKey))
+                {
+                    isSprinting = false;
+                }
             }
         }
 
@@ -88,6 +106,7 @@ namespace PlatformCrafterModularSystem
             }
 
             float currentSpeed = rb.velocity.x;
+
             if (targetSpeed != 0)
             {
                 currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleratingSpeedSettings.Acceleration * Time.deltaTime);
@@ -100,35 +119,26 @@ namespace PlatformCrafterModularSystem
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -acceleratingSpeedSettings.MaxSpeed, acceleratingSpeedSettings.MaxSpeed), rb.velocity.y);
         }
 
-        private void HandleVehicleLike()
+        private void HandleDoubleTap()
         {
-            float targetSpeed = 0f;
+            float currentTime = Time.time;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKeyDown(rightKey))
             {
-                targetSpeed = vehicleLikeSettings.Speed;
+                if (currentTime - lastRightKeyPressTime < 0.3f)
+                {
+                    isSprinting = true;
+                }
+                lastRightKeyPressTime = currentTime;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKeyDown(leftKey))
             {
-                targetSpeed = -vehicleLikeSettings.Speed;
+                if (currentTime - lastLeftKeyPressTime < 0.3f)
+                {
+                    isSprinting = true;
+                }
+                lastLeftKeyPressTime = currentTime;
             }
-
-            float currentSpeed = rb.velocity.x;
-            if (targetSpeed != 0)
-            {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, vehicleLikeSettings.Acceleration * Time.deltaTime);
-            }
-            else
-            {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, vehicleLikeSettings.Deceleration * Time.deltaTime);
-            }
-
-            if (Input.GetKey(vehicleLikeSettings.BrakeInput))
-            {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, vehicleLikeSettings.BrakeForce * Time.deltaTime);
-            }
-
-            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -vehicleLikeSettings.MaxSpeed, vehicleLikeSettings.MaxSpeed), rb.velocity.y);
         }
     }
 }

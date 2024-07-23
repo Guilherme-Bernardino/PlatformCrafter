@@ -16,13 +16,18 @@ MonoBehaviour:
   leftKey: 276
   extraActions: -1
   walk:
-    walkMode: 1
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.1
+    canMoveOnAir: 1
+    walkMode: 0
     constantSpeedSettings:
       speed: 8.2
     acceleratingSpeedSettings:
-      speed: 11.5
+      speed: 17.5
       maxSpeed: 25.2
-      acceleration: 6
+      acceleration: 26.5
       deceleration: 6
     vehicleLikeSettings:
       brakeInput: 32
@@ -40,7 +45,7 @@ MonoBehaviour:
     acceleratingSpeedSettings:
       speed: 37.2
       maxSpeed: 50
-      acceleration: 17.9
+      acceleration: 33
       deceleration: 5.2
   dash:
     dashKey: 306
