@@ -118,7 +118,8 @@ namespace PlatformCrafterModularSystem
     public enum HMActions
     {
         None = 0,
-        Sprint = 1,
-        Dash = 2,
+        Sprint = 1 << 0,
+        Dash = 1 << 1,
+        All = ~0
     }
 }

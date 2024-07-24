@@ -12,16 +12,19 @@ namespace PlatformCrafterModularSystem
         private Rigidbody2D rb;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
+        private Collider2D col;
 
         public Rigidbody2D Rigidbody => rb;
         public SpriteRenderer SpriteRenderer => spriteRenderer;
         public Animator Animator => animator;
+        public Collider2D Collider => col;
 
         private void Start()
         {
             rb = GetComponentInChildren<Rigidbody2D>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             animator = GetComponentInChildren<Animator>();
+            col = GetComponentInChildren<Collider2D>();
 
             InitializeModules();
         }

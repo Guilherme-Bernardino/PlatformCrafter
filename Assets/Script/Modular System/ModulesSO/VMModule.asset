@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: VMModule
   m_EditorClassIdentifier: 
   jumpKey: 273
-  extraActions: 1
+  extraActions: 3
   jump:
     groundLayer:
       serializedVersion: 2
@@ -46,3 +46,17 @@ MonoBehaviour:
       gravityScale: 6
       fallGravityScale: 12
       maxJumpDuration: 0.29
+  crouch:
+    crouchKey: 274
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.1
+    crouchMode: 1
+    normalCrouchSettings:
+      crouchHeightReductionPercentage: 50.4
+    platformCrouchSettings:
+      crouchHeightReductionPercentage: 50.4
+      platformTag: Platform
+      platformHoldTime: 4.3
+      platformDropTime: 1.02

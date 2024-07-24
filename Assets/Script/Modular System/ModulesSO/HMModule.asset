@@ -21,7 +21,7 @@ MonoBehaviour:
       m_Bits: 8
     groundCheckRange: 0.1
     canMoveOnAir: 1
-    walkMode: 0
+    walkMode: 1
     constantSpeedSettings:
       speed: 8.2
     acceleratingSpeedSettings:
@@ -45,8 +45,8 @@ MonoBehaviour:
     acceleratingSpeedSettings:
       speed: 37.2
       maxSpeed: 50
-      acceleration: 33
-      deceleration: 5.2
+      acceleration: 16.5
+      deceleration: 2.6
   dash:
     dashKey: 306
     allowDoubleTap: 1
