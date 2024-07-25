@@ -148,6 +148,13 @@ namespace PlatformCrafterModularSystem
         public float PlatformDropTime => platformDropTime;
     }
 
+    [System.Serializable]
+    public struct VerticalClimb
+    {
+        [SerializeField] private float climbSpeed;
+
+        public float ClimbSpeed => climbSpeed;
+    }
 
     [Flags]
     public enum VMActions

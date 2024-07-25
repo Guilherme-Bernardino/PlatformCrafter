@@ -1,7 +1,10 @@
+using NaughtyAttributes;
 using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static PlatformCrafterModularSystem.CrouchAction;
 
 namespace PlatformCrafterModularSystem
 {
@@ -26,22 +29,23 @@ namespace PlatformCrafterModularSystem
         private float dashStartTime;
         private float dashDirection;
 
-        public enum DashMovementMode
-        {
-            Dash,
-            MultipleDashes
-        }
+        //public enum DashMovementMode
+        //{
+        //    Dash,
+        //    MultipleDashes
+        //}
 
-        [SerializeField] private DashMovementMode mode;
+        //[SerializeField] private DashMovementMode dashMode;
+
+        //[ShowIf("dashMode", DashMovementMode.Dash)]
+        //[AllowNesting]
+        [SerializeField] private Dash dashSettings;
+
+        //[ShowIf("dashMode", DashMovementMode.MultipleDashes)]
+        //[AllowNesting]
+        //[SerializeField] private MultipleDashes multipleDashesSettings;
+
         public KeyCode DashKey => dashKey;
-
-        [Range(0.0f, 50.0f)]
-        [SerializeField] private float dashDistance;
-        [Range(0.0f, 50.0f)]
-        [SerializeField] private float dashSpeed;
-        [Range(0.0f, 50.0f)]
-        [SerializeField] private float cooldown;
-        [SerializeField] private int numberOfDashes;
 
         public override void Initialize(Module module)
         {
@@ -72,28 +76,20 @@ namespace PlatformCrafterModularSystem
                 }
                 else
                 {
-                    switch (mode)
-                    {
-                        case DashMovementMode.Dash:
-                            HandleDash();
-                            break;
-                        case DashMovementMode.MultipleDashes:
-                            HandleMultipleDashes();
-                            break;
-                    }
+                    HandleDash();
                 }
             }
         }
 
         public void Activate()
         {
-            if (!isDashing && dashCooldownTimer >= cooldown)
+            if (!isDashing && dashCooldownTimer >= dashSettings.Cooldown)
             {
                 isDashing = true;
                 isActive = true;
                 dashStartTime = Time.time;
                 dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
-                rb.velocity = new Vector2(dashDirection * dashSpeed, rb.velocity.y);
+                rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
             }
         }
 
@@ -106,7 +102,7 @@ namespace PlatformCrafterModularSystem
 
         private void UpdateDash()
         {
-            float dashDuration = dashDistance / dashSpeed;
+            float dashDuration = dashSettings.DashDistance / dashSettings.DashSpeed;
             if (Time.time - dashStartTime >= dashDuration)
             {
                 Deactivate();
@@ -115,27 +111,34 @@ namespace PlatformCrafterModularSystem
 
         private void HandleDash()
         {
-            if (dashCooldownTimer >= cooldown && Input.GetKeyDown(dashKey))
+            if (dashCooldownTimer >= dashSettings.Cooldown && Input.GetKeyDown(dashKey))
             {
-                Activate();
+                if (!isDashing && dashCooldownTimer >= dashSettings.Cooldown)
+                {
+                    isDashing = true;
+                    isActive = true;
+                    dashStartTime = Time.time;
+                    dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
+                    rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
+                }
                 dashCooldownTimer = 0;
             }
         }
 
-        private void HandleMultipleDashes()
-        {
-            if (dashesLeft > 0 && Input.GetKeyDown(dashKey))
-            {
-                Activate();
-                dashesLeft--;
-            }
+        //private void HandleMultipleDashes()
+        //{
+        //    if (dashesLeft > 0 && Input.GetKeyDown(dashKey))
+        //    {
+        //        Activate();
+        //        dashesLeft--;
+        //    }
 
-            if (dashesLeft < numberOfDashes && dashCooldownTimer >= cooldown)
-            {
-                dashCooldownTimer = 0;
-                dashesLeft++;
-            }
-        }
+        //    if (dashesLeft < numberOfDashes && dashCooldownTimer >= cooldown)
+        //    {
+        //        dashCooldownTimer = 0;
+        //        dashesLeft++;
+        //    }
+        //}
 
         private void HandleDoubleTap()
         {

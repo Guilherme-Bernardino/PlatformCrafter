@@ -50,8 +50,7 @@ MonoBehaviour:
   dash:
     dashKey: 306
     allowDoubleTap: 1
-    mode: 0
-    dashDistance: 6.5
-    dashSpeed: 27.3
-    cooldown: 0.9
-    numberOfDashes: 3
+    dashSettings:
+      dashDistance: 2.9
+      dashSpeed: 34.9
+      cooldown: 1.4
