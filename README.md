@@ -7,10 +7,27 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.4.1] - 25-07-2024
+
+### Added 
+- Added Crouch action to VM Module v1.0.
+- Added two modes to crouch: normal crouch and platform that allows to go through platforms while crouching.
+- Added Climb action to VM Module v1.0 with a simple vertical climb.
+- Added Collider reference on the Modular Brain.
+
+### Changed
+- Dash action struture.
+
+### Fixed
+- HM and VM action selection where some actions couldn't be selected properly.
+
+### Removed
+- Removed MultipleDashes mode to dash action.
+
 ## [0.4] - 23-07-2024
 
 ### Added
-- Added Verical Movement Type Module V1.0.
+- Added Vertical Movement Type Module V1.0.
 - Added Jump and AirJump as ModuleActions for said module.
 - Added Constant Height and Derivative Height for both actions.
 
