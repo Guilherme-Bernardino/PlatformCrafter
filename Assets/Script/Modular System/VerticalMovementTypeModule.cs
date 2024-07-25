@@ -35,9 +35,13 @@ namespace PlatformCrafterModularSystem
         private Rigidbody2D rigidbody;
         public Rigidbody2D Rigidbody => rigidbody;
 
+        private Collider2D collider;
+        public Collider2D Collider => collider;
+
         protected override void InitializeModule()
         {
             rigidbody = modularBrain.Rigidbody;
+            collider = modularBrain.Collider;
 
             jump.Initialize(this);
             if (extraActions.HasFlag(VMActions.Crouch))
@@ -117,13 +121,49 @@ namespace PlatformCrafterModularSystem
         public float MaxJumpDuration => maxJumpDuration;
     }
 
+    [System.Serializable]
+    public struct NormalCrouch
+    {
+        [Range(0, 100)]
+        [SerializeField] private float crouchHeightReductionPercentage;
+
+        public float CrouchHeightReductionPercentage => crouchHeightReductionPercentage;
+    }
+
+    [System.Serializable]
+    public struct PlatformCrouch
+    {
+        [Range(0, 100)]
+        [SerializeField] private float crouchHeightReductionPercentage;
+        [Tag]
+        [SerializeField] private string platformTag;
+        [Range(0, 10)]
+        [SerializeField] private float platformHoldTime;
+        [Range(0, 10)]
+        [SerializeField] private float platformDropTime;
+
+        public float CrouchHeightReductionPercentage => crouchHeightReductionPercentage;
+        public string PlatformTag => platformTag;
+        public float PlatformHoldTime => platformHoldTime;
+        public float PlatformDropTime => platformDropTime;
+    }
+
+    [System.Serializable]
+    public struct VerticalClimb
+    {
+        [SerializeField] private float climbSpeed;
+
+        public float ClimbSpeed => climbSpeed;
+    }
+
     [Flags]
     public enum VMActions
     {
-        None,
-        AirJump,
-        Crouch,
-        Climb
+        None = 0,
+        AirJump = 1 << 0,
+        Crouch = 1 << 1,
+        Climb = 1 << 2,
+        All = ~0
     }
 }
 

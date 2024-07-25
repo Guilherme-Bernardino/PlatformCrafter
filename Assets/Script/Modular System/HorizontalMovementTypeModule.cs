@@ -114,11 +114,44 @@ namespace PlatformCrafterModularSystem
         public float BrakeForce => brakeForce;
     }
 
+    [System.Serializable]
+    public struct Dash
+    {
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float dashDistance;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float dashSpeed;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float cooldown;
+
+        public float DashDistance => dashDistance;
+        public float DashSpeed => dashSpeed;
+        public float Cooldown => cooldown;
+    }
+
+    [System.Serializable]
+    public struct MultipleDashes
+    {
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float dashDistance;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float dashSpeed;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float cooldown;
+        [SerializeField] private int numberOfDashes;
+
+        public float DashDistance => dashDistance;
+        public float DashSpeed => dashSpeed;
+        public float Cooldown => cooldown;
+        public int NumberOfDashes => numberOfDashes;
+    }
+
     [Flags]
     public enum HMActions
     {
         None = 0,
-        Sprint = 1,
-        Dash = 2,
+        Sprint = 1 << 0,
+        Dash = 1 << 1,
+        All = ~0
     }
 }
