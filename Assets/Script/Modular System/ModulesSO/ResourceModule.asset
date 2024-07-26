@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceName: HP
   maxValue: 100
-  currentValue: 94
-  resourceColor: {r: 0.8867924, g: 0.071110725, b: 0.071110725, a: 1}
-  togglePassive: 1
+  currentValue: 80
+  resourceColor: {r: 1, g: 0.4669811, b: 0.4669811, a: 1}
+  togglePassive: 0
   passiveRecoveryRate: 0
   passiveRecoveryInterval: 0
   passiveDepletionRate: 0
