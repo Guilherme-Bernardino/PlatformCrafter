@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aefb5c483b26684d984fb5b73858377, type: 3}
   m_Name: InteractionModule
   m_EditorClassIdentifier: 
-  isActive: 0
+  automaticInteraction: 0
+  interactionKey: 101
+  interactionChannel: {fileID: 11400000, guid: d87d9bbfec939ef4ab08c3439278ae4a, type: 2}
+  interactionRadius: 1.4
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 64
