@@ -7,6 +7,13 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.5] - 27-07-2024
+
+### Added
+- Added Resource Module v1.0 with active and passive modes.
+- Added Interaction Module v1.0 with active and passive modes.
+- Added ScriptableChannels.
+
 ## [0.4.1] - 25-07-2024
 
 ### Added 
