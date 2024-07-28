@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace PlatformCrafterModularSystem
 {
-    public interface InteractionReceptor
+    public abstract class InteractionReceptor : MonoBehaviour
     {
-        ScriptableGameObjectChannel InteractionChannel { get; set; }
+        [SerializeField] protected ScriptableGameObjectChannel interactionChannel;
 
-        void OnEnable();
+        protected abstract void OnEnable();
 
-        void OnDisable();
+        protected abstract void OnDisable();
 
-        void DoInteraction();
+        protected abstract void OnInteract(GameObject obj);
     }
 }
 

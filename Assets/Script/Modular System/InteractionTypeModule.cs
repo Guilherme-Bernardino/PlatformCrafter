@@ -16,7 +16,6 @@ namespace PlatformCrafterModularSystem
 
         [Range(0f,20f)]
         [SerializeField] private float interactionRadius = 1.0f;
-        [SerializeField] private LayerMask interactableLayer;
 
         private GameObject currentInteractable;
         private Collider2D[] interactablesInRange = new Collider2D[10];
@@ -49,26 +48,30 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateModule()
         {
-            interactablesCount = Physics2D.OverlapCircleNonAlloc(modularBrain.transform.position, interactionRadius, interactablesInRange, interactableLayer);
+            interactablesCount = Physics2D.OverlapCircleNonAlloc(modularBrain.transform.position, interactionRadius, interactablesInRange);
 
-            Debug.DrawCircle(modularBrain.transform.position, interactionRadius, 32, Color.green);
+            //Debug draw the radius of the interactable area
+            Debug.DrawCircle(modularBrain.transform.position, interactionRadius, 32, Color.green); 
 
-            if (interactablesCount > 0)
+            for (int i = 0; i < interactablesCount; i++)
             {
-                currentInteractable = interactablesInRange[0].gameObject;
-                if (automaticInteraction)
+                var receptor = interactablesInRange[i].GetComponent<InteractionReceptor>();
+                if (receptor != null)
                 {
-                    Interact();
-                }
-                else if (Input.GetKeyDown(interactionKey))
-                {
-                    Interact();
+                    currentInteractable = receptor.gameObject;
+                    if (automaticInteraction)
+                    {
+                        Interact();
+                    }
+                    else if (Input.GetKeyDown(interactionKey))
+                    {
+                        Interact();
+                    }
+                    return; 
                 }
             }
-            else
-            {
-                ClearCurrentInteractable();
-            }
+
+            ClearCurrentInteractable();
         }
     }
 }

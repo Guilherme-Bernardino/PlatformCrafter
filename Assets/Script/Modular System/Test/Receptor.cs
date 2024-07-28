@@ -4,34 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Receptor : MonoBehaviour, InteractionReceptor
+public class Receptor : InteractionReceptor
 {
-    public ScriptableGameObjectChannel InteractionChannel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-    public void DoInteraction()
+    protected override void OnEnable()
     {
-        throw new System.NotImplementedException();
+        interactionChannel.AddChannelListener(OnInteract);
     }
 
-    public void OnDisable()
+    protected override void OnDisable()
     {
-        throw new System.NotImplementedException();
+        interactionChannel.RemoveChannelListener(OnInteract);
     }
 
-    public void OnEnable()
+    protected override void OnInteract(GameObject obj)
     {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (obj == this.gameObject)
+        {
+            //Something
+            Debug.Log($"{gameObject.name} interacted with!");
+        }
     }
 }
