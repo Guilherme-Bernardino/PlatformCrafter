@@ -52,11 +52,13 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    crouchMode: 1
+    crouchMode: 0
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50.4
+      linearDrag: 9.5
     platformCrouchSettings:
       crouchHeightReductionPercentage: 50.4
+      linearDrag: 0
       platformTag: Platform
       platformHoldTime: 4.3
       platformDropTime: 1.02
@@ -68,3 +70,4 @@ MonoBehaviour:
     climbCheckRange: 0.5
     verticalClimbSettings:
       climbSpeed: 8.63
+      holdClimb: 1

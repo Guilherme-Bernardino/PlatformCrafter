@@ -40,6 +40,7 @@ namespace PlatformCrafterModularSystem
         {
             RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.up, climbCheckRange, climbableLayer);
             Debug.DrawRay(rb.position, Vector2.up * climbCheckRange, Color.green);
+            rb.constraints = RigidbodyConstraints2D.None;
             return hit.collider != null;
         }
 
@@ -51,10 +52,18 @@ namespace PlatformCrafterModularSystem
                 rb.gravityScale = 0f;
                 float verticalInput = Input.GetAxis("Vertical");
                 rb.velocity = new Vector2(rb.velocity.x, verticalInput * verticalClimbSettings.ClimbSpeed);
+                rb.constraints = RigidbodyConstraints2D.None;
             }
             else
             {
-                StopClimbing();
+                if (verticalClimbSettings.HoldClimb)
+                {
+                    rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+                }
+                else
+                {
+                    StopClimbing();
+                }
             }
         }
 

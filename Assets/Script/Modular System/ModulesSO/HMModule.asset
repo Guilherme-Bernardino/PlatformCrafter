@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightKey: 275
   leftKey: 276
-  extraActions: -1
+  extraActions: 1
   walk:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
     canMoveOnAir: 1
-    walkMode: 1
+    walkMode: 2
     constantSpeedSettings:
       speed: 8.2
     acceleratingSpeedSettings:
@@ -31,11 +31,12 @@ MonoBehaviour:
       deceleration: 6
     vehicleLikeSettings:
       brakeInput: 32
-      speed: 17.3
-      maxSpeed: 50
-      acceleration: 5.8
-      deceleration: 3
-      brakeForce: 35.4
+      horizontalBrake: 1
+      speed: 33.3
+      maxSpeed: 36.1
+      acceleration: 20
+      deceleration: 5
+      brakeForce: 24.2
   sprint:
     sprintKey: 304
     allowDoubleTap: 0
