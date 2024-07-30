@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ namespace PlatformCrafterModularSystem
 {
     public abstract class Module : ScriptableObject
     {
-        protected bool isActive;
+
+        [SerializeReference][ReadOnly]protected bool isActive;
         protected ModularBrain modularBrain;
 
         public void Initialize(ModularBrain modularBrain)
@@ -20,5 +22,10 @@ namespace PlatformCrafterModularSystem
         public abstract void UpdateModule();
 
         public bool IsActive { get { return isActive; } set { isActive = value; } }
+
+        public void SetModuleState(bool state)
+        {
+            isActive = state;
+        }
     }
 }

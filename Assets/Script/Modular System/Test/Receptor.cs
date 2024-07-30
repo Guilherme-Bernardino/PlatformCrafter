@@ -3,24 +3,15 @@ using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Receptor : InteractionReceptor
 {
-    protected override void OnEnable()
-    {
-        interactionChannel.AddChannelListener(OnInteract);
-    }
-
-    protected override void OnDisable()
-    {
-        interactionChannel.RemoveChannelListener(OnInteract);
-    }
-
-    protected override void OnInteract(GameObject obj)
+    protected override void DoInteraction(GameObject obj)
     {
         if (obj == this.gameObject)
         {
-            //Something
+            ////Something
             Debug.Log($"{gameObject.name} interacted with!");
         }
     }

@@ -221,6 +221,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionChannel: {fileID: 11400000, guid: d87d9bbfec939ef4ab08c3439278ae4a, type: 2}
+  actionEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +506,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionChannel: {fileID: 11400000, guid: d87d9bbfec939ef4ab08c3439278ae4a, type: 2}
+  actionEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1365920763
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -662,10 +668,6 @@ PrefabInstance:
     - target: {fileID: 540978068380232213, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3244442297419460967, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: m_Constraints
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name

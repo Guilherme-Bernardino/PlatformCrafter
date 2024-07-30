@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091208a9ef59154418063146089116a1, type: 3}
   m_Name: HMModule
   m_EditorClassIdentifier: 
+  isActive: 1
   rightKey: 275
   leftKey: 276
   extraActions: 1

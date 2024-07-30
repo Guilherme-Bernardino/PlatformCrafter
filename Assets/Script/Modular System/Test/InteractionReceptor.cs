@@ -2,6 +2,7 @@ using OI.ScriptableTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PlatformCrafterModularSystem
 {
@@ -9,11 +10,24 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] protected ScriptableGameObjectChannel interactionChannel;
 
-        protected abstract void OnEnable();
+        [SerializeField] protected UnityEvent actionEvent;
 
-        protected abstract void OnDisable();
+        protected virtual void OnEnable()
+        {
+            interactionChannel.AddChannelListener(OnInteract);
+        }
 
-        protected abstract void OnInteract(GameObject obj);
+        protected virtual void OnDisable()
+        {
+            interactionChannel.RemoveChannelListener(OnInteract);
+        }
+    
+        protected void OnInteract(GameObject obj) {
+            actionEvent.Invoke();
+            DoInteraction(obj); //Custom (empty if nothing)
+        }
+
+        protected virtual void DoInteraction(GameObject obj) { }
     }
 }
 
