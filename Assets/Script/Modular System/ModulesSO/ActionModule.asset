@@ -12,4 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39358687e3dd8384c92afca24ca4acf5, type: 3}
   m_Name: ActionModule
   m_EditorClassIdentifier: 
-  isActive: 0
+  isActive: 1
+  actionInput: 113
+  actionType: 3
+  instantiationTypeSettings:
+    prefab: {fileID: 0}
+    position: {x: 0, y: 0}
+    launchDirection: {x: 0, y: 0}
+    speed: 0
+  consumptionTypeSettings:
+    item: 0
+    amount: 0
+  statusApplicationTypeSettings:
+    status: 0
+    multiplier: 0
+    duration: 0
+    amount: 0
+  externalActionTypeSettings:
+    selectedAction: {fileID: 11400000, guid: d04e3c183d3ae8644b4ec8fd7c78a197, type: 2}
+  soundEffectTypeSettings:
+    audioClip: {fileID: 0}
+    volume: 0
+  animationTypeSettings:
+    triggerName: 

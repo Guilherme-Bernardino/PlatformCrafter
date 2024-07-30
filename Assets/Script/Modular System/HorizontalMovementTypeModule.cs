@@ -22,7 +22,7 @@ namespace PlatformCrafterModularSystem
         [EnumFlags]
         [SerializeField] private HMActions extraActions;
 
-        [SerializeField] private WalkAction walk = new();
+        [SerializeField] private WalkAction walk;
 
         [ShowIf("extraActions", HMActions.Sprint)]
         [AllowNesting]

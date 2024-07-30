@@ -17,7 +17,7 @@ namespace PlatformCrafterModularSystem
         [EnumFlags]
         [SerializeField] private VMActions extraActions;
 
-        [SerializeField] private JumpAction jump = new();
+        [SerializeField] private JumpAction jump;
 
 
         [ShowIf("extraActions", VMActions.AirJump)]
