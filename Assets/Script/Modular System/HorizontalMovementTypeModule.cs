@@ -22,7 +22,7 @@ namespace PlatformCrafterModularSystem
         [EnumFlags]
         [SerializeField] private HMActions extraActions;
 
-        [SerializeField] private WalkAction walk = new();
+        [SerializeField] private WalkAction walk;
 
         [ShowIf("extraActions", HMActions.Sprint)]
         [AllowNesting]
@@ -94,6 +94,7 @@ namespace PlatformCrafterModularSystem
     public struct VehicleLike
     {
         [SerializeField] private KeyCode brakeInput;
+        [SerializeField] private bool horizontalBrake;
         [Range(0.0f, 50.0f)]
         [SerializeField] private float speed;
         [Range(0.0f, 50.0f)]
@@ -107,6 +108,7 @@ namespace PlatformCrafterModularSystem
 
 
         public KeyCode BrakeInput => brakeInput;
+        public bool HorizontalBrake => horizontalBrake;
         public float Speed => speed;
         public float MaxSpeed => maxSpeed;
         public float Acceleration => acceleration;

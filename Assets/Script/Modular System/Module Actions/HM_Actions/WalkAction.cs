@@ -36,11 +36,14 @@ namespace PlatformCrafterModularSystem
         [AllowNesting]
         [SerializeField] private VehicleLike vehicleLikeSettings;
 
+        private bool isBraking;
+
         public override void Initialize(Module module)
         {
             rb = ((HorizontalMovementTypeModule)module).Rigidbody;
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
+            isBraking = false;
         }
 
         public override void UpdateAction()
@@ -110,16 +113,17 @@ namespace PlatformCrafterModularSystem
         {
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKey(rightKey) && !isBraking)
             {
                 targetSpeed = vehicleLikeSettings.Speed;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey) && !isBraking)
             {
                 targetSpeed = -vehicleLikeSettings.Speed;
             }
 
             float currentSpeed = rb.velocity.x;
+
             if (targetSpeed != 0)
             {
                 currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, vehicleLikeSettings.Acceleration * Time.deltaTime);
@@ -129,9 +133,15 @@ namespace PlatformCrafterModularSystem
                 currentSpeed = Mathf.MoveTowards(currentSpeed, 0, vehicleLikeSettings.Deceleration * Time.deltaTime);
             }
 
-            if (Input.GetKey(vehicleLikeSettings.BrakeInput))
+            if (Input.GetKey(vehicleLikeSettings.BrakeInput) ||
+                (vehicleLikeSettings.HorizontalBrake && ((currentSpeed > 0 && Input.GetKey(leftKey)) || (currentSpeed < 0 && Input.GetKey(rightKey)))))
             {
+                isBraking = true;
                 currentSpeed = Mathf.MoveTowards(currentSpeed, 0, vehicleLikeSettings.BrakeForce * Time.deltaTime);
+            }
+            else
+            {
+                isBraking = false;
             }
 
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -vehicleLikeSettings.MaxSpeed, vehicleLikeSettings.MaxSpeed), rb.velocity.y);

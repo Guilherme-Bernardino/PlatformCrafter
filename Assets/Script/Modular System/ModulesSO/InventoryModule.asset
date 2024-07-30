@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0fd25e808710b47b07d70e4200e4be, type: 3}
   m_Name: InventoryModule
   m_EditorClassIdentifier: 
-  isActive: 0
+  isActive: 1

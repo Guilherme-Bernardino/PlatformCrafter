@@ -133,7 +133,16 @@ namespace PlatformCrafterModularSystem
             Rect toggleRect = new Rect(rect.x + rect.width - 50, rect.y - 20, 15, EditorGUIUtility.singleLineHeight);
             if (GUI.Button(toggleRect, ""))
             {
-                module.IsActive = !module.IsActive;
+                if (module.IsActive)
+                {
+                    module.SetModuleState(false);
+                }
+                else
+                {
+                    module.SetModuleState(true);
+                }
+                
+                EditorUtility.SetDirty(module);
             }
 
             EditorGUI.DrawRect(toggleRect, buttonColor);

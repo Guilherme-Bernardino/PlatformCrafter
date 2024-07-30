@@ -17,7 +17,7 @@ namespace PlatformCrafterModularSystem
         [EnumFlags]
         [SerializeField] private VMActions extraActions;
 
-        [SerializeField] private JumpAction jump = new();
+        [SerializeField] private JumpAction jump;
 
 
         [ShowIf("extraActions", VMActions.AirJump)]
@@ -126,8 +126,11 @@ namespace PlatformCrafterModularSystem
     {
         [Range(0, 100)]
         [SerializeField] private float crouchHeightReductionPercentage;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float linearDrag;
 
         public float CrouchHeightReductionPercentage => crouchHeightReductionPercentage;
+        public float LinearDrag => linearDrag;
     }
 
     [System.Serializable]
@@ -135,6 +138,8 @@ namespace PlatformCrafterModularSystem
     {
         [Range(0, 100)]
         [SerializeField] private float crouchHeightReductionPercentage;
+        [Range(0.0f, 50.0f)]
+        [SerializeField] private float linearDrag;
         [Tag]
         [SerializeField] private string platformTag;
         [Range(0, 10)]
@@ -142,7 +147,9 @@ namespace PlatformCrafterModularSystem
         [Range(0, 10)]
         [SerializeField] private float platformDropTime;
 
+
         public float CrouchHeightReductionPercentage => crouchHeightReductionPercentage;
+        public float LinearDrag => linearDrag;
         public string PlatformTag => platformTag;
         public float PlatformHoldTime => platformHoldTime;
         public float PlatformDropTime => platformDropTime;
@@ -152,8 +159,10 @@ namespace PlatformCrafterModularSystem
     public struct VerticalClimb
     {
         [SerializeField] private float climbSpeed;
+        [SerializeField] private bool holdClimb;
 
         public float ClimbSpeed => climbSpeed;
+        public bool HoldClimb => holdClimb;
     }
 
     [Flags]

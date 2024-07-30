@@ -85,12 +85,14 @@ namespace PlatformCrafterModularSystem
                 float heightReduction = originalColliderHeight * (normalCrouchSettings.CrouchHeightReductionPercentage / 100f);
                 collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
                 collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+                rb.drag = normalCrouchSettings.LinearDrag;
             }
             else if (Input.GetKeyUp(crouchKey))
             {
                 isCrouching = false;
                 collider.size = new Vector2(collider.size.x, originalColliderHeight);
                 collider.offset = originalOffset;
+                rb.drag = 0;
             }
         }
 
@@ -103,6 +105,7 @@ namespace PlatformCrafterModularSystem
                 collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
                 collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
                 crouchTime = 0;
+                rb.drag = normalCrouchSettings.LinearDrag;
             }
 
             if (Input.GetKey(crouchKey))
@@ -121,6 +124,7 @@ namespace PlatformCrafterModularSystem
                 isCrouching = false;
                 collider.size = new Vector2(collider.size.x, originalColliderHeight);
                 collider.offset = originalOffset;
+                rb.drag = 0;
             }
         }
 

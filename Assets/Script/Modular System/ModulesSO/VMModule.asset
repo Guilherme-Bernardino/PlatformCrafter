@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c543a5938ca9614eb74b37636fd8409, type: 3}
   m_Name: VMModule
   m_EditorClassIdentifier: 
+  isActive: 1
   jumpKey: 273
-  extraActions: -1
+  extraActions: 0
   jump:
     groundLayer:
       serializedVersion: 2
@@ -52,11 +53,13 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    crouchMode: 1
+    crouchMode: 0
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50.4
+      linearDrag: 9.5
     platformCrouchSettings:
       crouchHeightReductionPercentage: 50.4
+      linearDrag: 0
       platformTag: Platform
       platformHoldTime: 4.3
       platformDropTime: 1.02
@@ -68,3 +71,4 @@ MonoBehaviour:
     climbCheckRange: 0.5
     verticalClimbSettings:
       climbSpeed: 8.63
+      holdClimb: 1
