@@ -7,6 +7,30 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.6] - 30-07-2024
+
+### Added
+- Added drag movement setting on the Crouch action.
+- Added option for braking with left/right key on the Vehicle-Like mode on the Walking Action.
+- Added toggle option that allows for mid-way stopping on vertical climb action.
+- Added Action Module v1.0 with internal and external actions choices.
+- Added External Action class used for actions not hardcoded on the action module.
+
+### Changed
+- Changed the way Interact Receptors work, now allowing UnityEvent and a hardcoded option of Interactable Objects.
+
+### Fixed
+- Fixed bug where braking didn't work properly for both left and right.
+- Fixed modules not keeping the active state upon reload.
+
+## [0.5.1] - 28-07-2024
+
+### Added
+- Added Interaction Receptor class used for interactable objects.
+
+### Removed
+- Layers and InteractComponent from Interaction Module.
+
 ## [0.5] - 27-07-2024
 
 ### Added
