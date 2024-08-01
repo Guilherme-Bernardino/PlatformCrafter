@@ -12,6 +12,8 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode actionInput;
 
+        private float cooldownTimer = 0f;
+
         private enum ActionType
         {
             Instantiate, // Instantiate something
@@ -66,15 +68,60 @@ namespace PlatformCrafterModularSystem
                     case ActionType.SoundEffect: ExecuteSoundEffect(); break;
                 }
             }
+
+            if (cooldownTimer > 0)
+            {
+                cooldownTimer -= Time.deltaTime;
+            }
         }
 
         private void ExecuteInstantiation()
         {
-            GameObject instance = GameObject.Instantiate(instantiationTypeSettings.prefab, instantiationTypeSettings.position, Quaternion.identity);
+            if (cooldownTimer > 0)
+            {
+                return;
+            }
+
+            cooldownTimer = instantiationTypeSettings.Cooldown;
+
+            Vector2 origin = modularBrain.transform.position;
+            Vector2 positionOffset = instantiationTypeSettings.PositionOffset;
+            float angle = instantiationTypeSettings.Angle;
+            float speed = instantiationTypeSettings.Speed;
+            bool useCharacterDirection = instantiationTypeSettings.UseCharacterDirection;
+
+            HorizontalMovementTypeModule horizontalMovementModule = modularBrain.GetHMTypeModule();
+
+            if (horizontalMovementModule != null && useCharacterDirection)
+            {
+                positionOffset.x *= horizontalMovementModule.IsFacingRight ? 1 : -1;
+            }
+
+            Vector2 finalPosition = origin + positionOffset;
+            Vector2 launchDirection;
+
+            if (instantiationTypeSettings.UseMouseToAim)
+            {
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                launchDirection = (mousePosition - (Vector3)finalPosition).normalized;
+            }
+            else
+            {
+                if (!horizontalMovementModule.IsFacingRight && useCharacterDirection)
+                {
+                    angle = 180 - angle;
+                }
+
+                launchDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+            }
+
+            GameObject instance = Instantiate(instantiationTypeSettings.Prefab, finalPosition, Quaternion.identity);
+
             Rigidbody2D rb = instance.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.velocity = instantiationTypeSettings.launchDirection.normalized * instantiationTypeSettings.speed;
+
+                rb.velocity = launchDirection * speed;
             }
         }
 
@@ -104,20 +151,35 @@ namespace PlatformCrafterModularSystem
 
         private void ExecuteExternalAction()
         {
-            //moduleActionTypeSettings.moduleAction.Initialize(this);
-            //moduleActionTypeSettings.moduleAction.UpdateAction();
-
-            externalActionTypeSettings.SelectedAction.Execute();
+            externalActionTypeSettings.ExternalAction.Execute();
         }
 
         private void ExecuteAnimation()
         {
-            modularBrain.Animator.Play(animationTypeSettings.triggerName);
+            modularBrain.Animator.Play(animationTypeSettings.TriggerName);
         }
 
         private void ExecuteSoundEffect()
         {
-            //Play Sound
+            if (cooldownTimer > 0)
+            {
+                return;
+            }
+
+            cooldownTimer = soundEffectTypeSettings.Cooldown;
+
+            if (modularBrain.AudioSource == null)
+            {
+                Debug.LogWarning("No AudioSource found on ModularBrain.");
+                return;
+            }
+
+            modularBrain.AudioSource.clip = soundEffectTypeSettings.AudioClip;
+            modularBrain.AudioSource.volume = soundEffectTypeSettings.Volume;
+            modularBrain.AudioSource.loop = soundEffectTypeSettings.Loop;
+            modularBrain.AudioSource.pitch = soundEffectTypeSettings.Pitch;
+
+            modularBrain.AudioSource.Play();
         }
 
         //private IEnumerator ApplySpeedBuff()
@@ -140,10 +202,24 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct InstantiateType
     {
-        public GameObject prefab;
-        public Vector2 position;
-        public Vector2 launchDirection;
-        public float speed;
+        [SerializeField] private GameObject prefab;
+        [SerializeField] private Vector2 positionOffset;
+        [Range(-90f, 90f)]
+        [SerializeField] private float angle;
+        [Range(0f, 200f)]
+        [SerializeField] private float speed;
+        [SerializeField] private bool useCharacterDirection;
+        [Range(0f, 50f)]
+        [SerializeField] private float cooldown;
+        [SerializeField] private bool useMouseToAim;
+
+        public GameObject Prefab => prefab;
+        public Vector2 PositionOffset => positionOffset;
+        public float Angle => angle;
+        public float Speed => speed;
+        public bool UseCharacterDirection => useCharacterDirection;
+        public float Cooldown => cooldown;
+        public bool UseMouseToAim => useMouseToAim;
     }
 
     [System.Serializable]
@@ -171,21 +247,34 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct ExternalActionType
     {
-        [SerializeField] private Action selectedAction;
-        public Action SelectedAction => selectedAction; 
+        [SerializeField] private ExternalAction externalAction;
+        public ExternalAction ExternalAction => externalAction; 
     }
 
     [System.Serializable]
     public struct SoundEffectType
     {
-        public AudioClip audioClip;
-        public float volume;
+        [SerializeField] private AudioClip audioClip;
+        [Range(0f, 1f)]
+        [SerializeField] private float volume;
+        [SerializeField] private bool loop;
+        [Range(-3f, 3f)]
+        [SerializeField] private float pitch;
+        [SerializeField] private float cooldown;
+
+        public AudioClip AudioClip => audioClip;
+        public float Volume => volume;
+        public bool Loop => loop;
+        public float Pitch => pitch;
+        public float Cooldown => cooldown;
     }
 
     [System.Serializable]
     public struct AnimationType
     {
-        public string triggerName;
+        [SerializeField] private string triggerName;
+
+        public string TriggerName => triggerName;
     }
 
     public enum StatusType
@@ -193,65 +282,4 @@ namespace PlatformCrafterModularSystem
         SpeedBuff,
         DefenseDebuff
     }
-
-
-
-    //[CustomPropertyDrawer(typeof(ExternalActionType))]
-    //public class ModuleActionTypeDrawer : PropertyDrawer
-    //{
-    //    private List<Action> availableActions;
-    //    private string[] actionNames;
-    //    private int selectedIndex = -1;
-
-    //    public ModuleActionTypeDrawer()
-    //    {
-    //        LoadAvailableActions();
-    //    }
-
-    //    private void LoadAvailableActions()
-    //    {
-    //        availableActions = new List<Action>();
-    //        var guids = AssetDatabase.FindAssets("t:ModuleAction");
-
-    //        foreach (var guid in guids)
-    //        {
-    //            string path = AssetDatabase.GUIDToAssetPath(guid);
-    //            var action = AssetDatabase.LoadAssetAtPath<Action>(path);
-    //            if (action != null)
-    //            {
-    //                availableActions.Add(action);
-    //            }
-    //        }
-
-    //        actionNames = new string[availableActions.Count];
-    //        for (int i = 0; i < availableActions.Count; i++)
-    //        {
-    //            actionNames[i] = availableActions[i].name;
-    //        }
-    //    }
-
-    //    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    //    {
-    //        SerializedProperty selectedActionProperty = property.FindPropertyRelative("selectedAction");
-
-    //        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-
-    //        if (availableActions.Count == 0)
-    //        {
-    //            EditorGUI.LabelField(position, "No ModuleActions found.");
-    //            return;
-    //        }
-
-    //        selectedIndex = Mathf.Max(0, System.Array.IndexOf(actionNames, selectedActionProperty.objectReferenceValue?.name));
-
-    //        selectedIndex = EditorGUI.Popup(position, selectedIndex, actionNames);
-
-    //        if (selectedIndex >= 0 && selectedIndex < availableActions.Count)
-    //        {
-    //            selectedActionProperty.objectReferenceValue = availableActions[selectedIndex];
-    //        }
-
-    //        property.serializedObject.ApplyModifiedProperties();
-    //    }
-    //}
 }

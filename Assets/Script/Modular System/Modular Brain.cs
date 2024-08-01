@@ -13,11 +13,13 @@ namespace PlatformCrafterModularSystem
         private SpriteRenderer spriteRenderer;
         private Animator animator;
         private Collider2D col;
+        private AudioSource audioSource;
 
         public Rigidbody2D Rigidbody => rb;
         public SpriteRenderer SpriteRenderer => spriteRenderer;
         public Animator Animator => animator;
         public Collider2D Collider => col;
+        public AudioSource AudioSource => audioSource;
 
         private void Start()
         {
@@ -25,6 +27,7 @@ namespace PlatformCrafterModularSystem
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             animator = GetComponentInChildren<Animator>();
             col = GetComponentInChildren<Collider2D>();
+            audioSource = GetComponentInChildren<AudioSource>();
 
             InitializeModules();
         }
@@ -48,6 +51,18 @@ namespace PlatformCrafterModularSystem
             {
                 module.UpdateModule();
             }
+        }
+
+        public HorizontalMovementTypeModule GetHMTypeModule()
+        {
+            foreach (var module in modules)
+            {
+                if (module is HorizontalMovementTypeModule hmModule)
+                {
+                    return hmModule;
+                }
+            }
+            return null;
         }
     }
 }
