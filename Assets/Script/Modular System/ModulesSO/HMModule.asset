@@ -19,12 +19,12 @@ MonoBehaviour:
   walk:
     groundLayer:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 8
     groundCheckRange: 0.1
     canMoveOnAir: 0
     walkMode: 0
     constantSpeedSettings:
-      speed: 0
+      speed: 8.6
     acceleratingSpeedSettings:
       speed: 0
       maxSpeed: 0

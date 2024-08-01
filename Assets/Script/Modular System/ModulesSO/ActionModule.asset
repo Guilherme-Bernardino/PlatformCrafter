@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: ActionModule
   m_EditorClassIdentifier: 
   isActive: 1
-  actionInput: 113
-  actionType: 3
+  actionInput: 323
+  actionType: 0
   instantiationTypeSettings:
-    prefab: {fileID: 0}
-    position: {x: 0, y: 0}
-    launchDirection: {x: 0, y: 0}
-    speed: 0
+    prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
+    positionOffset: {x: 0.12, y: 1.71}
+    angle: 15
+    speed: 82.9
+    useCharacterDirection: 1
+    cooldown: 0
+    useMouseToAim: 1
   consumptionTypeSettings:
     item: 0
     amount: 0
@@ -29,7 +32,7 @@ MonoBehaviour:
     duration: 0
     amount: 0
   externalActionTypeSettings:
-    selectedAction: {fileID: 11400000, guid: d04e3c183d3ae8644b4ec8fd7c78a197, type: 2}
+    externalAction: {fileID: 0}
   soundEffectTypeSettings:
     audioClip: {fileID: 0}
     volume: 0

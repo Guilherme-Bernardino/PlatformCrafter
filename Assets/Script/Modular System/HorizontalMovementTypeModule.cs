@@ -35,6 +35,9 @@ namespace PlatformCrafterModularSystem
         private Rigidbody2D rigidbody;
         public Rigidbody2D Rigidbody => rigidbody;
 
+        private bool isFacingRight;
+        public bool IsFacingRight => isFacingRight;
+
         protected override void InitializeModule()
         {
             rigidbody = modularBrain.Rigidbody;
@@ -42,6 +45,8 @@ namespace PlatformCrafterModularSystem
             walk.Initialize(this);
             sprint.Initialize(this);    
             dash.Initialize(this);
+
+            isFacingRight = false;
 
         }
         public override void UpdateModule()
@@ -58,8 +63,26 @@ namespace PlatformCrafterModularSystem
                 {
                     dash.UpdateAction();
                 }
+
+                UpdateDirection();
             }
         }
+
+
+        private void UpdateDirection()
+        {
+            if (Input.GetKey(rightKey))
+            {
+                isFacingRight = true;
+                modularBrain.SpriteRenderer.flipX = true;
+            }
+            else if (Input.GetKey(leftKey))
+            {
+                isFacingRight = false;
+                modularBrain.SpriteRenderer.flipX = false;
+            }
+        }
+
     }
 
     [System.Serializable]
