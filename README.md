@@ -7,6 +7,18 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.6.1] - 1-07-2024
+
+### Added
+- Added Instantiate Type Action to Action Module v1.0.
+- Added Sound Effect Type Action to Action Module v1.0.
+- Added AudioSource component to Modular Brain.
+- Added a way to obtain the HM Module form the MB.
+- Added a Facing Right check for HM module for direction check.
+
+### Changed
+- Changed Action class to ExternalAction for comprehension.
+
 ## [0.6] - 30-07-2024
 
 ### Added
@@ -38,7 +50,7 @@ All notable changes of the project
 - Added Interaction Module v1.0 with active and passive modes.
 - Added ScriptableChannels.
 
-## [0.4.1] - 25-07-2024
+## [0.4.1] - 26-07-2024
 
 ### Added 
 - Added Crouch action to VM Module v1.0.
