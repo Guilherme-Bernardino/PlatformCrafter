@@ -18,8 +18,8 @@ MonoBehaviour:
   instantiationTypeSettings:
     prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
     positionOffset: {x: 0.12, y: 1.71}
-    angle: 15
-    speed: 82.9
+    angle: 25
+    speed: 24.3
     useCharacterDirection: 1
     cooldown: 0
     useMouseToAim: 1
@@ -34,7 +34,10 @@ MonoBehaviour:
   externalActionTypeSettings:
     externalAction: {fileID: 0}
   soundEffectTypeSettings:
-    audioClip: {fileID: 0}
-    volume: 0
+    audioClip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+    volume: 1
+    loop: 0
+    pitch: 0.95
+    cooldown: 0.1
   animationTypeSettings:
     triggerName: 

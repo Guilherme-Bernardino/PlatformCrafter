@@ -161,8 +161,24 @@ namespace PlatformCrafterModularSystem
 
         private void ExecuteSoundEffect()
         {
+            if (cooldownTimer > 0)
+            {
+                return;
+            }
+
+            cooldownTimer = soundEffectTypeSettings.Cooldown;
+
+            if (modularBrain.AudioSource == null)
+            {
+                Debug.LogWarning("No AudioSource found on ModularBrain.");
+                return;
+            }
+
             modularBrain.AudioSource.clip = soundEffectTypeSettings.AudioClip;
             modularBrain.AudioSource.volume = soundEffectTypeSettings.Volume;
+            modularBrain.AudioSource.loop = soundEffectTypeSettings.Loop;
+            modularBrain.AudioSource.pitch = soundEffectTypeSettings.Pitch;
+
             modularBrain.AudioSource.Play();
         }
 
@@ -188,9 +204,12 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private Vector2 positionOffset;
+        [Range(-90f, 90f)]
         [SerializeField] private float angle;
+        [Range(0f, 200f)]
         [SerializeField] private float speed;
         [SerializeField] private bool useCharacterDirection;
+        [Range(0f, 50f)]
         [SerializeField] private float cooldown;
         [SerializeField] private bool useMouseToAim;
 
@@ -236,10 +255,18 @@ namespace PlatformCrafterModularSystem
     public struct SoundEffectType
     {
         [SerializeField] private AudioClip audioClip;
+        [Range(0f, 1f)]
         [SerializeField] private float volume;
+        [SerializeField] private bool loop;
+        [Range(-3f, 3f)]
+        [SerializeField] private float pitch;
+        [SerializeField] private float cooldown;
 
         public AudioClip AudioClip => audioClip;
         public float Volume => volume;
+        public bool Loop => loop;
+        public float Pitch => pitch;
+        public float Cooldown => cooldown;
     }
 
     [System.Serializable]
