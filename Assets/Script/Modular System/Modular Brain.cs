@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,20 @@ namespace PlatformCrafterModularSystem
 {
     public class ModularBrain : MonoBehaviour
     {
-        public List<Module> modules = new();
+        //private List<Module> modules = new();
+
+        [SerializeField] private HorizontalMovementTypeModule horizontalMovementModule;
+        [SerializeField] private VerticalMovementTypeModule verticalMovementModule;
+
+        // Multiple Action/Interaction Modules
+        [SerializeField] private List<ActionTypeModule> actionModules = new List<ActionTypeModule>();
+        [SerializeField] private List<InteractionTypeModule> interactionModules = new List<InteractionTypeModule>();
+
+        // Multiple Container Modules
+        [SerializeField] private List<ResourceTypeModule> resourceModules = new List<ResourceTypeModule>();
+        [SerializeField] private List<InventoryTypeModule> inventoryModules = new List<InventoryTypeModule>();
+
+        [SerializeField] private List<Module> customModules = new List<Module>();
 
         //Entity Components
         private Rigidbody2D rb;
@@ -34,7 +48,30 @@ namespace PlatformCrafterModularSystem
 
         private void InitializeModules()
         {
-            foreach (var module in modules)
+            horizontalMovementModule?.Initialize(this);
+            verticalMovementModule?.Initialize(this);
+
+            foreach (var module in actionModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in interactionModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in resourceModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in inventoryModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in customModules)
             {
                 module.Initialize(this);
             }
@@ -47,7 +84,30 @@ namespace PlatformCrafterModularSystem
 
         private void UpdateModules()
         {
-            foreach (var module in modules)
+            horizontalMovementModule?.UpdateModule();
+            verticalMovementModule?.UpdateModule();
+
+            foreach (var module in actionModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in interactionModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in resourceModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in inventoryModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in customModules)
             {
                 module.UpdateModule();
             }
@@ -55,14 +115,7 @@ namespace PlatformCrafterModularSystem
 
         public HorizontalMovementTypeModule GetHMTypeModule()
         {
-            foreach (var module in modules)
-            {
-                if (module is HorizontalMovementTypeModule hmModule)
-                {
-                    return hmModule;
-                }
-            }
-            return null;
+            return horizontalMovementModule;
         }
     }
 }
