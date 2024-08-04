@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace PlatformCrafterModularSystem
@@ -12,15 +13,13 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private HorizontalMovementTypeModule horizontalMovementModule;
         [SerializeField] private VerticalMovementTypeModule verticalMovementModule;
 
-        // Multiple Action/Interaction Modules
         [SerializeField] private List<ActionTypeModule> actionModules = new List<ActionTypeModule>();
         [SerializeField] private List<InteractionTypeModule> interactionModules = new List<InteractionTypeModule>();
 
-        // Multiple Container Modules
         [SerializeField] private List<ResourceTypeModule> resourceModules = new List<ResourceTypeModule>();
         [SerializeField] private List<InventoryTypeModule> inventoryModules = new List<InventoryTypeModule>();
 
-        [SerializeField] private List<Module> customModules = new List<Module>();
+        [SerializeField] private List<Module> customModules;
 
         //Entity Components
         private Rigidbody2D rb;
@@ -113,10 +112,28 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        public HorizontalMovementTypeModule GetHMTypeModule()
+        private void OnValidate()
         {
-            return horizontalMovementModule;
+            for (int i = customModules.Count - 1; i >= 0; i--)
+            {
+                var module = customModules[i];
+                if (module is HorizontalMovementTypeModule || module is VerticalMovementTypeModule ||
+                    module is ActionTypeModule || module is InteractionTypeModule ||
+                    module is ResourceTypeModule || module is InventoryTypeModule)
+                {
+                    Debug.LogWarning($"Removed predefined module type from Custom Modules list: {module.GetType().Name}. Use the type specific lists to add this specific module type.");
+                    customModules.RemoveAt(i);
+                }
+            }
         }
+
+        //Getter for all modules
+        public HorizontalMovementTypeModule HorizontalMovementTypeModule { get => horizontalMovementModule;}
+        public VerticalMovementTypeModule VerticalMovementTypeModule { get => verticalMovementModule; }
+        public List<ActionTypeModule> ActionTypeModules { get => actionModules; }
+        public List<InteractionTypeModule> InteractionTypeModules { get => interactionModules; }
+        public List<ResourceTypeModule> ResourceTypeModules { get => resourceModules; }
+        public List<InventoryTypeModule> InventoryTypeModules { get => inventoryModules; }
     }
 }
 

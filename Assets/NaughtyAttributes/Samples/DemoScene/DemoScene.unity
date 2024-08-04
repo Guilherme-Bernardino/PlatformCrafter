@@ -2665,9 +2665,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: horizontalMovementModule
       value: 
       objectReference: {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7814c8f0faab4c549953fd06b4dd0eb5, type: 2}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
     - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: modules.Array.size
       value: 4

@@ -63,6 +63,7 @@ public class ModularBrainEditor : Editor
         LoadFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
         LoadFoldoutList(resourceFoldouts, resourceModulesProperty, "ModularBrain_ResourceFoldouts");
         LoadFoldoutList(inventoryFoldouts, inventoryModulesProperty, "ModularBrain_InventoryFoldouts");
+        LoadFoldoutList(customFoldouts, customModulesProperty, "ModularBrain_CustomFoldouts");
     }
 
     private void SaveFoldoutStates()
@@ -78,6 +79,7 @@ public class ModularBrainEditor : Editor
         SaveFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
         SaveFoldoutList(resourceFoldouts, resourceModulesProperty, "ModularBrain_ResourceFoldouts");
         SaveFoldoutList(inventoryFoldouts, inventoryModulesProperty, "ModularBrain_InventoryFoldouts");
+        SaveFoldoutList(customFoldouts, customModulesProperty, "ModularBrain_CustomFoldouts");
     }
 
     private void LoadFoldoutList(List<bool> foldoutList, SerializedProperty property, string key)
@@ -149,11 +151,7 @@ public class ModularBrainEditor : Editor
     {
         Texture2D icon = icons.ContainsKey(iconKey) ? icons[iconKey] : null;
 
-        float totalWidth = EditorGUIUtility.currentViewWidth - 30;
-        int itemCount = 7;
-        float itemWidth = totalWidth / itemCount;
-
-        EditorGUILayout.BeginVertical(GUILayout.Width(itemWidth));
+        EditorGUILayout.BeginVertical();
         EditorGUILayout.BeginHorizontal();
 
         if (icon != null)
@@ -318,7 +316,7 @@ public class ModularBrainEditor : Editor
         {
             return $"{module.name} : Type-Inventory";
         }
-        return "Custom";
+        return $"{module.name} : Custom";
     }
 
     private void DrawModuleBackground(Module module)
@@ -407,6 +405,7 @@ public class ModularBrainEditor : Editor
         InitializeFoldouts(interactionFoldouts, interactionModulesProperty.arraySize);
         InitializeFoldouts(resourceFoldouts, resourceModulesProperty.arraySize);
         InitializeFoldouts(inventoryFoldouts, inventoryModulesProperty.arraySize);
+        InitializeFoldouts(customFoldouts, customModulesProperty.arraySize);
     }
 
     private void InitializeFoldouts(List<bool> foldouts, int size)
