@@ -794,7 +794,7 @@ MonoBehaviour:
     nest2:
       stamina: 75
   elixir: 50
-  maxElixir: 100
+  maxElixir: 112
 --- !u!1 &993534225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,11 +1049,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cc6d3f8d4a53374887b3d620a6972e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  line0: 0
+  line0: 65
   nest1:
-    line1: 0
+    line1: 87
     nest2:
-      line2: 0
+      line2: 40
 --- !u!1 &1148579783
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,7 +2141,7 @@ MonoBehaviour:
   int1: 0
   float0: 0
   float1: 0
-  slider0: {x: 0.25, y: 0.75}
+  slider0: {x: 0.5, y: 1}
   slider1: {x: 0.25, y: 0.75}
   str0: 
   str1: 
@@ -2664,6 +2664,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: horizontalMovementModule
+      value: 
+      objectReference: {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7814c8f0faab4c549953fd06b4dd0eb5, type: 2}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
     - target: {fileID: 7307272757358876768, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: modules.Array.size
       value: 4

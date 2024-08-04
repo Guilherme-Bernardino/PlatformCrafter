@@ -49,13 +49,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modules:
-  - {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
-  - {fileID: 11400000, guid: 025e630db232f3a49aea6076e3beeee5, type: 2}
+  horizontalMovementModule: {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
+  verticalMovementModule: {fileID: 11400000, guid: 025e630db232f3a49aea6076e3beeee5, type: 2}
+  actionModules:
   - {fileID: 11400000, guid: 1d33fc92eada0ae4a9000a1cd183a421, type: 2}
+  interactionModules:
   - {fileID: 11400000, guid: 029e40fdb02d3d44487ec4632ee7956d, type: 2}
+  resourceModules:
   - {fileID: 11400000, guid: fe9b507cf3cfeb847a3787abcc25daaf, type: 2}
+  inventoryModules:
   - {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
+  customModules: []
 --- !u!212 &7127116229475881017
 SpriteRenderer:
   m_ObjectHideFlags: 0

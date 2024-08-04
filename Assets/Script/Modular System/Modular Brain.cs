@@ -1,12 +1,25 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace PlatformCrafterModularSystem
 {
     public class ModularBrain : MonoBehaviour
     {
-        public List<Module> modules = new();
+        //private List<Module> modules = new();
+
+        [SerializeField] private HorizontalMovementTypeModule horizontalMovementModule;
+        [SerializeField] private VerticalMovementTypeModule verticalMovementModule;
+
+        [SerializeField] private List<ActionTypeModule> actionModules = new List<ActionTypeModule>();
+        [SerializeField] private List<InteractionTypeModule> interactionModules = new List<InteractionTypeModule>();
+
+        [SerializeField] private List<ResourceTypeModule> resourceModules = new List<ResourceTypeModule>();
+        [SerializeField] private List<InventoryTypeModule> inventoryModules = new List<InventoryTypeModule>();
+
+        [SerializeField] private List<Module> customModules;
 
         //Entity Components
         private Rigidbody2D rb;
@@ -34,7 +47,30 @@ namespace PlatformCrafterModularSystem
 
         private void InitializeModules()
         {
-            foreach (var module in modules)
+            horizontalMovementModule?.Initialize(this);
+            verticalMovementModule?.Initialize(this);
+
+            foreach (var module in actionModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in interactionModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in resourceModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in inventoryModules)
+            {
+                module.Initialize(this);
+            }
+
+            foreach (var module in customModules)
             {
                 module.Initialize(this);
             }
@@ -47,23 +83,57 @@ namespace PlatformCrafterModularSystem
 
         private void UpdateModules()
         {
-            foreach (var module in modules)
+            horizontalMovementModule?.UpdateModule();
+            verticalMovementModule?.UpdateModule();
+
+            foreach (var module in actionModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in interactionModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in resourceModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in inventoryModules)
+            {
+                module.UpdateModule();
+            }
+
+            foreach (var module in customModules)
             {
                 module.UpdateModule();
             }
         }
 
-        public HorizontalMovementTypeModule GetHMTypeModule()
+        private void OnValidate()
         {
-            foreach (var module in modules)
+            for (int i = customModules.Count - 1; i >= 0; i--)
             {
-                if (module is HorizontalMovementTypeModule hmModule)
+                var module = customModules[i];
+                if (module is HorizontalMovementTypeModule || module is VerticalMovementTypeModule ||
+                    module is ActionTypeModule || module is InteractionTypeModule ||
+                    module is ResourceTypeModule || module is InventoryTypeModule)
                 {
-                    return hmModule;
+                    Debug.LogWarning($"Removed predefined module type from Custom Modules list: {module.GetType().Name}. Use the type specific lists to add this specific module type.");
+                    customModules.RemoveAt(i);
                 }
             }
-            return null;
         }
+
+        //Getter for all modules
+        public HorizontalMovementTypeModule HorizontalMovementTypeModule { get => horizontalMovementModule;}
+        public VerticalMovementTypeModule VerticalMovementTypeModule { get => verticalMovementModule; }
+        public List<ActionTypeModule> ActionTypeModules { get => actionModules; }
+        public List<InteractionTypeModule> InteractionTypeModules { get => interactionModules; }
+        public List<ResourceTypeModule> ResourceTypeModules { get => resourceModules; }
+        public List<InventoryTypeModule> InventoryTypeModules { get => inventoryModules; }
     }
 }
 

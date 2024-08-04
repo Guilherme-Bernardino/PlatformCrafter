@@ -486,6 +486,7 @@ GameObject:
   - component: {fileID: 1365920764}
   - component: {fileID: 1365920763}
   - component: {fileID: 1365920761}
+  - component: {fileID: 1365920766}
   m_Layer: 6
   m_Name: Square (1)
   m_TagString: Untagged
@@ -621,6 +622,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1365920766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365920760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  horizontalMovementModule: {fileID: 0}
+  verticalMovementModule: {fileID: 0}
+  actionModules: []
+  interactionModules: []
+  resourceModules: []
+  inventoryModules: []
+  customModules: []
 --- !u!1001 &1794297281
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -669,6 +689,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: resourceModules.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7814c8f0faab4c549953fd06b4dd0eb5, type: 2}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: customModules.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
+    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+      propertyPath: resourceModules.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: fe9b507cf3cfeb847a3787abcc25daaf, type: 2}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name
       value: Platformer

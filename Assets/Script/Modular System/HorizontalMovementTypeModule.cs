@@ -8,7 +8,7 @@ using static PlatformCrafterModularSystem.HorizontalMovementTypeModule;
 
 namespace PlatformCrafterModularSystem
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "HMModule", menuName = "Platform Crafter's Modular System/Type - HM")]
     public class HorizontalMovementTypeModule : Module
     {

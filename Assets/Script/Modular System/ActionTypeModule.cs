@@ -90,7 +90,7 @@ namespace PlatformCrafterModularSystem
             float speed = instantiationTypeSettings.Speed;
             bool useCharacterDirection = instantiationTypeSettings.UseCharacterDirection;
 
-            HorizontalMovementTypeModule horizontalMovementModule = modularBrain.GetHMTypeModule();
+            HorizontalMovementTypeModule horizontalMovementModule = modularBrain.HorizontalMovementTypeModule;
 
             if (horizontalMovementModule != null && useCharacterDirection)
             {
