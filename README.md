@@ -7,6 +7,19 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.6.2] - 3-07-2024
+
+### Added
+- Added a Custom Modules list.
+- Added a validation to Custom Modules where predefined types of modules can't be added to the list.
+- Added getters for all modules.
+- Added a count of modules per type and a respective icon for clarity.
+
+### Changed
+- Changed modular brain single module list to now having one module for HM and VM, a list for Action, Interaction, Resource, and Inventory.
+- Changed editor display to now having categories: Physics Modules with HM and VM types; Action/Interaction Modules with Action and Interaction Types; Container Modules with Resource and Inventory Type; Custom Modules.
+- Changed custom modules interface on editor.
+
 ## [0.6.1] - 1-07-2024
 
 ### Added
