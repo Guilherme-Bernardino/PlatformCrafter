@@ -7,6 +7,14 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.6.3] - 5-07-2024
+
+### Added
+- Added Consumption Type Action to Action Module v1.0.
+
+### Removed
+- Removed Status Application type.
+
 ## [0.6.2] - 3-07-2024
 
 ### Added
