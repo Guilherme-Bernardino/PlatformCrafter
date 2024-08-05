@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,10 +17,9 @@ namespace PlatformCrafterModularSystem
 
         private enum ActionType
         {
-            Instantiate, // Instantiate something
-            Consumption, // Consume something
-            StatusApplication, //Apply buff or change to entity
-            ExternalAction, // Just a module action (if this is selected, search for all module action and show on a dropdown list)
+            Instantiate,
+            Consumption,
+            ExternalAction, 
             SoundEffect,
             Animation,
         }
@@ -33,10 +33,6 @@ namespace PlatformCrafterModularSystem
         [ShowIf("actionType", ActionType.Consumption)]
         [AllowNesting]
         [SerializeField] private ConsumptionType consumptionTypeSettings;
-
-        [ShowIf("actionType", ActionType.StatusApplication)]
-        [AllowNesting]
-        [SerializeField] private StatusApplicationType statusApplicationTypeSettings;
 
         [ShowIf("actionType", ActionType.ExternalAction)]
         [SerializeField] private ExternalActionType externalActionTypeSettings; // show than the action settings
@@ -62,7 +58,6 @@ namespace PlatformCrafterModularSystem
                 {
                     case ActionType.Instantiate: ExecuteInstantiation(); break;
                     case ActionType.Consumption: ExecuteConsumption(); break;
-                    case ActionType.StatusApplication: ExecuteStatusApplication(); break;
                     case ActionType.ExternalAction: ExecuteExternalAction(); break;
                     case ActionType.Animation: ExecuteAnimation(); break;
                     case ActionType.SoundEffect: ExecuteSoundEffect(); break;
@@ -127,26 +122,24 @@ namespace PlatformCrafterModularSystem
 
         private void ExecuteConsumption()
         {
-            if (consumptionTypeSettings.item == ItemType.HealthPotion)
+            if (cooldownTimer > 0)
             {
-                //modularBrain.Health += consumptionTypeSettings.amount;
+                return;
             }
-            else if (consumptionTypeSettings.item == ItemType.EnergyPotion)
-            {
-                //modularBrain.Energy += consumptionTypeSettings.amount;
-            }
-        }
 
-        private void ExecuteStatusApplication()
-        {
-            if (statusApplicationTypeSettings.status == StatusType.SpeedBuff)
+            ResourceTypeModule resourceModule = modularBrain.ResourceTypeModules.Where(m => m.ResourceName.Equals(consumptionTypeSettings.ResourceName)).FirstOrDefault();
+
+            if (resourceModule != null)
             {
-                //modularBrain.StartCoroutine(ApplySpeedBuff());
+                if(consumptionTypeSettings.Action == ConsumptionType.ResourceAction.Deplete) resourceModule.Deplete(consumptionTypeSettings.Amount);
+                if (consumptionTypeSettings.Action == ConsumptionType.ResourceAction.Recover) resourceModule.Recover(consumptionTypeSettings.Amount);
             }
-            else if (statusApplicationTypeSettings.status == StatusType.DefenseDebuff)
+            else
             {
-                //modularBrain.StartCoroutine(ApplyDefenseDebuff());
+                Debug.LogWarning("There is no module with that name currently on the system!");
             }
+
+            cooldownTimer = consumptionTypeSettings.Cooldown;
         }
 
         private void ExecuteExternalAction()
@@ -181,22 +174,6 @@ namespace PlatformCrafterModularSystem
 
             modularBrain.AudioSource.Play();
         }
-
-        //private IEnumerator ApplySpeedBuff()
-        //{
-        //    float originalSpeed = modularBrain.Speed;
-        //    modularBrain.Speed *= statusApplicationTypeSettings.multiplier;
-        //    yield return new WaitForSeconds(statusApplicationTypeSettings.duration);
-        //    modularBrain.Speed = originalSpeed;
-        //}
-
-        //private IEnumerator ApplyDefenseDebuff()
-        //{
-        //    float originalDefense = modularBrain.Defense;
-        //    modularBrain.Defense -= statusApplicationTypeSettings.amount;
-        //    yield return new WaitForSeconds(statusApplicationTypeSettings.duration);
-        //    modularBrain.Defense = originalDefense;
-        //}
     }
 
     [System.Serializable]
@@ -226,22 +203,26 @@ namespace PlatformCrafterModularSystem
     public struct ConsumptionType
     {
         public ItemType item;
-        public int amount;
+        [SerializeField] private string resourceName;
+        [SerializeField] private int amount;
+        [SerializeField] private ResourceAction action;
+        [SerializeField] private float cooldown;
+
+        public string ResourceName => resourceName;
+        public int Amount => amount;
+        public ResourceAction Action => action;
+        public float Cooldown => cooldown;
+        public enum ResourceAction
+        {
+            Recover,
+            Deplete
+        }
     }
 
     public enum ItemType
     {
         HealthPotion,
         EnergyPotion
-    }
-
-    [System.Serializable]
-    public struct StatusApplicationType
-    {
-        public StatusType status;
-        public float multiplier;
-        public float duration;
-        public float amount;
     }
 
     [System.Serializable]
@@ -275,11 +256,5 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private string triggerName;
 
         public string TriggerName => triggerName;
-    }
-
-    public enum StatusType
-    {
-        SpeedBuff,
-        DefenseDebuff
     }
 }

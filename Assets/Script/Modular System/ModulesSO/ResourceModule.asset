@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e15735482e437ec4d87e81f238723255, type: 3}
   m_Name: ResourceModule
   m_EditorClassIdentifier: 
+  isActive: 0
   resourceName: HP
   maxValue: 100
   currentValue: 80

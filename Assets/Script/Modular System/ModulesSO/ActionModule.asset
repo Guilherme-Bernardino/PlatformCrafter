@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   actionInput: 323
-  actionType: 0
+  actionType: 1
   instantiationTypeSettings:
     prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
     positionOffset: {x: 0.12, y: 1.71}
@@ -25,12 +25,10 @@ MonoBehaviour:
     useMouseToAim: 1
   consumptionTypeSettings:
     item: 0
-    amount: 0
-  statusApplicationTypeSettings:
-    status: 0
-    multiplier: 0
-    duration: 0
-    amount: 0
+    resourceName: HP
+    amount: 5
+    resourceAction: 1
+    cooldown: 3
   externalActionTypeSettings:
     externalAction: {fileID: 0}
   soundEffectTypeSettings:
