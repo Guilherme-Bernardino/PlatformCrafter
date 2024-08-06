@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
 namespace PlatformCrafterModularSystem
@@ -88,6 +90,18 @@ namespace PlatformCrafterModularSystem
                         inventorySlots[i].Item = null;
                         inventorySlots[i].Quantity = 0;
                     }
+                }
+            }
+            return false;
+        }
+
+        public bool HasItem(InventoryItem item, int quantity)
+        {
+            for (int i = 0; i < inventorySlots.Count; i++)
+            {
+                if (inventorySlots[i].Item == item)
+                {
+                    return inventorySlots[i].Quantity >= quantity;
                 }
             }
             return false;
