@@ -7,7 +7,16 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
-## [0.6.3] - 5-07-2024
+## [0.7] - 06-07-2024
+
+### Added
+- Added an Inventory Module v1.0 to the system, with Inventory Slots and methods to add and remove items.
+- Added InventoryItem scriptable object.
+- Added specific getters using name of the module for Modular Brain.
+- Added a UseAnItem option on the ConsumptionType of Action Module, where you select a specific InventoryModule, an item and an amount to consume and act.
+- Added a method to check if Inventory has an Item and a specific quantity.
+
+## [0.6.3] - 05-07-2024
 
 ### Added
 - Added Consumption Type Action to Action Module v1.0.
@@ -15,7 +24,7 @@ All notable changes of the project
 ### Removed
 - Removed Status Application type.
 
-## [0.6.2] - 3-07-2024
+## [0.6.2] - 03-07-2024
 
 ### Added
 - Added a Custom Modules list.
@@ -28,7 +37,7 @@ All notable changes of the project
 - Changed editor display to now having categories: Physics Modules with HM and VM types; Action/Interaction Modules with Action and Interaction Types; Container Modules with Resource and Inventory Type; Custom Modules.
 - Changed custom modules interface on editor.
 
-## [0.6.1] - 1-07-2024
+## [0.6.1] - 01-07-2024
 
 ### Added
 - Added Instantiate Type Action to Action Module v1.0.
