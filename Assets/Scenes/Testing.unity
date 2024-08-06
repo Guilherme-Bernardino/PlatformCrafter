@@ -224,6 +224,9 @@ MonoBehaviour:
   actionEvent:
     m_PersistentCalls:
       m_Calls: []
+  inventoryModuleName: 
+  amount: 0
+  mb: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +477,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &776631866 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
+  m_PrefabInstance: {fileID: 1794297281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1365920760
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,7 +500,6 @@ GameObject:
   - component: {fileID: 1365920764}
   - component: {fileID: 1365920763}
   - component: {fileID: 1365920761}
-  - component: {fileID: 1365920766}
   m_Layer: 6
   m_Name: Square (1)
   m_TagString: Untagged
@@ -509,7 +522,23 @@ MonoBehaviour:
   interactionChannel: {fileID: 11400000, guid: d87d9bbfec939ef4ab08c3439278ae4a, type: 2}
   actionEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1365920761}
+        m_TargetAssemblyTypeName: Receptor, Assembly-CSharp
+        m_MethodName: AddAppleToInventory
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 3f3a6d0be16762143a9488a95e76e455, type: 2}
+          m_ObjectArgumentAssemblyTypeName: PlatformCrafterModularSystem.InventoryItem,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  inventoryModuleName: InventoryModule
+  amount: 3
+  mb: {fileID: 776631866}
 --- !u!61 &1365920763
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -622,25 +651,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1365920766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1365920760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalMovementModule: {fileID: 0}
-  verticalMovementModule: {fileID: 0}
-  actionModules: []
-  interactionModules: []
-  resourceModules: []
-  inventoryModules: []
-  customModules: []
 --- !u!1001 &1794297281
 PrefabInstance:
   m_ObjectHideFlags: 0
