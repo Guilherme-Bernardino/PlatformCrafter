@@ -15,7 +15,7 @@ MonoBehaviour:
   isActive: 0
   resourceName: HP
   maxValue: 100
-  currentValue: 80
+  currentValue: 81
   resourceColor: {r: 1, g: 0.4669811, b: 0.4669811, a: 1}
   togglePassive: 0
   passiveRecoveryRate: 0

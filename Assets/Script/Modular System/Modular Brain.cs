@@ -134,6 +134,28 @@ namespace PlatformCrafterModularSystem
         public List<InteractionTypeModule> InteractionTypeModules { get => interactionModules; }
         public List<ResourceTypeModule> ResourceTypeModules { get => resourceModules; }
         public List<InventoryTypeModule> InventoryTypeModules { get => inventoryModules; }
+
+
+        // Getter methods to retrieve specific modules by name
+        public ActionTypeModule GetActionTypeModuleByName(string name)
+        {
+            return actionModules.Find(module => module.name == name);
+        }
+
+        public InteractionTypeModule GetInteractionTypeModuleByName(string name)
+        {
+            return interactionModules.Find(module => module.name == name);
+        }
+
+        public ResourceTypeModule GetResourceTypeModuleByName(string name)
+        {
+            return resourceModules.Find(module => module.name == name);
+        }
+
+        public InventoryTypeModule GetInventoryTypeModuleByName(string name)
+        {
+            return inventoryModules.Find(module => module.name == name);
+        }
     }
 }
 

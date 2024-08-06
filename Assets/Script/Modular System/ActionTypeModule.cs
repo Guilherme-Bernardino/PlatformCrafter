@@ -127,6 +127,21 @@ namespace PlatformCrafterModularSystem
                 return;
             }
 
+            InventoryTypeModule inventoryModule = modularBrain.GetInventoryTypeModuleByName(consumptionTypeSettings.InventoryModuleName);
+
+            if (inventoryModule != null && consumptionTypeSettings.UseAnItem)
+            {
+                if (inventoryModule.HasItem(consumptionTypeSettings.Item, consumptionTypeSettings.ItemAmount))
+                {
+                    inventoryModule.RemoveItem(consumptionTypeSettings.Item, consumptionTypeSettings.ItemAmount);
+                }
+                else
+                {
+                    Debug.LogWarning("Can't act due to lack of items to perform the action.");
+                    return;
+                }
+            }
+
             ResourceTypeModule resourceModule = modularBrain.ResourceTypeModules.Where(m => m.ResourceName.Equals(consumptionTypeSettings.ResourceName)).FirstOrDefault();
 
             if (resourceModule != null)
@@ -202,27 +217,36 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct ConsumptionType
     {
-        public ItemType item;
         [SerializeField] private string resourceName;
         [SerializeField] private int amount;
         [SerializeField] private ResourceAction action;
         [SerializeField] private float cooldown;
 
+        [SerializeField] private bool useAnItem;
+        [ShowIf("useAnItem")]
+        [AllowNesting]
+        [SerializeField] private string inventoryModuleName;
+        [ShowIf("useAnItem")]
+        [AllowNesting]
+        [SerializeField] private InventoryItem item;
+        [ShowIf("useAnItem")]
+        [AllowNesting]
+        [SerializeField] private int itemAmount;
+
         public string ResourceName => resourceName;
         public int Amount => amount;
         public ResourceAction Action => action;
         public float Cooldown => cooldown;
+        public bool UseAnItem => useAnItem;
+        public string InventoryModuleName => inventoryModuleName;  
+        public InventoryItem Item => item;
+        public int ItemAmount => itemAmount;
+
         public enum ResourceAction
         {
             Recover,
             Deplete
         }
-    }
-
-    public enum ItemType
-    {
-        HealthPotion,
-        EnergyPotion
     }
 
     [System.Serializable]
