@@ -22,13 +22,13 @@ MonoBehaviour:
       m_Bits: 8
     groundCheckRange: 0.1
     canMoveOnAir: 0
-    walkMode: 0
+    walkMode: 1
     constantSpeedSettings:
       speed: 8
     acceleratingSpeedSettings:
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
+      speed: 10.1
+      maxSpeed: 16.8
+      acceleration: 8.9
       deceleration: 0
     vehicleLikeSettings:
       brakeInput: 0

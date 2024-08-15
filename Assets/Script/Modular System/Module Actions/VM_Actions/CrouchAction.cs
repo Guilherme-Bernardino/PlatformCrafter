@@ -61,6 +61,7 @@ namespace PlatformCrafterModularSystem
                 {
                     isDroppingThroughPlatform = false;
                     collider.enabled = true;
+                    isCrouching = false;
                 }
             }
             else
@@ -105,7 +106,7 @@ namespace PlatformCrafterModularSystem
                 collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
                 collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
                 crouchTime = 0;
-                rb.drag = normalCrouchSettings.LinearDrag;
+                rb.drag = platformCrouchSettings.LinearDrag;
             }
 
             if (Input.GetKey(crouchKey))
@@ -119,9 +120,13 @@ namespace PlatformCrafterModularSystem
                 }
             }
 
-            if (Input.GetKeyUp(crouchKey))
+            if (Input.GetKeyUp(crouchKey) )
             {
                 isCrouching = false;
+            }
+
+            if (!isCrouching)
+            {
                 collider.size = new Vector2(collider.size.x, originalColliderHeight);
                 collider.offset = originalOffset;
                 rb.drag = 0;

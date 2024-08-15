@@ -20,9 +20,9 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    jumpMode: 0
+    jumpMode: 1
     constantHeightJumpSettings:
-      jumpHeight: 1.8
+      jumpHeight: 2.8
       gravityScale: 6
       fallGravityScale: 9
     derivativeHeightJumpSettings:
@@ -53,15 +53,15 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    crouchMode: 0
+    crouchMode: 1
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50.4
       linearDrag: 9.5
     platformCrouchSettings:
       crouchHeightReductionPercentage: 50.4
-      linearDrag: 0
+      linearDrag: 2
       platformTag: Platform
-      platformHoldTime: 4.3
+      platformHoldTime: 1
       platformDropTime: 1.02
   climb:
     climbKey: 273
