@@ -21,23 +21,23 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    canMoveOnAir: 0
-    walkMode: 0
+    canMoveOnAir: 1
+    walkMode: 2
     constantSpeedSettings:
       speed: 8
     acceleratingSpeedSettings:
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
+      speed: 19.9
+      maxSpeed: 22.1
+      acceleration: 14.5
+      deceleration: 15.7
     vehicleLikeSettings:
       brakeInput: 0
       horizontalBrake: 0
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
-      brakeForce: 0
+      speed: 11.5
+      maxSpeed: 19.9
+      acceleration: 8
+      deceleration: 7
+      brakeForce: 11.3
   sprint:
     sprintKey: 0
     allowDoubleTap: 0

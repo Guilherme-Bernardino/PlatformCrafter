@@ -60,6 +60,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Modular System\CameraFollowModule.cs" />
     <Compile Include="Assets\Script\Scriptable Variables And Events\Specific Scriptable Init Variables\ScriptableInitVariableString.cs" />
     <Compile Include="Assets\Script\Scriptable Variables And Events\Specific Scriptable Init Variables\ScriptableInitVariableColor.cs" />
     <Compile Include="Assets\Script\Modular System\Abstracts\ActionTest.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Assets\Script\Modular System\Abstracts\InventoryItem.cs" />
     <Compile Include="Assets\Script\Modular System\Modular Brain.cs" />
     <Compile Include="Assets\Script\Scriptable Variables And Events\Specific Scriptable Variables\ScriptableVariableColor.cs" />
+    <Compile Include="Assets\CameraFollow.cs" />
     <Compile Include="Assets\Script\Scriptable Variables And Events\Core\ScriptableChannel.cs" />
     <Compile Include="Assets\Script\Old Scripts\PCToggleFeatureController.cs" />
     <Compile Include="Assets\Script\Scriptable Variables And Events\Specific Scriptable Variables\ScriptableVariableVector2.cs" />

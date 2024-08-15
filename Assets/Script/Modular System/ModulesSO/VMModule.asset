@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   jumpKey: 273
-  extraActions: -1
+  extraActions: 6
   jump:
     groundLayer:
       serializedVersion: 2
@@ -22,7 +22,7 @@ MonoBehaviour:
     groundCheckRange: 0.1
     jumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 1.8
+      jumpHeight: 4.2
       gravityScale: 6
       fallGravityScale: 9
     derivativeHeightJumpSettings:
@@ -53,15 +53,15 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    crouchMode: 0
+    crouchMode: 1
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50.4
       linearDrag: 9.5
     platformCrouchSettings:
       crouchHeightReductionPercentage: 50.4
-      linearDrag: 0
+      linearDrag: 4.2
       platformTag: Platform
-      platformHoldTime: 4.3
+      platformHoldTime: 1.29
       platformDropTime: 1.02
   climb:
     climbKey: 273

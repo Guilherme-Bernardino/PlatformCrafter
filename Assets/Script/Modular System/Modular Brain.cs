@@ -19,7 +19,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private List<ResourceTypeModule> resourceModules = new List<ResourceTypeModule>();
         [SerializeField] private List<InventoryTypeModule> inventoryModules = new List<InventoryTypeModule>();
 
-        [SerializeField] private List<Module> customModules;
+        [SerializeField] private List<Module> customModules = new List<Module>();
 
         //Entity Components
         private Rigidbody2D rb;
