@@ -7,6 +7,17 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.8] - 15-07-2024
+
+### Added
+- Added more obstacles and platforms to Testing Scene.
+- Added a custom module named Camera Following.
+
+### Fixed
+- Fixed crouching bug where box collider doesnt revert to original height.
+- Fixed crounching drag on platform crouch.
+- Fixed bug where climbing action had rotation on enabled.
+
 ## [0.7] - 06-07-2024
 
 ### Added
