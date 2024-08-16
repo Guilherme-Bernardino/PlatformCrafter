@@ -8,7 +8,8 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public class ClimbAction : ModuleAction
     {
-        [SerializeField] private KeyCode climbKey;
+        [SerializeField] private KeyCode climbUpKey;
+        [SerializeField] private KeyCode climbDownKey;
         [SerializeField] private LayerMask climbableLayer;
         [SerializeField] private float climbCheckRange;
 
@@ -49,15 +50,24 @@ namespace PlatformCrafterModularSystem
 
         private void HandleClimbing()
         {
-            if (Input.GetKey(climbKey))
+            if (Input.GetKey(climbUpKey) || Input.GetKey(climbDownKey))
             {
                 isClimbing = true;
                 rb.gravityScale = 0f;
-                float verticalInput = Input.GetAxis("Vertical");
+
+                float verticalInput = 0f;
+                if (Input.GetKey(climbUpKey))
+                {
+                    verticalInput = 1f; 
+                }
+                else if (Input.GetKey(climbDownKey))
+                {
+                    verticalInput = -1f;
+                }
+
                 rb.velocity = new Vector2(rb.velocity.x, verticalInput * verticalClimbSettings.ClimbSpeed);
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
             }
             else
             {

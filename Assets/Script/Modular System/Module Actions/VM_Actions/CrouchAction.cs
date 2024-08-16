@@ -14,6 +14,7 @@ namespace PlatformCrafterModularSystem
 
         private Rigidbody2D rb;
         private BoxCollider2D collider;
+        private CapsuleCollider2D capsuleCollider;
         private float originalColliderHeight;
         private Vector2 originalOffset;
         private bool isCrouching;
@@ -45,9 +46,19 @@ namespace PlatformCrafterModularSystem
         public override void Initialize(Module module)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
-            collider = ((VerticalMovementTypeModule)module).Collider as BoxCollider2D;
-            originalColliderHeight = collider.size.y;
-            originalOffset = collider.offset;
+
+            if (((VerticalMovementTypeModule)module).Collider is not BoxCollider2D)
+            {
+                capsuleCollider = ((VerticalMovementTypeModule)module).Collider as CapsuleCollider2D;
+                originalColliderHeight = capsuleCollider.size.y;
+                originalOffset = capsuleCollider.offset;
+            }
+            else
+            {
+                collider = ((VerticalMovementTypeModule)module).Collider as BoxCollider2D;
+                originalColliderHeight = collider.size.y;
+                originalOffset = collider.offset;
+            }
         }
 
         public override void UpdateAction()
@@ -80,31 +91,58 @@ namespace PlatformCrafterModularSystem
 
         private void HandleNormalCrouch()
         {
-            if (Input.GetKeyDown(crouchKey))
+            if (Input.GetKeyDown(crouchKey) && isGrounded)
             {
                 isCrouching = true;
                 float heightReduction = originalColliderHeight * (normalCrouchSettings.CrouchHeightReductionPercentage / 100f);
-                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
-                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+
+                if (collider != null) 
+                {
+                    collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
+                    collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+                }
+                if (capsuleCollider != null)
+                {
+                    capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
+                    capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
+                }
                 rb.drag = normalCrouchSettings.LinearDrag;
             }
             else if (Input.GetKeyUp(crouchKey))
             {
                 isCrouching = false;
-                collider.size = new Vector2(collider.size.x, originalColliderHeight);
-                collider.offset = originalOffset;
+                if (collider != null)
+                {
+                    collider.size = new Vector2(collider.size.x, originalColliderHeight);
+                    collider.offset = originalOffset;
+                }
+                if (capsuleCollider != null)
+                {
+                    capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight);
+                    capsuleCollider.offset = originalOffset;
+                }
+
                 rb.drag = 0;
             }
         }
 
         private void HandlePlatformCrouch()
         {
-            if (Input.GetKeyDown(crouchKey))
+            if (Input.GetKeyDown(crouchKey) && isGrounded)
             {
                 isCrouching = true;
                 float heightReduction = originalColliderHeight * (platformCrouchSettings.CrouchHeightReductionPercentage / 100f);
-                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
-                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+
+                if (collider != null)
+                {
+                    collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
+                    collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+                }
+                if (capsuleCollider != null)
+                {
+                    capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
+                    capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
+                }
                 crouchTime = 0;
                 rb.drag = platformCrouchSettings.LinearDrag;
             }
@@ -127,8 +165,16 @@ namespace PlatformCrafterModularSystem
 
             if (!isCrouching)
             {
-                collider.size = new Vector2(collider.size.x, originalColliderHeight);
-                collider.offset = originalOffset;
+                if (collider != null)
+                {
+                    collider.size = new Vector2(collider.size.x, originalColliderHeight);
+                    collider.offset = originalOffset;
+                }
+                if (capsuleCollider != null)
+                {
+                    capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight);
+                    capsuleCollider.offset = originalOffset;
+                }
                 rb.drag = 0;
             }
         }
