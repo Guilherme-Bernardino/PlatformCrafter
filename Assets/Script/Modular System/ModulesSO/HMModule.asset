@@ -15,16 +15,16 @@ MonoBehaviour:
   isActive: 1
   rightKey: 275
   leftKey: 276
-  extraActions: -1
+  extraActions: 0
   walk:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
-    groundCheckRange: 0.1
-    canMoveOnAir: 0
-    walkMode: 1
+    groundCheckRange: 0.15
+    canMoveOnAir: 1
+    walkMode: 0
     constantSpeedSettings:
-      speed: 8
+      speed: 12
     acceleratingSpeedSettings:
       speed: 10.1
       maxSpeed: 16.8
