@@ -7,7 +7,19 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
-## [0.8] - 15-07-2024
+## [0.8.1] - 16-08-2024
+
+### Added
+- Added assets from Spelunky.
+- Added a new scene to recreate the levels from Spelunky.
+- Added a new player character that represent Spelunky game settings. Currently walk, jump, climb and crouch.
+- Added the ability to climb down on the Climb Action of VM Module.
+- Added a capsule collider reference to Crouch Action of VM Module.
+
+### Fixed
+- Fixed crouch being able to perform mid-air.
+
+## [0.8] - 15-08-2024
 
 ### Added
 - Added more obstacles and platforms to Testing Scene.
@@ -15,10 +27,10 @@ All notable changes of the project
 
 ### Fixed
 - Fixed crouching bug where box collider doesnt revert to original height.
-- Fixed crounching drag on platform crouch.
+- Fixed crouching drag on platform crouch.
 - Fixed bug where climbing action had rotation on enabled.
 
-## [0.7] - 06-07-2024
+## [0.7] - 06-08-2024
 
 ### Added
 - Added an Inventory Module v1.0 to the system, with Inventory Slots and methods to add and remove items.
@@ -27,7 +39,7 @@ All notable changes of the project
 - Added a UseAnItem option on the ConsumptionType of Action Module, where you select a specific InventoryModule, an item and an amount to consume and act.
 - Added a method to check if Inventory has an Item and a specific quantity.
 
-## [0.6.3] - 05-07-2024
+## [0.6.3] - 05-08-2024
 
 ### Added
 - Added Consumption Type Action to Action Module v1.0.
@@ -35,7 +47,7 @@ All notable changes of the project
 ### Removed
 - Removed Status Application type.
 
-## [0.6.2] - 03-07-2024
+## [0.6.2] - 03-08-2024
 
 ### Added
 - Added a Custom Modules list.
@@ -48,7 +60,7 @@ All notable changes of the project
 - Changed editor display to now having categories: Physics Modules with HM and VM types; Action/Interaction Modules with Action and Interaction Types; Container Modules with Resource and Inventory Type; Custom Modules.
 - Changed custom modules interface on editor.
 
-## [0.6.1] - 01-07-2024
+## [0.6.1] - 01-08-2024
 
 ### Added
 - Added Instantiate Type Action to Action Module v1.0.
