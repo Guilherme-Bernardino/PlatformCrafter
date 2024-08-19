@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39358687e3dd8384c92afca24ca4acf5, type: 3}
+  m_Name: RD_Shooting
+  m_EditorClassIdentifier: 
+  isActive: 1
+  actionInput: 32
+  actionType: 0
+  instantiationTypeSettings:
+    prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
+    positionOffset: {x: 1, y: 1}
+    angle: 0
+    speed: 51
+    useCharacterDirection: 1
+    cooldown: 2
+    useMouseToAim: 0
+  consumptionTypeSettings:
+    resourceName: 
+    amount: 0
+    action: 0
+    cooldown: 0
+    useAnItem: 0
+    inventoryModuleName: 
+    item: {fileID: 0}
+    itemAmount: 0
+  externalActionTypeSettings:
+    externalAction: {fileID: 0}
+  soundEffectTypeSettings:
+    audioClip: {fileID: 0}
+    volume: 0
+    loop: 0
+    pitch: 0
+    cooldown: 0
+  animationTypeSettings:
+    triggerName: 
