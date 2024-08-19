@@ -7,6 +7,13 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.8.2] - 19-08-2024
+
+### Added
+- Added assets from Rick Dangerous Amiga.
+- Added a new scene to recreate the levels from Rick Dangerous.
+- Added a new player character that represent Rick Dangerous game settings. Currently walk, jump, climb, crouch and a shooting action.
+
 ## [0.8.1] - 16-08-2024
 
 ### Added
