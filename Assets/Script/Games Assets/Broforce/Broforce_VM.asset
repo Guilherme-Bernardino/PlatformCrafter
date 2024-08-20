@@ -23,8 +23,8 @@ MonoBehaviour:
     jumpMode: 0
     constantHeightJumpSettings:
       jumpHeight: 7
-      gravityScale: 3
-      fallGravityScale: 3
+      gravityScale: 6
+      fallGravityScale: 6
     derivativeHeightJumpSettings:
       initialJumpForce: 0
       gravityScale: 0

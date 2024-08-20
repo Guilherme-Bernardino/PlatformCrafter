@@ -7,6 +7,11 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.8.3] - 20-08-2024
+- Added assets from Bro Force.
+- Added a new scene to recreate the levels from Bro Force.
+- Added a new player character that represent Bro Force game settings. Currently walk, jump and a shooting action.
+
 ## [0.8.2] - 19-08-2024
 
 ### Added
