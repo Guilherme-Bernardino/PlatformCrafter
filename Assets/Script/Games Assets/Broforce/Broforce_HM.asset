@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 091208a9ef59154418063146089116a1, type: 3}
+  m_Name: Broforce_HM
+  m_EditorClassIdentifier: 
+  isActive: 1
+  rightKey: 275
+  leftKey: 276
+  extraActions: 0
+  walk:
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.15
+    canMoveOnAir: 1
+    walkMode: 0
+    constantSpeedSettings:
+      speed: 12.6
+    acceleratingSpeedSettings:
+      speed: 0
+      maxSpeed: 0
+      acceleration: 0
+      deceleration: 0
+    vehicleLikeSettings:
+      brakeInput: 0
+      horizontalBrake: 0
+      speed: 0
+      maxSpeed: 0
+      acceleration: 0
+      deceleration: 0
+      brakeForce: 0
+  sprint:
+    sprintKey: 0
+    allowDoubleTap: 0
+    mode: 0
+    constantSpeedSettings:
+      speed: 0
+    acceleratingSpeedSettings:
+      speed: 0
+      maxSpeed: 0
+      acceleration: 0
+      deceleration: 0
+  dash:
+    dashKey: 0
+    allowDoubleTap: 0
+    dashSettings:
+      dashDistance: 0
+      dashSpeed: 0
+      cooldown: 0

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c543a5938ca9614eb74b37636fd8409, type: 3}
+  m_Name: Broforce_VM
+  m_EditorClassIdentifier: 
+  isActive: 1
+  jumpKey: 273
+  extraActions: 0
+  jump:
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    groundCheckRange: 0.15
+    jumpMode: 0
+    constantHeightJumpSettings:
+      jumpHeight: 7
+      gravityScale: 3
+      fallGravityScale: 3
+    derivativeHeightJumpSettings:
+      initialJumpForce: 0
+      gravityScale: 0
+      fallGravityScale: 0
+      maxJumpDuration: 0
+  airJump:
+    airJumpKey: 0
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheckRange: 0
+    maxExtraJumps: 0
+    airJumpMode: 0
+    constantHeightJumpSettings:
+      jumpHeight: 0
+      gravityScale: 0
+      fallGravityScale: 0
+    derivativeHeightJumpSettings:
+      initialJumpForce: 0
+      gravityScale: 0
+      fallGravityScale: 0
+      maxJumpDuration: 0
+  crouch:
+    crouchKey: 0
+    groundLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheckRange: 0
+    crouchMode: 0
+    normalCrouchSettings:
+      crouchHeightReductionPercentage: 0
+      linearDrag: 0
+    platformCrouchSettings:
+      crouchHeightReductionPercentage: 0
+      linearDrag: 0
+      platformTag: 
+      platformHoldTime: 0
+      platformDropTime: 0
+  climb:
+    climbUpKey: 0
+    climbDownKey: 0
+    climbableLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    climbCheckRange: 0
+    verticalClimbSettings:
+      climbSpeed: 0
+      holdClimb: 0
