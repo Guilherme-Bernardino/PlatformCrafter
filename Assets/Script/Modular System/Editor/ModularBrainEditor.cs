@@ -31,6 +31,8 @@ public class ModularBrainEditor : Editor
 
     private Dictionary<string, Texture2D> icons;
 
+    private SerializedProperty disableEditorFeaturesProperty;
+
     private void OnEnable()
     {
         horizontalMovementModuleProperty = serializedObject.FindProperty("horizontalMovementModule");
@@ -40,6 +42,8 @@ public class ModularBrainEditor : Editor
         resourceModulesProperty = serializedObject.FindProperty("resourceModules");
         inventoryModulesProperty = serializedObject.FindProperty("inventoryModules");
         customModulesProperty = serializedObject.FindProperty("customModules");
+
+        disableEditorFeaturesProperty = serializedObject.FindProperty("disableEditorFeatures");
 
         InitializeFoldouts();
         LoadFoldoutStates();
@@ -105,20 +109,31 @@ public class ModularBrainEditor : Editor
 
     private void LoadIcons()
     {
-        icons = new Dictionary<string, Texture2D>
+        if (icons == null)
         {
-            { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/hmmoduleicon.png") },
-            { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/vmicon.png") },
-            { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/iconaction.png") },
-            { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/interactionicon.png") },
-            { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/resourceicon.png") },
-            { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/inventorymodule.png") },
-            { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/customicon.png") },
-        };
+            icons = new Dictionary<string, Texture2D>
+            {
+                { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/hmmoduleicon.png") },
+                { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/vmicon.png") },
+                { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/iconaction.png") },
+                { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/interactionicon.png") },
+                { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/resourceicon.png") },
+                { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/inventorymodule.png") },
+                { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/customicon.png") },
+            };
+        }
     }
+
+
 
     public override void OnInspectorGUI()
     {
+        if (disableEditorFeaturesProperty.boolValue)
+        {
+            GUILayout.Label("Editor features disabled for performance.");
+            return;
+        }
+
         serializedObject.Update();
 
         DrawModuleSummary();
@@ -175,20 +190,16 @@ public class ModularBrainEditor : Editor
         EditorGUILayout.BeginVertical();
 
         Rect rect = GUILayoutUtility.GetRect(20, EditorGUIUtility.singleLineHeight);
-        rect.x -= 0;
-        rect.width += 15;
-        rect.height -= 5;
-        EditorGUI.DrawRect(rect, Color.white);
+        foldout = EditorGUI.Foldout(rect, foldout, new GUIContent(title), true, EditorStyles.foldout);
 
-        foldout = EditorGUI.Foldout(rect, foldout, new GUIContent(title), true, new GUIStyle(EditorStyles.foldout) { fontStyle = FontStyle.Bold, normal = { textColor = Color.black }, onActive = { textColor = Color.black }});
-        EditorGUILayout.EndVertical();
-
-        if (foldout)
+        if (EditorGUILayout.BeginFadeGroup(foldout ? 1 : 0))
         {
             EditorGUI.indentLevel++;
             drawAction();
             EditorGUI.indentLevel--;
         }
+        EditorGUILayout.EndFadeGroup();
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawPhysicsModules()
@@ -242,20 +253,25 @@ public class ModularBrainEditor : Editor
         }
     }
 
+
     private void DrawModuleList(SerializedProperty modulesProperty, List<bool> foldouts, string label, string colorHex)
     {
         DrawPropertyBackground(label, colorHex);
 
         EditorGUILayout.PropertyField(modulesProperty, new GUIContent(label), true);
 
+
         if (modulesProperty.isExpanded)
         {
+            int maxDisplayCount = 10;
+            int totalModules = Mathf.Min(modulesProperty.arraySize, maxDisplayCount);
+
             if (modulesProperty.arraySize != foldouts.Count)
             {
-                InitializeFoldouts();
+                InitializeFoldouts(foldouts, modulesProperty.arraySize);
             }
 
-            for (int i = 0; i < modulesProperty.arraySize; i++)
+            for (int i = 0; i < totalModules; i++)
             {
                 SerializedProperty moduleProperty = modulesProperty.GetArrayElementAtIndex(i);
                 Module module = moduleProperty.objectReferenceValue as Module;
@@ -275,6 +291,11 @@ public class ModularBrainEditor : Editor
 
                     EditorGUILayout.Space();
                 }
+            }
+
+            if (modulesProperty.arraySize > maxDisplayCount)
+            {
+                EditorGUILayout.HelpBox("More modules exist but are not displayed to maintain performance.", MessageType.Info);
             }
         }
     }

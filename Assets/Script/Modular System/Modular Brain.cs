@@ -8,6 +8,9 @@ namespace PlatformCrafterModularSystem
 {
     public class ModularBrain : MonoBehaviour
     {
+        public bool disableEditorFeatures = false;
+        public bool DisableEditorFeatures {  get { return disableEditorFeatures; } set {  disableEditorFeatures = value; } }
+
         //private List<Module> modules = new();
 
         [SerializeField] private HorizontalMovementTypeModule horizontalMovementModule;
@@ -128,7 +131,7 @@ namespace PlatformCrafterModularSystem
         }
 
         //Getter for all modules
-        public HorizontalMovementTypeModule HorizontalMovementTypeModule { get => horizontalMovementModule;}
+        public HorizontalMovementTypeModule HorizontalMovementTypeModule { get => horizontalMovementModule; }
         public VerticalMovementTypeModule VerticalMovementTypeModule { get => verticalMovementModule; }
         public List<ActionTypeModule> ActionTypeModules { get => actionModules; }
         public List<InteractionTypeModule> InteractionTypeModules { get => interactionModules; }
@@ -155,6 +158,12 @@ namespace PlatformCrafterModularSystem
         public InventoryTypeModule GetInventoryTypeModuleByName(string name)
         {
             return inventoryModules.Find(module => module.name == name);
+        }
+
+        [ContextMenu("Toggle Editor Features")]
+        private void ToggleEditorFeatures()
+        {
+            disableEditorFeatures = !disableEditorFeatures;
         }
     }
 }

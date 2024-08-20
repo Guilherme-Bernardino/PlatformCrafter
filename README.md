@@ -8,9 +8,17 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 All notable changes of the project
 
 ## [0.8.3] - 20-08-2024
+
+### Added
 - Added assets from Bro Force.
 - Added a new scene to recreate the levels from Bro Force.
 - Added a new player character that represent Bro Force game settings. Currently walk, jump and a shooting action.
+- (Editor) Added a limit to the number of Modules displayed on each module type, where it only displays the 10 first modules, and alerts the user that the next modules won't be displayed on the inspector.
+- (Editor) Added a toggle editor features on Modular Brain's context menu. 
+
+### Changes
+- (Editor) Changed Icon loading to be cached and loaded once.
+- (Editor) Changed GUI foldout rendering to minimize 
 
 ## [0.8.2] - 19-08-2024
 

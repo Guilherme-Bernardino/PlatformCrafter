@@ -21,7 +21,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.15
-    canMoveOnAir: 1
+    canMoveOnAir: 0
     walkMode: 0
     constantSpeedSettings:
       speed: 12.6
