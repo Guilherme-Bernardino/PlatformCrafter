@@ -18,7 +18,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private VMActions extraActions;
 
         [SerializeField] private JumpAction jump;
-
+        public JumpAction Jump => jump;
 
         [ShowIf("extraActions", VMActions.AirJump)]
         [AllowNesting]
@@ -27,10 +27,12 @@ namespace PlatformCrafterModularSystem
         [ShowIf("extraActions", VMActions.Crouch)]
         [AllowNesting]
         [SerializeField] private CrouchAction crouch;
+        public CrouchAction Crouch => crouch;
 
         [ShowIf("extraActions", VMActions.Climb)]
         [AllowNesting]
         [SerializeField] private ClimbAction climb;
+        public ClimbAction Climb => climb;
 
         private Rigidbody2D rigidbody;
         public Rigidbody2D Rigidbody => rigidbody;
@@ -43,20 +45,20 @@ namespace PlatformCrafterModularSystem
             rigidbody = modularBrain.Rigidbody;
             collider = modularBrain.Collider;
 
-            jump.Initialize(this);
+            jump.Initialize(this, modularBrain);
             if (extraActions.HasFlag(VMActions.Crouch))
             {
-                crouch.Initialize(this);
+                crouch.Initialize(this, modularBrain);
             }
 
             if (extraActions.HasFlag(VMActions.Climb))
             {
-                climb.Initialize(this);
+                climb.Initialize(this, modularBrain);
             }
 
             if (extraActions.HasFlag(VMActions.AirJump))
             {
-                airJump.Initialize(this);
+                airJump.Initialize(this, modularBrain);
             }
         }
 

@@ -26,10 +26,10 @@ MonoBehaviour:
     constantSpeedSettings:
       speed: 12
     acceleratingSpeedSettings:
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
+      speed: 11.1
+      maxSpeed: 15.5
+      acceleration: 6.8
+      deceleration: 7.5
     vehicleLikeSettings:
       brakeInput: 0
       horizontalBrake: 0

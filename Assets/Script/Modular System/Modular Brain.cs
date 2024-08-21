@@ -2,16 +2,14 @@ using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 namespace PlatformCrafterModularSystem
 {
     public class ModularBrain : MonoBehaviour
     {
-        public bool disableEditorFeatures = false;
-        public bool DisableEditorFeatures {  get { return disableEditorFeatures; } set {  disableEditorFeatures = value; } }
-
-        //private List<Module> modules = new();
+        [SerializeField] private bool disableEditorFeatures = false;
 
         [SerializeField] private HorizontalMovementTypeModule horizontalMovementModule;
         [SerializeField] private VerticalMovementTypeModule verticalMovementModule;
@@ -158,6 +156,19 @@ namespace PlatformCrafterModularSystem
         public InventoryTypeModule GetInventoryTypeModuleByName(string name)
         {
             return inventoryModules.Find(module => module.name == name);
+        }
+
+        public AnimationModule GetAnimationModule()
+        {
+            for (int i = customModules.Count - 1; i >= 0; i--)
+            {
+                var module = customModules[i];
+                if (module is AnimationModule)
+                {
+                    return module as AnimationModule;
+                }
+            }
+            return null;
         }
 
         [ContextMenu("Toggle Editor Features")]

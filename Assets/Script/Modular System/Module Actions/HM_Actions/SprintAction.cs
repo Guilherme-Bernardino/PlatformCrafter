@@ -38,7 +38,7 @@ namespace PlatformCrafterModularSystem
         private float lastLeftKeyPressTime;
         private bool isSprinting;
 
-        public override void Initialize(Module module)
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((HorizontalMovementTypeModule)module).Rigidbody;
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;

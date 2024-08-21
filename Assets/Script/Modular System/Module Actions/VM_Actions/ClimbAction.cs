@@ -13,16 +13,24 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private LayerMask climbableLayer;
         [SerializeField] private float climbCheckRange;
 
+        private AnimationModule animModule;
+
         private Rigidbody2D rb;
-        private bool isClimbing;
         private float originalGravityScale;
+
+        private bool isClimbing;
+        public bool IsClimbing { get { return isClimbing; } }
+
+        private bool isFrozen;
 
         [SerializeField] private VerticalClimb verticalClimbSettings;
 
-        public override void Initialize(Module module)
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             originalGravityScale = rb.gravityScale;
+
+            animModule = modularBrain.GetAnimationModule();
         }
 
         public override void UpdateAction()
@@ -30,12 +38,31 @@ namespace PlatformCrafterModularSystem
             if (IsClimbable())
             {
                 HandleClimbing();
+
             }
             else
             {
                 StopClimbing();
             }
 
+            if (isClimbing)
+            {
+                if (animModule != null)
+                {
+                    animModule.DoAnimation(AnimationModule.AnimationAction.Climb);
+
+                    if (!isFrozen)
+                    {
+                        animModule.UnpauseAnimation();
+                    }
+                    else
+                    {
+                        animModule.PauseAnimation();
+                    }
+                }
+            }
+
+            Debug.Log(isFrozen);
         }
 
         private bool IsClimbable()
@@ -68,12 +95,15 @@ namespace PlatformCrafterModularSystem
                 rb.velocity = new Vector2(rb.velocity.x, verticalInput * verticalClimbSettings.ClimbSpeed);
                 rb.constraints = RigidbodyConstraints2D.None;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+                isFrozen = false;
             }
             else
             {
                 if (verticalClimbSettings.HoldClimb)
                 {
                     rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+                    isFrozen = true;
                 }
                 else
                 {

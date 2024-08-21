@@ -9,7 +9,6 @@ namespace PlatformCrafterModularSystem
     [Serializable]
     public abstract class Module : ScriptableObject
     {
-
         [SerializeReference][ReadOnly]protected bool isActive;
         protected ModularBrain modularBrain;
 

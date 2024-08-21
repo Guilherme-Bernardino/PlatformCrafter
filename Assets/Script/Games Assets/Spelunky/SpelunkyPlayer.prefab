@@ -49,13 +49,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableEditorFeatures: 0
   horizontalMovementModule: {fileID: 11400000, guid: 421c07f9f07a2264992aa0605cec001d, type: 2}
   verticalMovementModule: {fileID: 11400000, guid: f8755f3a2ede78f4e8d726382802d831, type: 2}
   actionModules: []
   interactionModules: []
   resourceModules: []
   inventoryModules: []
-  customModules: []
+  customModules:
+  - {fileID: 11400000, guid: 9e17e028e2a1f5a4c8bd695777d84041, type: 2}
 --- !u!212 &5440477859944263683
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -145,7 +147,7 @@ Animator:
   m_GameObject: {fileID: 5388550066333633782}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 67b907953fef336419b46f9878a8b038, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

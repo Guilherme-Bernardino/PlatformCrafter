@@ -7,9 +7,13 @@ namespace PlatformCrafterModularSystem
     public class WalkAction : ModuleAction
     {
         private Rigidbody2D rb;
+        private AnimationModule animModule;
 
         private KeyCode rightKey;
         private KeyCode leftKey;
+
+        private bool isWalking;
+        public bool IsWalking { get { return isWalking; } }
 
         public enum WalkMovementMode
         {
@@ -38,12 +42,14 @@ namespace PlatformCrafterModularSystem
 
         private bool isBraking;
 
-        public override void Initialize(Module module)
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((HorizontalMovementTypeModule)module).Rigidbody;
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
             isBraking = false;
+
+            animModule = modularBrain.GetAnimationModule();
         }
 
         public override void UpdateAction()
@@ -64,6 +70,16 @@ namespace PlatformCrafterModularSystem
                 case WalkMovementMode.VehicleLike:
                     HandleVehicleLike();
                     break;
+            }
+
+            if (rb.velocity.x != 0 && IsGrounded())
+            {
+                isWalking = true;
+                if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Walk);
+            }
+            else
+            {
+                isWalking = false;
             }
         }
 

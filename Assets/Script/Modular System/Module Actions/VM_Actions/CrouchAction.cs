@@ -17,10 +17,13 @@ namespace PlatformCrafterModularSystem
         private CapsuleCollider2D capsuleCollider;
         private float originalColliderHeight;
         private Vector2 originalOffset;
-        private bool isCrouching;
         private float crouchTime;
         private bool isDroppingThroughPlatform;
         private float dropTimer;
+        private AnimationModule animModule;
+
+        private bool isCrouching;
+        public bool IsCrouching { get { return isCrouching; } }
 
         public enum CrouchMode
         {
@@ -43,7 +46,7 @@ namespace PlatformCrafterModularSystem
 
         private bool isGrounded;
 
-        public override void Initialize(Module module)
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
 
@@ -59,6 +62,8 @@ namespace PlatformCrafterModularSystem
                 originalColliderHeight = collider.size.y;
                 originalOffset = collider.offset;
             }
+
+            animModule = modularBrain.GetAnimationModule();
         }
 
         public override void UpdateAction()
@@ -86,6 +91,11 @@ namespace PlatformCrafterModularSystem
                         HandlePlatformCrouch();
                         break;
                 }
+            }
+
+            if (isCrouching)
+            {
+                if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Crouch);
             }
         }
 

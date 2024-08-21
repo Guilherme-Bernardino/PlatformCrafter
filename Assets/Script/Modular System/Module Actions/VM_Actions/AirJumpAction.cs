@@ -40,7 +40,7 @@ namespace PlatformCrafterModularSystem
         private bool isGrounded;
         private float defaultGravityScale;
 
-        public override void Initialize(Module module)
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             jumpKey = ((VerticalMovementTypeModule)module).JumpKey;

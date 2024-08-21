@@ -23,6 +23,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private HMActions extraActions;
 
         [SerializeField] private WalkAction walk;
+        public WalkAction Walk => walk;
 
         [ShowIf("extraActions", HMActions.Sprint)]
         [AllowNesting]
@@ -42,9 +43,9 @@ namespace PlatformCrafterModularSystem
         {
             rigidbody = modularBrain.Rigidbody;
 
-            walk.Initialize(this);
-            sprint.Initialize(this);    
-            dash.Initialize(this);
+            walk.Initialize(this, modularBrain);
+            sprint.Initialize(this, modularBrain);    
+            dash.Initialize(this, modularBrain);
 
             isFacingRight = false;
 

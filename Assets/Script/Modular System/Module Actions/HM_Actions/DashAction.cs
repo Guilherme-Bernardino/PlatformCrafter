@@ -47,7 +47,7 @@ namespace PlatformCrafterModularSystem
 
         public KeyCode DashKey => dashKey;
 
-        public override void Initialize(Module module)
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((HorizontalMovementTypeModule)module).Rigidbody;
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;

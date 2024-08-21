@@ -10,6 +10,9 @@ namespace PlatformCrafterModularSystem
         private KeyCode jumpKey;
         private bool isJumping;
         private float jumpTime;
+        private AnimationModule animModule;
+
+        public bool IsJumping { get { return isJumping; } }
 
         public enum JumpMovementMode
         {
@@ -32,14 +35,19 @@ namespace PlatformCrafterModularSystem
 
         private int remainingJumps;
         private bool isGrounded;
-        private float defaultGravityScale ; 
+        private float defaultGravityScale ;
 
-        public override void Initialize(Module module)
+        private ModularBrain modularBrain;
+
+        public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             jumpKey = ((VerticalMovementTypeModule)module).JumpKey;
 
             defaultGravityScale = rb.gravityScale;
+
+            animModule = modularBrain.GetAnimationModule();
+            this.modularBrain = modularBrain;
         }
 
         public override void UpdateAction()
@@ -61,8 +69,15 @@ namespace PlatformCrafterModularSystem
                 rb.gravityScale = defaultGravityScale;
             }
 
-            if (!isGrounded) isJumping = true;
-            else isJumping = false;
+            if (!isGrounded && rb.velocity.y != 0 && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing)
+            {
+                isJumping = true;
+                animModule.DoAnimation(AnimationModule.AnimationAction.Jump);
+            }
+            else
+            {
+                isJumping = false;
+            }
         }
 
         private void HandleConstantHeightJump()
