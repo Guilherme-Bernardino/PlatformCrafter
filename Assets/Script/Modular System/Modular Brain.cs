@@ -168,19 +168,6 @@ namespace PlatformCrafterModularSystem
             return inventoryModules.Find(module => module.name == name);
         }
 
-        //public AnimationModule GetAnimationModule()
-        //{
-        //    for (int i = customModules.Count - 1; i >= 0; i--)
-        //    {
-        //        var module = customModules[i];
-        //        if (module is AnimationModule)
-        //        {
-        //            return module as AnimationModule;
-        //        }
-        //    }
-        //    return null;
-        //}
-
         [ContextMenu("Toggle Editor Features")]
         private void ToggleEditorFeatures()
         {

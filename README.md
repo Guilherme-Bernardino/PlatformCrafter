@@ -7,6 +7,20 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.9] - 22-08-2024
+- Added the AnimationTypeModule v1.0, with animations for Walk, Sprint, Dash, Brake, Jump, AirJump, Crouch, Climb, and Crouch Walking (Walk + Crouch).
+- Added states for HM and VM, so the animations don't conflict with each other.
+- (Editor) Added a new category named Visuals & Audio.
+- (Editor) Added an icon to the AnimationType Module
+- (Editor) Added buttons to pause and unpause animations on the editor.
+- (Spelunky Recreation) Added multiple animations to the Spelunky Player entity, namely Walk, Jump, Crouch, Climb and CrouchWalking.
+
+### Changes
+- (Editor) Changed the icons and the labels display.
+
+### Fixed
+- Fixed HM Module allowing sprites to be flipped when CanMoveOnAir of Walk Action is active.
+
 ## [0.8.3] - 20-08-2024
 
 ### Added

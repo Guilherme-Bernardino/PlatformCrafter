@@ -196,7 +196,6 @@ namespace PlatformCrafterModularSystem
             GUILayout.FlexibleSpace();
             GUILayout.Label($"    {count}", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14, alignment = TextAnchor.MiddleLeft });
             GUILayout.FlexibleSpace();
-            //GUILayout.Label(label, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.LowerCenter });
             EditorGUILayout.EndVertical();
         }
 
@@ -329,7 +328,6 @@ namespace PlatformCrafterModularSystem
             rect.width = 5;
             Color backgroundColor = HexToColor(colorHex);
             EditorGUI.DrawRect(rect, backgroundColor);
-            //EditorGUI.LabelField(rect, new GUIContent(label), EditorStyles.boldLabel);
         }
 
         private string TypeName(Module module)

@@ -15,7 +15,6 @@ namespace PlatformCrafterModularSystem
         private VerticalMovementTypeModule verticalModule;
 
         private Rigidbody2D rb;
-        private KeyCode jumpKey;
         private int remainingJumps;
         private float jumpTime;
 
@@ -50,7 +49,6 @@ namespace PlatformCrafterModularSystem
         public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
-            jumpKey = ((VerticalMovementTypeModule)module).JumpKey;
             defaultGravityScale = rb.gravityScale;
 
             verticalModule = (VerticalMovementTypeModule)module;
