@@ -6,7 +6,7 @@ using UnityEngine;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "AnimationModule", menuName = "Platform Crafter's Modular System/Type - Animation")]
+    [CreateAssetMenu(fileName = "AnimationModule", menuName = "Platform Crafter's Modular System/Animation")]
     public class AnimationModule : Module
     {
         private Animator animator;

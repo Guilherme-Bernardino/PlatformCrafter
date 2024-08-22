@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   jumpKey: 273
-  extraActions: -1
+  extraActions: 6
   jump:
     groundLayer:
       serializedVersion: 2

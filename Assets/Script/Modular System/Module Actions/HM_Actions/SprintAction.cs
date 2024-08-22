@@ -13,7 +13,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private bool allowDoubleTap;
 
         private Rigidbody2D rb;
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private HorizontalMovementTypeModule movementModule;
 
         private KeyCode rightKey;
         private KeyCode leftKey;
@@ -46,7 +47,8 @@ namespace PlatformCrafterModularSystem
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
 
-            animModule = modularBrain.GetAnimationModule();
+            movementModule = (HorizontalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
         }
 
         public override void UpdateAction()
@@ -73,12 +75,16 @@ namespace PlatformCrafterModularSystem
                         break;
                 }
 
-                if (!Input.GetKey(sprintKey) && !Input.GetKey(rightKey) && !Input.GetKey(leftKey))
+                if (!Input.GetKey(sprintKey))
                 {
                     isSprinting = false;
+                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.None);
                 }
+            }
 
-                if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Sprint);
+            if (isSprinting && rb.velocity.x != 0f)
+            {
+                movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Sprinting);
             }
         }
 

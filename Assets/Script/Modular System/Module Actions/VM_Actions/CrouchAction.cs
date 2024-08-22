@@ -20,7 +20,8 @@ namespace PlatformCrafterModularSystem
         private float crouchTime;
         private bool isDroppingThroughPlatform;
         private float dropTimer;
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private VerticalMovementTypeModule verticalModule;
 
         private bool isCrouching;
         public bool IsCrouching { get { return isCrouching; } }
@@ -63,7 +64,8 @@ namespace PlatformCrafterModularSystem
                 originalOffset = collider.offset;
             }
 
-            animModule = modularBrain.GetAnimationModule();
+            verticalModule = (VerticalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
         }
 
         public override void UpdateAction()
@@ -95,7 +97,7 @@ namespace PlatformCrafterModularSystem
 
             if (isCrouching)
             {
-                if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Crouch);
+                verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.Crouching);
             }
         }
 

@@ -13,7 +13,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private LayerMask climbableLayer;
         [SerializeField] private float climbCheckRange;
 
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private VerticalMovementTypeModule verticalModule;
 
         private Rigidbody2D rb;
         private float originalGravityScale;
@@ -30,7 +31,8 @@ namespace PlatformCrafterModularSystem
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             originalGravityScale = rb.gravityScale;
 
-            animModule = modularBrain.GetAnimationModule();
+            verticalModule = (VerticalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
         }
 
         public override void UpdateAction()
@@ -49,7 +51,7 @@ namespace PlatformCrafterModularSystem
             {
                 if (animModule != null)
                 {
-                    animModule.DoAnimation(AnimationModule.AnimationAction.Climb);
+                    verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.Climbing);
 
                     if (!isFrozen)
                     {
@@ -61,8 +63,6 @@ namespace PlatformCrafterModularSystem
                     }
                 }
             }
-
-            Debug.Log(isFrozen);
         }
 
         private bool IsClimbable()
@@ -119,6 +119,7 @@ namespace PlatformCrafterModularSystem
                 isClimbing = false;
                 rb.gravityScale = originalGravityScale;
                 rb.velocity = new Vector2(rb.velocity.x, 0);
+                animModule.UnpauseAnimation();
             }
         }
     }

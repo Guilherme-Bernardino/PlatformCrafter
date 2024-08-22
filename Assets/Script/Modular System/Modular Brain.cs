@@ -11,15 +11,22 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private bool disableEditorFeatures = false;
 
+        //Physics
         [SerializeField] private HorizontalMovementTypeModule horizontalMovementModule;
         [SerializeField] private VerticalMovementTypeModule verticalMovementModule;
 
+        //Actions/Interactions
         [SerializeField] private List<ActionTypeModule> actionModules = new List<ActionTypeModule>();
         [SerializeField] private List<InteractionTypeModule> interactionModules = new List<InteractionTypeModule>();
 
+        //Containers
         [SerializeField] private List<ResourceTypeModule> resourceModules = new List<ResourceTypeModule>();
         [SerializeField] private List<InventoryTypeModule> inventoryModules = new List<InventoryTypeModule>();
 
+        //Visuals and Sounds
+        [SerializeField] private AnimationTypeModule animationModule;
+
+        //Custom
         [SerializeField] private List<Module> customModules;
 
         //Entity Components
@@ -50,6 +57,7 @@ namespace PlatformCrafterModularSystem
         {
             horizontalMovementModule?.Initialize(this);
             verticalMovementModule?.Initialize(this);
+            animationModule?.Initialize(this);
 
             foreach (var module in actionModules)
             {
@@ -86,6 +94,7 @@ namespace PlatformCrafterModularSystem
         {
             horizontalMovementModule?.UpdateModule();
             verticalMovementModule?.UpdateModule();
+            animationModule?.UpdateModule();
 
             foreach (var module in actionModules)
             {
@@ -120,7 +129,7 @@ namespace PlatformCrafterModularSystem
                 var module = customModules[i];
                 if (module is HorizontalMovementTypeModule || module is VerticalMovementTypeModule ||
                     module is ActionTypeModule || module is InteractionTypeModule ||
-                    module is ResourceTypeModule || module is InventoryTypeModule)
+                    module is ResourceTypeModule || module is InventoryTypeModule || module is AnimationTypeModule)
                 {
                     Debug.LogWarning($"Removed predefined module type from Custom Modules list: {module.GetType().Name}. Use the type specific lists to add this specific module type.");
                     customModules.RemoveAt(i);
@@ -135,6 +144,7 @@ namespace PlatformCrafterModularSystem
         public List<InteractionTypeModule> InteractionTypeModules { get => interactionModules; }
         public List<ResourceTypeModule> ResourceTypeModules { get => resourceModules; }
         public List<InventoryTypeModule> InventoryTypeModules { get => inventoryModules; }
+        public AnimationTypeModule AnimationTypeModule { get => animationModule; }
 
 
         // Getter methods to retrieve specific modules by name
@@ -158,18 +168,18 @@ namespace PlatformCrafterModularSystem
             return inventoryModules.Find(module => module.name == name);
         }
 
-        public AnimationModule GetAnimationModule()
-        {
-            for (int i = customModules.Count - 1; i >= 0; i--)
-            {
-                var module = customModules[i];
-                if (module is AnimationModule)
-                {
-                    return module as AnimationModule;
-                }
-            }
-            return null;
-        }
+        //public AnimationModule GetAnimationModule()
+        //{
+        //    for (int i = customModules.Count - 1; i >= 0; i--)
+        //    {
+        //        var module = customModules[i];
+        //        if (module is AnimationModule)
+        //        {
+        //            return module as AnimationModule;
+        //        }
+        //    }
+        //    return null;
+        //}
 
         [ContextMenu("Toggle Editor Features")]
         private void ToggleEditorFeatures()

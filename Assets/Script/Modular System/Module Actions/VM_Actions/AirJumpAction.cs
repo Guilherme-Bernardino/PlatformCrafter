@@ -11,7 +11,8 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode airJumpKey;
 
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private VerticalMovementTypeModule verticalModule;
 
         private Rigidbody2D rb;
         private KeyCode jumpKey;
@@ -52,7 +53,8 @@ namespace PlatformCrafterModularSystem
             jumpKey = ((VerticalMovementTypeModule)module).JumpKey;
             defaultGravityScale = rb.gravityScale;
 
-            animModule = modularBrain.GetAnimationModule();
+            verticalModule = (VerticalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
             this.modularBrain = modularBrain;
         }
 
@@ -87,9 +89,11 @@ namespace PlatformCrafterModularSystem
             if (!isGrounded && rb.velocity.y != 0 && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing)
             {
                 isJumping = true;
-                animModule.DoAnimation(AnimationModule.AnimationAction.AirJump);
             }
-            else isJumping = false;
+            else
+            {
+                isJumping = false;
+            }
         }
 
         private void HandleConstantHeightAirJump()
@@ -101,6 +105,8 @@ namespace PlatformCrafterModularSystem
                 float jumpForce = Mathf.Sqrt(constantHeightJumpSettings.JumpHeight * (Physics2D.gravity.y * rb.gravityScale) * -2) * rb.mass;
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 remainingJumps--;
+
+                verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.AirJumping);
             }
 
             if (isJumping)
@@ -124,6 +130,8 @@ namespace PlatformCrafterModularSystem
                 jumpTime = 0;
                 rb.velocity = new Vector2(rb.velocity.x, derivativeHeightJumpSettings.InitialJumpForce);
                 remainingJumps--;
+
+                verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.AirJumping);
             }
 
             if (isJumping)

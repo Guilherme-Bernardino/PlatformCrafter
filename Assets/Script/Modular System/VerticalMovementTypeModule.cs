@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlatformCrafterModularSystem.HorizontalMovementTypeModule;
 
 namespace PlatformCrafterModularSystem 
 {
@@ -10,6 +11,17 @@ namespace PlatformCrafterModularSystem
     [CreateAssetMenu(fileName = "VMModule", menuName = "Platform Crafter's Modular System/Type - VM")]
     public class VerticalMovementTypeModule : Module
     {
+        public enum VerticalState
+        {
+            Idle,
+            Jumping,
+            AirJumping,
+            Crouching,
+            Climbing
+        }
+
+        public VerticalState CurrentState { get; private set; } = VerticalState.Idle;
+
         [SerializeField] private KeyCode jumpKey;
 
         public KeyCode JumpKey => jumpKey;
@@ -82,6 +94,25 @@ namespace PlatformCrafterModularSystem
                 {
                     airJump.UpdateAction();
                 }
+            }
+
+            if (!modularBrain.VerticalMovementTypeModule.Jump.IsJumping
+                && !modularBrain.VerticalMovementTypeModule.AirJump.IsJumping
+                && !modularBrain.VerticalMovementTypeModule.Crouch.IsCrouching
+                && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing)
+            {
+                ChangeState(VerticalState.Idle);
+            }
+
+                Debug.Log(CurrentState);
+        }
+
+        public void ChangeState(VerticalState newState)
+        {
+            if (CurrentState != newState)
+            {
+                CurrentState = newState;
+                modularBrain.AnimationTypeModule.OnVerticalStateChange(newState);
             }
         }
     }

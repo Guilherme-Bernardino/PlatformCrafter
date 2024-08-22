@@ -5694,22 +5694,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2020515092114913046, guid: b41b53ad517c9824480729472af764e3, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 67b907953fef336419b46f9878a8b038, type: 2}
     - target: {fileID: 5388550066333633782, guid: b41b53ad517c9824480729472af764e3, type: 3}
       propertyPath: m_Name
       value: SpelunkyPlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 6412731524204208205, guid: b41b53ad517c9824480729472af764e3, type: 3}
-      propertyPath: customModules.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6412731524204208205, guid: b41b53ad517c9824480729472af764e3, type: 3}
-      propertyPath: customModules.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9e17e028e2a1f5a4c8bd695777d84041, type: 2}
     - target: {fileID: 8330680666593271629, guid: b41b53ad517c9824480729472af764e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.89

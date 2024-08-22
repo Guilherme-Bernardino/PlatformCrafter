@@ -7,7 +7,8 @@ namespace PlatformCrafterModularSystem
     public class WalkAction : ModuleAction
     {
         private Rigidbody2D rb;
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private HorizontalMovementTypeModule movementModule;
 
         private KeyCode rightKey;
         private KeyCode leftKey;
@@ -25,6 +26,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float groundCheckRange = 0.1f;
         [SerializeField] private bool canMoveOnAir;
+        public bool CanMoveOnAir => canMoveOnAir;
 
         [SerializeField] private WalkMovementMode walkMode;
 
@@ -49,7 +51,8 @@ namespace PlatformCrafterModularSystem
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
             isBraking = false;
 
-            animModule = modularBrain.GetAnimationModule();
+            movementModule = (HorizontalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
         }
 
         public override void UpdateAction()
@@ -57,6 +60,22 @@ namespace PlatformCrafterModularSystem
             if (!canMoveOnAir && !IsGrounded())
             {
                 return;
+            }
+
+            if (isBraking)
+            {
+                movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Braking);
+            }
+            else if (rb.velocity.x != 0 && !movementModule.Sprint.IsSprinting && !movementModule.Dash.IsDashing)
+            {
+                if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)) && movementModule.CurrentState != HorizontalMovementTypeModule.MovementState.Braking)
+                {
+                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Walking);
+                }
+                else
+                {
+                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.None);
+                }
             }
 
             switch (walkMode)
@@ -72,10 +91,9 @@ namespace PlatformCrafterModularSystem
                     break;
             }
 
-            if (rb.velocity.x != 0 && IsGrounded())
+            if (rb.velocity.x != 0 && IsGrounded() && movementModule.CurrentState != HorizontalMovementTypeModule.MovementState.Sprinting)
             {
                 isWalking = true;
-                if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Walk);
             }
             else
             {
@@ -163,7 +181,7 @@ namespace PlatformCrafterModularSystem
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -vehicleLikeSettings.MaxSpeed, vehicleLikeSettings.MaxSpeed), rb.velocity.y);
         }
 
-        private bool IsGrounded()
+        public bool IsGrounded()
         {
             Vector2 rayOrigin = rb.position;
             Vector2 rayDirection = Vector2.down;

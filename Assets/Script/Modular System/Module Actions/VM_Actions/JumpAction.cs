@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using PlatformCrafter;
 using UnityEngine;
 
 namespace PlatformCrafterModularSystem
@@ -10,7 +11,8 @@ namespace PlatformCrafterModularSystem
         private KeyCode jumpKey;
         private bool isJumping;
         private float jumpTime;
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private VerticalMovementTypeModule verticalModule;
 
         public bool IsJumping { get { return isJumping; } }
 
@@ -46,7 +48,8 @@ namespace PlatformCrafterModularSystem
 
             defaultGravityScale = rb.gravityScale;
 
-            animModule = modularBrain.GetAnimationModule();
+            verticalModule = (VerticalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
             this.modularBrain = modularBrain;
         }
 
@@ -69,10 +72,11 @@ namespace PlatformCrafterModularSystem
                 rb.gravityScale = defaultGravityScale;
             }
 
-            if (!isGrounded && rb.velocity.y != 0 && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing)
+            if (!isGrounded && rb.velocity.y != 0 && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing && 
+                !modularBrain.VerticalMovementTypeModule.AirJump.IsJumping)
             {
                 isJumping = true;
-                animModule.DoAnimation(AnimationModule.AnimationAction.Jump);
+                verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.Jumping);
             }
             else
             {

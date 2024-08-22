@@ -14,7 +14,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private KeyCode dashKey;
         [SerializeField] private bool allowDoubleTap;
 
-        private AnimationModule animModule;
+        private AnimationTypeModule animModule;
+        private HorizontalMovementTypeModule movementModule;
 
         private KeyCode rightKey;
         private KeyCode leftKey;
@@ -43,7 +44,8 @@ namespace PlatformCrafterModularSystem
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
 
-            animModule = modularBrain.GetAnimationModule();
+            movementModule = (HorizontalMovementTypeModule)module;
+            animModule = modularBrain.AnimationTypeModule;
         }
 
         public override void UpdateAction()
@@ -65,7 +67,6 @@ namespace PlatformCrafterModularSystem
                 if (isDashing)
                 {
                     UpdateDash();
-                    if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Dash);
                 }
                 else
                 {
@@ -83,6 +84,8 @@ namespace PlatformCrafterModularSystem
                 dashStartTime = Time.time;
                 dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
                 rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
+
+                movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Dashing); 
             }
         }
 
@@ -91,6 +94,8 @@ namespace PlatformCrafterModularSystem
             isDashing = false;
             isActive = false;
             rb.velocity = Vector2.zero;
+
+            movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.None);
         }
 
         private void UpdateDash()
@@ -113,6 +118,8 @@ namespace PlatformCrafterModularSystem
                     dashStartTime = Time.time;
                     dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
                     rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
+
+                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Dashing);
                 }
                 dashCooldownTimer = 0;
             }

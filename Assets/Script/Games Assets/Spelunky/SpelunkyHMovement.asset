@@ -15,29 +15,29 @@ MonoBehaviour:
   isActive: 1
   rightKey: 275
   leftKey: 276
-  extraActions: -1
+  extraActions: 0
   walk:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.15
-    canMoveOnAir: 1
-    walkMode: 1
+    canMoveOnAir: 0
+    walkMode: 0
     constantSpeedSettings:
       speed: 12
     acceleratingSpeedSettings:
       speed: 11.1
       maxSpeed: 15.5
       acceleration: 6.8
-      deceleration: 7.5
+      deceleration: 24.4
     vehicleLikeSettings:
-      brakeInput: 0
-      horizontalBrake: 0
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
-      brakeForce: 0
+      brakeInput: 32
+      horizontalBrake: 1
+      speed: 10.4
+      maxSpeed: 20.5
+      acceleration: 8.3
+      deceleration: 7.6
+      brakeForce: 5
   sprint:
     sprintKey: 304
     allowDoubleTap: 0
@@ -45,13 +45,13 @@ MonoBehaviour:
     constantSpeedSettings:
       speed: 16.5
     acceleratingSpeedSettings:
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
+      speed: 27
+      maxSpeed: 26.7
+      acceleration: 12.2
+      deceleration: 25.5
   dash:
     dashKey: 101
-    allowDoubleTap: 1
+    allowDoubleTap: 0
     dashSettings:
       dashDistance: 31.6
       dashSpeed: 11.1
