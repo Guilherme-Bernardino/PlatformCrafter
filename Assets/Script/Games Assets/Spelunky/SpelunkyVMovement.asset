@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   jumpKey: 273
-  extraActions: 6
+  extraActions: -1
   jump:
     groundLayer:
       serializedVersion: 2
@@ -31,17 +31,17 @@ MonoBehaviour:
       fallGravityScale: 0
       maxJumpDuration: 0
   airJump:
-    airJumpKey: 0
+    airJumpKey: 273
     groundLayer:
       serializedVersion: 2
-      m_Bits: 0
-    groundCheckRange: 0
-    maxExtraJumps: 0
+      m_Bits: 8
+    groundCheckRange: 0.15
+    maxExtraJumps: 2
     airJumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 0
-      gravityScale: 0
-      fallGravityScale: 0
+      jumpHeight: 2
+      gravityScale: 6
+      fallGravityScale: 7.5
     derivativeHeightJumpSettings:
       initialJumpForce: 0
       gravityScale: 0

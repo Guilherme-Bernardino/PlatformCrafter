@@ -15,9 +15,9 @@ MonoBehaviour:
   isActive: 1
   idleAnimation: Idle
   walkAnimation: walk
-  runAnimation: 
-  dashAnimation: 
+  sprintAnimation: sprint
+  dashAnimation: dash
   jumpAnimation: jump
-  airJumpAnimation: 
+  airJumpAnimation: airjump
   climbAnimation: climb
   crouchAnimation: crouch

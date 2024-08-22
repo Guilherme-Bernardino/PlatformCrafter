@@ -13,7 +13,7 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private string idleAnimation;
         [Foldout("HM Animations")][SerializeField] private string walkAnimation;
-        [Foldout("HM Animations")][SerializeField] private string runAnimation;
+        [Foldout("HM Animations")][SerializeField] private string sprintAnimation;
         [Foldout("HM Animations")][SerializeField] private string dashAnimation;
         [Foldout("VM Animations")][SerializeField] private string jumpAnimation;
         [Foldout("VM Animations")][SerializeField] private string airJumpAnimation;
@@ -24,7 +24,7 @@ namespace PlatformCrafterModularSystem
         {
             Idle,
             Walk,
-            Run,
+            Sprint,
             Dash,
             Jump,
             AirJump,
@@ -40,9 +40,13 @@ namespace PlatformCrafterModularSystem
         public override void UpdateModule()
         {
             if (!modularBrain.HorizontalMovementTypeModule.Walk.IsWalking
+                && !modularBrain.HorizontalMovementTypeModule.Sprint.IsSprinting
+                && !modularBrain.HorizontalMovementTypeModule.Dash.IsDashing
                 && !modularBrain.VerticalMovementTypeModule.Jump.IsJumping
+                && !modularBrain.VerticalMovementTypeModule.AirJump.IsJumping
                 && !modularBrain.VerticalMovementTypeModule.Crouch.IsCrouching
-                && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing)
+                && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing
+                )
             {
                 animator.Play(idleAnimation);
             }
@@ -52,7 +56,7 @@ namespace PlatformCrafterModularSystem
         {
             if (animationName == AnimationAction.Idle) animator.Play(idleAnimation);
             if (animationName == AnimationAction.Walk )animator.Play(walkAnimation);
-            if (animationName == AnimationAction.Run) animator.Play(runAnimation);
+            if (animationName == AnimationAction.Sprint) animator.Play(sprintAnimation);
             if (animationName == AnimationAction.Dash) animator.Play(dashAnimation);
             if (animationName == AnimationAction.Jump) animator.Play(jumpAnimation);
             if (animationName == AnimationAction.AirJump) animator.Play(airJumpAnimation);

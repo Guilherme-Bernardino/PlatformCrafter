@@ -28,10 +28,12 @@ namespace PlatformCrafterModularSystem
         [ShowIf("extraActions", HMActions.Sprint)]
         [AllowNesting]
         [SerializeField] private SprintAction sprint;
+        public SprintAction Sprint => sprint;
 
         [ShowIf("extraActions", HMActions.Dash)]
         [AllowNesting]
         [SerializeField] private DashAction dash;
+        public DashAction Dash => dash;
 
         private Rigidbody2D rigidbody;
         public Rigidbody2D Rigidbody => rigidbody;

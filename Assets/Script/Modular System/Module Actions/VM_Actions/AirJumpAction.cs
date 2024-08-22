@@ -11,11 +11,15 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode airJumpKey;
 
+        private AnimationModule animModule;
+
         private Rigidbody2D rb;
         private KeyCode jumpKey;
         private int remainingJumps;
-        private bool isJumping;
         private float jumpTime;
+
+        private bool isJumping;
+        public bool IsJumping => isJumping;
 
         public enum AirJumpMode
         {
@@ -40,11 +44,16 @@ namespace PlatformCrafterModularSystem
         private bool isGrounded;
         private float defaultGravityScale;
 
+        private ModularBrain modularBrain;
+
         public override void Initialize(Module module, ModularBrain modularBrain)
         {
             rb = ((VerticalMovementTypeModule)module).Rigidbody;
             jumpKey = ((VerticalMovementTypeModule)module).JumpKey;
             defaultGravityScale = rb.gravityScale;
+
+            animModule = modularBrain.GetAnimationModule();
+            this.modularBrain = modularBrain;
         }
 
         public override void UpdateAction()
@@ -75,7 +84,11 @@ namespace PlatformCrafterModularSystem
                 rb.gravityScale = defaultGravityScale;
             }
 
-            if (!isGrounded) isJumping = true;
+            if (!isGrounded && rb.velocity.y != 0 && !modularBrain.VerticalMovementTypeModule.Climb.IsClimbing)
+            {
+                isJumping = true;
+                animModule.DoAnimation(AnimationModule.AnimationAction.AirJump);
+            }
             else isJumping = false;
         }
 

@@ -14,6 +14,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private KeyCode dashKey;
         [SerializeField] private bool allowDoubleTap;
 
+        private AnimationModule animModule;
+
         private KeyCode rightKey;
         private KeyCode leftKey;
 
@@ -23,27 +25,15 @@ namespace PlatformCrafterModularSystem
 
         private float lastRightKeyPressTime;
         private float lastLeftKeyPressTime;
-        private bool isDashing;
         private bool isActive;
+
+        private bool isDashing;
+        public bool IsDashing => isDashing;
 
         private float dashStartTime;
         private float dashDirection;
 
-        //public enum DashMovementMode
-        //{
-        //    Dash,
-        //    MultipleDashes
-        //}
-
-        //[SerializeField] private DashMovementMode dashMode;
-
-        //[ShowIf("dashMode", DashMovementMode.Dash)]
-        //[AllowNesting]
         [SerializeField] private Dash dashSettings;
-
-        //[ShowIf("dashMode", DashMovementMode.MultipleDashes)]
-        //[AllowNesting]
-        //[SerializeField] private MultipleDashes multipleDashesSettings;
 
         public KeyCode DashKey => dashKey;
 
@@ -52,6 +42,8 @@ namespace PlatformCrafterModularSystem
             rb = ((HorizontalMovementTypeModule)module).Rigidbody;
             rightKey = ((HorizontalMovementTypeModule)module).RightKey;
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
+
+            animModule = modularBrain.GetAnimationModule();
         }
 
         public override void UpdateAction()
@@ -73,6 +65,7 @@ namespace PlatformCrafterModularSystem
                 if (isDashing)
                 {
                     UpdateDash();
+                    if (animModule != null) animModule.DoAnimation(AnimationModule.AnimationAction.Dash);
                 }
                 else
                 {
@@ -124,21 +117,6 @@ namespace PlatformCrafterModularSystem
                 dashCooldownTimer = 0;
             }
         }
-
-        //private void HandleMultipleDashes()
-        //{
-        //    if (dashesLeft > 0 && Input.GetKeyDown(dashKey))
-        //    {
-        //        Activate();
-        //        dashesLeft--;
-        //    }
-
-        //    if (dashesLeft < numberOfDashes && dashCooldownTimer >= cooldown)
-        //    {
-        //        dashCooldownTimer = 0;
-        //        dashesLeft++;
-        //    }
-        //}
 
         private void HandleDoubleTap()
         {

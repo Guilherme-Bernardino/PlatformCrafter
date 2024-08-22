@@ -23,6 +23,7 @@ namespace PlatformCrafterModularSystem
         [ShowIf("extraActions", VMActions.AirJump)]
         [AllowNesting]
         [SerializeField] private AirJumpAction airJump;
+        public AirJumpAction AirJump => airJump;
 
         [ShowIf("extraActions", VMActions.Crouch)]
         [AllowNesting]

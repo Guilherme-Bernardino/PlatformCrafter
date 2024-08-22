@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disableEditorFeatures: 0
+  disableEditorFeatures: 1
   horizontalMovementModule: {fileID: 11400000, guid: 421c07f9f07a2264992aa0605cec001d, type: 2}
   verticalMovementModule: {fileID: 11400000, guid: f8755f3a2ede78f4e8d726382802d831, type: 2}
   actionModules: []
