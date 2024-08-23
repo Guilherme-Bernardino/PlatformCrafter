@@ -1,7 +1,7 @@
 <p align="center">
- <img width="100px" src="https://github.com/user-attachments/assets/ac4c2183-8c39-49f4-8605-0d1ea1091eb8" align="center" alt="Icon" />
- <h1 align="center">Platform Crafter</h1>
+ <img width="400px" src="https://github.com/user-attachments/assets/891f62b1-ceca-4a2e-8249-addfa799fb5e" align="center" alt="Icon" />
 </p>
+<br />
 <p align="center">
  <img src="https://img.shields.io/badge/build-v0.9-ffffff" />
    <a href="https://github/Guilherme-Bernardino/PlatformCrafter/downloads">
@@ -10,12 +10,12 @@
    <br />
  </p>
  
-# Contributor
-Guilherme B.
-
 # Description
 Unity package for 2D platformer and platformer-like games.
 Meant for unexperienced and experienced game devs that want an easy way to create game experiences.
+
+# Contributor(s)
+Guilherme Bernardino
 
 # Change Log
 All notable changes of the project
