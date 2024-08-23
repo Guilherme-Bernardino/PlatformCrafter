@@ -64,17 +64,17 @@ namespace PlatformCrafterModularSystem
 
             if (isBraking)
             {
-                movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Braking);
+                movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Braking);
             }
             else if (rb.velocity.x != 0 && !movementModule.Sprint.IsSprinting && !movementModule.Dash.IsDashing)
             {
-                if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)) && movementModule.CurrentState != HorizontalMovementTypeModule.MovementState.Braking)
+                if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)) && movementModule.CurrentState != HorizontalMovementTypeModule.HorizontalState.Braking)
                 {
-                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Walking);
+                    movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Walking);
                 }
                 else
                 {
-                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.None);
+                    movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Idle);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace PlatformCrafterModularSystem
                     break;
             }
 
-            if (rb.velocity.x != 0 && IsGrounded() && movementModule.CurrentState != HorizontalMovementTypeModule.MovementState.Sprinting)
+            if (rb.velocity.x != 0 && IsGrounded() && movementModule.CurrentState != HorizontalMovementTypeModule.HorizontalState.Sprinting)
             {
                 isWalking = true;
             }

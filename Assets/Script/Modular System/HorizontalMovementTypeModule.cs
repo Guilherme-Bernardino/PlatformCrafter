@@ -12,16 +12,16 @@ namespace PlatformCrafterModularSystem
     [CreateAssetMenu(fileName = "HMModule", menuName = "Platform Crafter's Modular System/Type - HM")]
     public class HorizontalMovementTypeModule : Module
     {
-        public enum MovementState
+        public enum HorizontalState
         {
-            None,
+            Idle,
             Walking,
             Sprinting,
             Dashing,
             Braking,
         }
 
-        public MovementState CurrentState { get; private set; } = MovementState.None;
+        public HorizontalState CurrentState { get; private set; } = HorizontalState.Idle;
 
         [SerializeField] private KeyCode rightKey;
         [SerializeField] private KeyCode leftKey;
@@ -61,7 +61,7 @@ namespace PlatformCrafterModularSystem
 
             isFacingRight = false;
 
-            CurrentState = MovementState.None;
+            CurrentState = HorizontalState.Idle;
         }
         public override void UpdateModule()
         {
@@ -102,12 +102,13 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        public void ChangeState(MovementState newState)
+        public void ChangeState(HorizontalState newState)
         {
             if (CurrentState != newState)
             {
                 CurrentState = newState;
-                modularBrain.AnimationTypeModule.OnHorizontalStateChange(newState);
+                modularBrain.AnimationTypeModule?.OnHorizontalStateChange(newState);
+                modularBrain.SoundEffectTypeModule?.OnHorizontalStateChange(newState);
             }
         }
     }

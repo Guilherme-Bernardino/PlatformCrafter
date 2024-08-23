@@ -20,8 +20,21 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.9.1] - 23-08-2024
+
+### Added
+- Added the SoundEffect Type Module v1.0, audio for Idle, Walk, Sprint, Dash, Braking, Jump, AirJump, Climb, Crouch and Crouch Walk.
+- (Editor) Added an icon to the SoundEffectType Module.
+- (Editor) Added buttons to pause and unpause audio on the editor.
+
+### Changes
+- Changed HM MovementState to HorizontalState.
+- Changed all icons on editor and each module to new ones.
+
 ## [0.9] - 22-08-2024
-- Added the AnimationTypeModule v1.0, with animations for Walk, Sprint, Dash, Brake, Jump, AirJump, Crouch, Climb, and Crouch Walking (Walk + Crouch).
+
+### Added
+- Added the Animation Type Module v1.0, with animations for Walk, Sprint, Dash, Brake, Jump, AirJump, Crouch, Climb, and Crouch Walking (Walk + Crouch).
 - Added states for HM and VM, so the animations don't conflict with each other.
 - (Editor) Added a new category named Visuals & Audio.
 - (Editor) Added an icon to the AnimationType Module

@@ -17,6 +17,7 @@ namespace PlatformCrafterModularSystem
         private SerializedProperty inventoryModulesProperty;
         private SerializedProperty customModulesProperty;
         private SerializedProperty animationModuleProperty;
+        private SerializedProperty soundEffectModuleProperty;
 
         private bool showPhysicsModules;
         private bool showActionInteractionModules;
@@ -27,6 +28,7 @@ namespace PlatformCrafterModularSystem
         private bool showHorizontalMovementModule;
         private bool showVerticalMovementModule;
         private bool showAnimationModule;
+        private bool showSoundEffectModule;
 
 
         private List<bool> actionFoldouts = new List<bool>();
@@ -48,6 +50,7 @@ namespace PlatformCrafterModularSystem
             resourceModulesProperty = serializedObject.FindProperty("resourceModules");
             inventoryModulesProperty = serializedObject.FindProperty("inventoryModules");
             animationModuleProperty = serializedObject.FindProperty("animationModule");
+            soundEffectModuleProperty = serializedObject.FindProperty("soundEffectModule");
             customModulesProperty = serializedObject.FindProperty("customModules");
 
             disableEditorFeaturesProperty = serializedObject.FindProperty("disableEditorFeatures");
@@ -72,6 +75,7 @@ namespace PlatformCrafterModularSystem
             showHorizontalMovementModule = EditorPrefs.GetBool("ModularBrain_ShowHorizontalMovementModule", true);
             showVerticalMovementModule = EditorPrefs.GetBool("ModularBrain_ShowVerticalMovementModule", true);
             showAnimationModule = EditorPrefs.GetBool("ModularBrain_ShowAnimationModule", true);
+            showSoundEffectModule = EditorPrefs.GetBool("ModularBrain_ShowSFXModule", true);
 
             LoadFoldoutList(actionFoldouts, actionModulesProperty, "ModularBrain_ActionFoldouts");
             LoadFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
@@ -90,6 +94,7 @@ namespace PlatformCrafterModularSystem
             EditorPrefs.SetBool("ModularBrain_ShowHorizontalMovementModule", showHorizontalMovementModule);
             EditorPrefs.SetBool("ModularBrain_ShowVerticalMovementModule", showVerticalMovementModule);
             EditorPrefs.SetBool("ModularBrain_ShowAnimationModule", showAnimationModule);
+            EditorPrefs.SetBool("ModularBrain_ShowSFXModule", showSoundEffectModule);
 
             SaveFoldoutList(actionFoldouts, actionModulesProperty, "ModularBrain_ActionFoldouts");
             SaveFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
@@ -125,14 +130,15 @@ namespace PlatformCrafterModularSystem
             {
                 icons = new Dictionary<string, Texture2D>
             {
-                { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/hmmoduleicon.png") },
-                { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/vmicon.png") },
-                { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/iconaction.png") },
-                { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/interactionicon.png") },
-                { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/resourceicon.png") },
-                { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/inventorymodule.png") },
-                { "AnimationModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/animationicon.png") },
-                { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/customicon.png") },
+                { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_hm_icon.png") },
+                { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_vm_icon.png") },
+                { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_action_icon.png") },
+                { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_interaction_icon.png") },
+                { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_resource_icon.png") },
+                { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_inventory_icon.png") },
+                { "AnimationModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_animation_icon.png") },
+                { "SoundEffectModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_sfx_icon.png") },
+                { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_custom_icon.png") },
             };
             }
         }
@@ -169,6 +175,7 @@ namespace PlatformCrafterModularSystem
             DrawModuleSummaryItem("ResourceModule", "", resourceModulesProperty.arraySize);
             DrawModuleSummaryItem("InventoryModule", "", inventoryModulesProperty.arraySize);
             DrawModuleSummaryItem("AnimationModule", "", animationModuleProperty.objectReferenceValue != null ? 1 : 0);
+            DrawModuleSummaryItem("SoundEffectModule", "", soundEffectModuleProperty.objectReferenceValue != null ? 1 : 0);
             DrawModuleSummaryItem("CustomModule", "", customModulesProperty.arraySize);
 
             EditorGUILayout.EndHorizontal();
@@ -218,30 +225,31 @@ namespace PlatformCrafterModularSystem
 
         private void DrawPhysicsModules()
         {
-            DrawSingleModule(horizontalMovementModuleProperty, ref showHorizontalMovementModule, "Horizontal Movement Module", "#CBE5FE");
-            DrawSingleModule(verticalMovementModuleProperty, ref showVerticalMovementModule, "Vertical Movement Module", "#FFFE8A");
+            DrawSingleModule(horizontalMovementModuleProperty, ref showHorizontalMovementModule, "Horizontal Movement Module", "#BDDEFF");
+            DrawSingleModule(verticalMovementModuleProperty, ref showVerticalMovementModule, "Vertical Movement Module", "#FFF1B8");
         }
 
         private void DrawActionInteractionModules()
         {
-            DrawModuleList(actionModulesProperty, actionFoldouts, "Action Modules", "#FDCCCB");
-            DrawModuleList(interactionModulesProperty, interactionFoldouts, "Interaction Modules", "#CDEB8B");
+            DrawModuleList(actionModulesProperty, actionFoldouts, "Action Modules", "#FFBAB3");
+            DrawModuleList(interactionModulesProperty, interactionFoldouts, "Interaction Modules", "#BDEB8F");
         }
 
         private void DrawContainerModules()
         {
-            DrawModuleList(resourceModulesProperty, resourceFoldouts, "Resource Modules", "#FFCA99");
-            DrawModuleList(inventoryModulesProperty, inventoryFoldouts, "Inventory Modules", "#DBB2FF");
+            DrawModuleList(resourceModulesProperty, resourceFoldouts, "Resource Modules", "#FFC39C");
+            DrawModuleList(inventoryModulesProperty, inventoryFoldouts, "Inventory Modules", "#E2C2FF");
         }
 
         private void DrawVisualsAudioModules()
         {
-            DrawSingleModule(animationModuleProperty, ref showAnimationModule, "Animation Module", "#FFAFF4");
+            DrawSingleModule(animationModuleProperty, ref showAnimationModule, "Animation Module", "#FFADD9");
+            DrawSingleModule(soundEffectModuleProperty, ref showSoundEffectModule, "Sound Effect Module", "#85DDD4");
         }
 
         private void DrawCustomModules()
         {
-            DrawModuleList(customModulesProperty, customFoldouts, "Custom Modules", "#EEEEEE");
+            DrawModuleList(customModulesProperty, customFoldouts, "Custom Modules", "#DDD7CE");
         }
 
 
@@ -360,6 +368,10 @@ namespace PlatformCrafterModularSystem
             {
                 return $"{module.name} : Type-Animation";
             }
+            else if (module is SoundEffectTypeModule)
+            {
+                return $"{module.name} : Type-SFX";
+            }
             return $"{module.name} : Custom";
         }
 
@@ -369,35 +381,39 @@ namespace PlatformCrafterModularSystem
             Color backgroundColor;
             if (module is HorizontalMovementTypeModule)
             {
-                backgroundColor = HexToColor("#CBE5FE");
+                backgroundColor = HexToColor("#BDDEFF");
             }
             else if (module is VerticalMovementTypeModule)
             {
-                backgroundColor = HexToColor("#FFFE8A");
+                backgroundColor = HexToColor("#FFF1B8");
             }
             else if (module is ActionTypeModule)
             {
-                backgroundColor = HexToColor("#FDCCCB");
+                backgroundColor = HexToColor("#FFBAB3");
             }
             else if (module is InteractionTypeModule)
             {
-                backgroundColor = HexToColor("#CDEB8B");
+                backgroundColor = HexToColor("#BDEB8F");
             }
             else if (module is ResourceTypeModule)
             {
-                backgroundColor = HexToColor("#FFCA99");
+                backgroundColor = HexToColor("#FFC39C");
             }
             else if (module is InventoryTypeModule)
             {
-                backgroundColor = HexToColor("#DBB2FF");
+                backgroundColor = HexToColor("#E2C2FF");
             }
             else if (module is AnimationTypeModule)
             {
-                backgroundColor = HexToColor("#FFAFF4");
+                backgroundColor = HexToColor("#FFADD9");
+            }
+            else if (module is SoundEffectTypeModule)
+            {
+                backgroundColor = HexToColor("#85DDD4");
             }
             else
             {
-                backgroundColor = HexToColor("#EEEEEE");
+                backgroundColor = HexToColor("#DDD7CE");
             }
 
             EditorGUILayout.BeginHorizontal();

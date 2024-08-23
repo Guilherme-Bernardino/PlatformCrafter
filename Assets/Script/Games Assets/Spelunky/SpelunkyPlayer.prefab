@@ -57,6 +57,7 @@ MonoBehaviour:
   resourceModules: []
   inventoryModules: []
   animationModule: {fileID: 11400000, guid: d6543923dcb25224d8d6be0d361796b0, type: 2}
+  soundEffectModule: {fileID: 11400000, guid: cf14a65491a8674479c408c96caaed36, type: 2}
   customModules: []
 --- !u!212 &5440477859944263683
 SpriteRenderer:
