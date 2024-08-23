@@ -85,7 +85,7 @@ namespace PlatformCrafterModularSystem
                 dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
                 rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
 
-                movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Dashing); 
+                movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Dashing); 
             }
         }
 
@@ -95,7 +95,7 @@ namespace PlatformCrafterModularSystem
             isActive = false;
             rb.velocity = Vector2.zero;
 
-            movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.None);
+            movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Idle);
         }
 
         private void UpdateDash()
@@ -119,7 +119,7 @@ namespace PlatformCrafterModularSystem
                     dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
                     rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
 
-                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Dashing);
+                    movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Dashing);
                 }
                 dashCooldownTimer = 0;
             }

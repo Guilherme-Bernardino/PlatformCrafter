@@ -78,13 +78,13 @@ namespace PlatformCrafterModularSystem
                 if (!Input.GetKey(sprintKey))
                 {
                     isSprinting = false;
-                    movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.None);
+                    movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Idle);
                 }
             }
 
             if (isSprinting && rb.velocity.x != 0f)
             {
-                movementModule.ChangeState(HorizontalMovementTypeModule.MovementState.Sprinting);
+                movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Sprinting);
             }
         }
 

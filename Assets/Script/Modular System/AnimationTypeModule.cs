@@ -22,7 +22,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private string crouchAnimation;
         [SerializeField] private string crouchWalkAnimation; // Combined animation (Crouch + Walk)
 
-        private HorizontalMovementTypeModule.MovementState horizontalState;
+        private HorizontalMovementTypeModule.HorizontalState horizontalState;
         private VerticalMovementTypeModule.VerticalState verticalState;
 
         public enum AnimationAction
@@ -49,7 +49,7 @@ namespace PlatformCrafterModularSystem
             PlayCombinedAnimation();
         }
 
-        public void OnHorizontalStateChange(HorizontalMovementTypeModule.MovementState newState)
+        public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
             PlayCombinedAnimation();
@@ -77,7 +77,7 @@ namespace PlatformCrafterModularSystem
             }
             else if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
             {
-                if (horizontalState == HorizontalMovementTypeModule.MovementState.Walking)
+                if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
                 {
                     DoAnimation(AnimationAction.CrouchWalk);
                 }
@@ -86,19 +86,19 @@ namespace PlatformCrafterModularSystem
                     DoAnimation(AnimationAction.Crouch);
                 }
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Walking)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
             {
                 DoAnimation(AnimationAction.Walk);
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Sprinting)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Sprinting)
             {
                 DoAnimation(AnimationAction.Sprint);
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Dashing)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Dashing)
             {
                 DoAnimation(AnimationAction.Dash);
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Braking)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Braking)
             {
                 DoAnimation(AnimationAction.Brake);
             }

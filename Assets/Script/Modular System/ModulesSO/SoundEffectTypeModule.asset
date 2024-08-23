@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   volume: 0.316
-  loop: 1
+  loop: 0
   pitch: 1
   idleSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
   walkSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}

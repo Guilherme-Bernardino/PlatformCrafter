@@ -29,7 +29,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private AudioClip crouchSFX;
         [SerializeField] private AudioClip crouchWalkSFX;
 
-        private HorizontalMovementTypeModule.MovementState horizontalState;
+        private HorizontalMovementTypeModule.HorizontalState horizontalState;
         private VerticalMovementTypeModule.VerticalState verticalState;
 
         public enum SoundEffectAction
@@ -56,7 +56,7 @@ namespace PlatformCrafterModularSystem
             //Empty
         }
 
-        public void OnHorizontalStateChange(HorizontalMovementTypeModule.MovementState newState)
+        public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
             PlaySound();
@@ -84,7 +84,7 @@ namespace PlatformCrafterModularSystem
             }
             else if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
             {
-                if (horizontalState == HorizontalMovementTypeModule.MovementState.Walking)
+                if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
                 {
                     SetSoundEffect(SoundEffectAction.CrouchWalk);
                 }
@@ -93,19 +93,19 @@ namespace PlatformCrafterModularSystem
                     SetSoundEffect(SoundEffectAction.Crouch);
                 }
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Walking)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
             {
                 SetSoundEffect(SoundEffectAction.Walk);
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Sprinting)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Sprinting)
             {
                 SetSoundEffect(SoundEffectAction.Sprint);
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Dashing)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Dashing)
             {
                 SetSoundEffect(SoundEffectAction.Dash);
             }
-            else if (horizontalState == HorizontalMovementTypeModule.MovementState.Braking)
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Braking)
             {
                 SetSoundEffect(SoundEffectAction.Brake);
             }
@@ -120,44 +120,44 @@ namespace PlatformCrafterModularSystem
             switch (audioClipName) 
             {
                 case SoundEffectAction.Idle:
-                    modularBrain.AudioSource.clip = idleSFX; break;
+                    soundSource.clip = idleSFX; break;
                 case SoundEffectAction.Walk:
-                    modularBrain.AudioSource.clip = walkSFX; break;
+                    soundSource.clip = walkSFX; break;
                 case SoundEffectAction.Sprint:
-                    modularBrain.AudioSource.clip = sprintSFX; break;
+                    soundSource.clip = sprintSFX; break;
                 case SoundEffectAction.Dash:
-                    modularBrain.AudioSource.clip = dashSFX; break;
+                    soundSource.clip = dashSFX; break;
                 case SoundEffectAction.Brake:
-                    modularBrain.AudioSource.clip = brakeSFX; break;
+                    soundSource.clip = brakeSFX; break;
                 case SoundEffectAction.Jump:
-                    modularBrain.AudioSource.clip = jumpSFX; break;
+                    soundSource.clip = jumpSFX; break;
                 case SoundEffectAction.AirJump:
-                    modularBrain.AudioSource.clip = airJumpSFX; break;
+                    soundSource.clip = airJumpSFX; break;
                 case SoundEffectAction.Climb:
-                    modularBrain.AudioSource.clip = climbSFX; break;
+                    soundSource.clip = climbSFX; break;
                 case SoundEffectAction.Crouch:
-                    modularBrain.AudioSource.clip = crouchSFX; break;
+                    soundSource.clip = crouchSFX; break;
                 case SoundEffectAction.CrouchWalk:
-                    modularBrain.AudioSource.clip = crouchWalkSFX; break;
+                    soundSource.clip = crouchWalkSFX; break;
             }
 
-            modularBrain.AudioSource.volume = volume;
-            modularBrain.AudioSource.loop = loop;
-            modularBrain.AudioSource.pitch = pitch;
+            soundSource.volume = volume;
+            soundSource.loop = loop;
+            soundSource.pitch = pitch;
 
-            modularBrain.AudioSource.Play();
+            soundSource.Play();
         }
 
         [Button("Pause Audio")]
         public void PauseAudio()
         {
-            modularBrain.AudioSource.Pause();
+            soundSource.Pause();
         }
 
         [Button("Unpause Audio")]
         public void UnpauseAudio()
         {
-            modularBrain.AudioSource.Play();
+            soundSource.Play();
         }
     }
 }
