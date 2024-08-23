@@ -107,7 +107,8 @@ namespace PlatformCrafterModularSystem
             if (CurrentState != newState)
             {
                 CurrentState = newState;
-                modularBrain.AnimationTypeModule.OnHorizontalStateChange(newState);
+                modularBrain.AnimationTypeModule?.OnHorizontalStateChange(newState);
+                modularBrain.SoundEffectTypeModule?.OnHorizontalStateChange(newState);
             }
         }
     }

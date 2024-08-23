@@ -25,6 +25,7 @@ namespace PlatformCrafterModularSystem
 
         //Visuals and Sounds
         [SerializeField] private AnimationTypeModule animationModule;
+        [SerializeField] private SoundEffectTypeModule soundEffectModule;
 
         //Custom
         [SerializeField] private List<Module> customModules;
@@ -58,6 +59,7 @@ namespace PlatformCrafterModularSystem
             horizontalMovementModule?.Initialize(this);
             verticalMovementModule?.Initialize(this);
             animationModule?.Initialize(this);
+            soundEffectModule?.Initialize(this);
 
             foreach (var module in actionModules)
             {
@@ -95,6 +97,7 @@ namespace PlatformCrafterModularSystem
             horizontalMovementModule?.UpdateModule();
             verticalMovementModule?.UpdateModule();
             animationModule?.UpdateModule();
+            soundEffectModule?.UpdateModule();
 
             foreach (var module in actionModules)
             {
@@ -145,6 +148,7 @@ namespace PlatformCrafterModularSystem
         public List<ResourceTypeModule> ResourceTypeModules { get => resourceModules; }
         public List<InventoryTypeModule> InventoryTypeModules { get => inventoryModules; }
         public AnimationTypeModule AnimationTypeModule { get => animationModule; }
+        public SoundEffectTypeModule SoundEffectTypeModule { get => soundEffectModule; }
 
 
         // Getter methods to retrieve specific modules by name

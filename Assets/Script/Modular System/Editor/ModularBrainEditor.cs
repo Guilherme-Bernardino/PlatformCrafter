@@ -17,6 +17,7 @@ namespace PlatformCrafterModularSystem
         private SerializedProperty inventoryModulesProperty;
         private SerializedProperty customModulesProperty;
         private SerializedProperty animationModuleProperty;
+        private SerializedProperty soundEffectModuleProperty;
 
         private bool showPhysicsModules;
         private bool showActionInteractionModules;
@@ -27,6 +28,7 @@ namespace PlatformCrafterModularSystem
         private bool showHorizontalMovementModule;
         private bool showVerticalMovementModule;
         private bool showAnimationModule;
+        private bool showSoundEffectModule;
 
 
         private List<bool> actionFoldouts = new List<bool>();
@@ -48,6 +50,7 @@ namespace PlatformCrafterModularSystem
             resourceModulesProperty = serializedObject.FindProperty("resourceModules");
             inventoryModulesProperty = serializedObject.FindProperty("inventoryModules");
             animationModuleProperty = serializedObject.FindProperty("animationModule");
+            soundEffectModuleProperty = serializedObject.FindProperty("soundEffectModule");
             customModulesProperty = serializedObject.FindProperty("customModules");
 
             disableEditorFeaturesProperty = serializedObject.FindProperty("disableEditorFeatures");
@@ -72,6 +75,7 @@ namespace PlatformCrafterModularSystem
             showHorizontalMovementModule = EditorPrefs.GetBool("ModularBrain_ShowHorizontalMovementModule", true);
             showVerticalMovementModule = EditorPrefs.GetBool("ModularBrain_ShowVerticalMovementModule", true);
             showAnimationModule = EditorPrefs.GetBool("ModularBrain_ShowAnimationModule", true);
+            showSoundEffectModule = EditorPrefs.GetBool("ModularBrain_ShowSFXModule", true);
 
             LoadFoldoutList(actionFoldouts, actionModulesProperty, "ModularBrain_ActionFoldouts");
             LoadFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
@@ -90,6 +94,7 @@ namespace PlatformCrafterModularSystem
             EditorPrefs.SetBool("ModularBrain_ShowHorizontalMovementModule", showHorizontalMovementModule);
             EditorPrefs.SetBool("ModularBrain_ShowVerticalMovementModule", showVerticalMovementModule);
             EditorPrefs.SetBool("ModularBrain_ShowAnimationModule", showAnimationModule);
+            EditorPrefs.SetBool("ModularBrain_ShowSFXModule", showSoundEffectModule);
 
             SaveFoldoutList(actionFoldouts, actionModulesProperty, "ModularBrain_ActionFoldouts");
             SaveFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
@@ -132,6 +137,7 @@ namespace PlatformCrafterModularSystem
                 { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/resourceicon.png") },
                 { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/inventorymodule.png") },
                 { "AnimationModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/animationicon.png") },
+                { "SoundEffectModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/sfxicon.png") },
                 { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/customicon.png") },
             };
             }
@@ -169,6 +175,7 @@ namespace PlatformCrafterModularSystem
             DrawModuleSummaryItem("ResourceModule", "", resourceModulesProperty.arraySize);
             DrawModuleSummaryItem("InventoryModule", "", inventoryModulesProperty.arraySize);
             DrawModuleSummaryItem("AnimationModule", "", animationModuleProperty.objectReferenceValue != null ? 1 : 0);
+            DrawModuleSummaryItem("SoundEffectModule", "", soundEffectModuleProperty.objectReferenceValue != null ? 1 : 0);
             DrawModuleSummaryItem("CustomModule", "", customModulesProperty.arraySize);
 
             EditorGUILayout.EndHorizontal();
@@ -237,6 +244,7 @@ namespace PlatformCrafterModularSystem
         private void DrawVisualsAudioModules()
         {
             DrawSingleModule(animationModuleProperty, ref showAnimationModule, "Animation Module", "#FFAFF4");
+            DrawSingleModule(soundEffectModuleProperty, ref showSoundEffectModule, "Sound Effect Module", "#32DDA2");
         }
 
         private void DrawCustomModules()
@@ -360,6 +368,10 @@ namespace PlatformCrafterModularSystem
             {
                 return $"{module.name} : Type-Animation";
             }
+            else if (module is SoundEffectTypeModule)
+            {
+                return $"{module.name} : Type-SFX";
+            }
             return $"{module.name} : Custom";
         }
 
@@ -394,6 +406,10 @@ namespace PlatformCrafterModularSystem
             else if (module is AnimationTypeModule)
             {
                 backgroundColor = HexToColor("#FFAFF4");
+            }
+            else if (module is SoundEffectTypeModule)
+            {
+                backgroundColor = HexToColor("#32DDA2");
             }
             else
             {
