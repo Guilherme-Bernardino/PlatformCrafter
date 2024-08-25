@@ -77,11 +77,11 @@ namespace PlatformCrafterModularSystem
             showAnimationModule = EditorPrefs.GetBool("ModularBrain_ShowAnimationModule", true);
             showSoundEffectModule = EditorPrefs.GetBool("ModularBrain_ShowSFXModule", true);
 
-            LoadFoldoutList(actionFoldouts, actionModulesProperty, "ModularBrain_ActionFoldouts");
-            LoadFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
-            LoadFoldoutList(resourceFoldouts, resourceModulesProperty, "ModularBrain_ResourceFoldouts");
-            LoadFoldoutList(inventoryFoldouts, inventoryModulesProperty, "ModularBrain_InventoryFoldouts");
-            LoadFoldoutList(customFoldouts, customModulesProperty, "ModularBrain_CustomFoldouts");
+            LoadFoldoutStatesGeneric("ModularBrain_ActionFoldouts", actionModulesProperty, ref actionFoldouts);
+            LoadFoldoutStatesGeneric("ModularBrain_InteractionFoldouts", interactionModulesProperty, ref interactionFoldouts);
+            LoadFoldoutStatesGeneric("ModularBrain_ResourceFoldouts", resourceModulesProperty, ref resourceFoldouts);
+            LoadFoldoutStatesGeneric("ModularBrain_InventoryFoldouts", inventoryModulesProperty, ref inventoryFoldouts);
+            LoadFoldoutStatesGeneric("ModularBrain_CustomFoldouts", customModulesProperty, ref customFoldouts);
         }
 
         private void SaveFoldoutStates()
@@ -89,6 +89,7 @@ namespace PlatformCrafterModularSystem
             EditorPrefs.SetBool("ModularBrain_ShowPhysicsModules", showPhysicsModules);
             EditorPrefs.SetBool("ModularBrain_ShowActionInteractionModules", showActionInteractionModules);
             EditorPrefs.SetBool("ModularBrain_ShowContainerModules", showContainerModules);
+            EditorPrefs.SetBool("ModularBrain_ShowAudioVisualsModules", showVisualsAudioModules);
             EditorPrefs.SetBool("ModularBrain_CustomFoldouts", showCustomModules);
 
             EditorPrefs.SetBool("ModularBrain_ShowHorizontalMovementModule", showHorizontalMovementModule);
@@ -96,32 +97,42 @@ namespace PlatformCrafterModularSystem
             EditorPrefs.SetBool("ModularBrain_ShowAnimationModule", showAnimationModule);
             EditorPrefs.SetBool("ModularBrain_ShowSFXModule", showSoundEffectModule);
 
-            SaveFoldoutList(actionFoldouts, actionModulesProperty, "ModularBrain_ActionFoldouts");
-            SaveFoldoutList(interactionFoldouts, interactionModulesProperty, "ModularBrain_InteractionFoldouts");
-            SaveFoldoutList(resourceFoldouts, resourceModulesProperty, "ModularBrain_ResourceFoldouts");
-            SaveFoldoutList(inventoryFoldouts, inventoryModulesProperty, "ModularBrain_InventoryFoldouts");
-            SaveFoldoutList(customFoldouts, customModulesProperty, "ModularBrain_CustomFoldouts");
+            SaveFoldoutStatesGeneric("ModularBrain_ActionFoldouts", actionFoldouts);
+            SaveFoldoutStatesGeneric("ModularBrain_InteractionFoldouts", interactionFoldouts);
+            SaveFoldoutStatesGeneric("ModularBrain_ResourceFoldouts", resourceFoldouts);
+            SaveFoldoutStatesGeneric("ModularBrain_InventoryFoldouts", inventoryFoldouts);
+            SaveFoldoutStatesGeneric("ModularBrain_CustomFoldouts", customFoldouts);
         }
 
-        private void LoadFoldoutList(List<bool> foldoutList, SerializedProperty property, string key)
-        {
-            int arraySize = property.arraySize;
-            foldoutList.Clear();
+        private Dictionary<string, List<bool>> foldoutStateCache = new Dictionary<string, List<bool>>();
 
-            for (int i = 0; i < arraySize; i++)
+        private void LoadFoldoutStatesGeneric(string keyPrefix, SerializedProperty modulesProperty, ref List<bool> foldouts)
+        {
+            int arraySize = modulesProperty.arraySize;
+
+            if (!foldoutStateCache.ContainsKey(keyPrefix))
             {
-                foldoutList.Add(EditorPrefs.GetBool($"{key}_{i}", false));
+                foldouts.Clear();
+                for (int i = 0; i < arraySize; i++)
+                {
+                    bool state = EditorPrefs.GetBool($"{keyPrefix}_{i}", false);
+                    foldouts.Add(state);
+                }
+                foldoutStateCache[keyPrefix] = new List<bool>(foldouts);
+            }
+            else
+            {
+                foldouts = foldoutStateCache[keyPrefix];
             }
         }
 
-        private void SaveFoldoutList(List<bool> foldoutList, SerializedProperty property, string key)
+        private void SaveFoldoutStatesGeneric(string keyPrefix, List<bool> foldouts)
         {
-            int arraySize = property.arraySize;
-
-            for (int i = 0; i < arraySize; i++)
+            for (int i = 0; i < foldouts.Count; i++)
             {
-                EditorPrefs.SetBool($"{key}_{i}", foldoutList[i]);
+                EditorPrefs.SetBool($"{keyPrefix}_{i}", foldouts[i]);
             }
+            foldoutStateCache[keyPrefix] = new List<bool>(foldouts);
         }
 
         private void LoadIcons()
@@ -153,6 +164,8 @@ namespace PlatformCrafterModularSystem
 
             serializedObject.Update();
 
+            EditorGUI.BeginChangeCheck();
+
             DrawModuleSummary();
 
             DrawCategoryFoldout(ref showPhysicsModules, "Physics Modules", DrawPhysicsModules);
@@ -161,29 +174,32 @@ namespace PlatformCrafterModularSystem
             DrawCategoryFoldout(ref showVisualsAudioModules, "Visuals & Audio Modules", DrawVisualsAudioModules);
             DrawCategoryFoldout(ref showCustomModules, "Custom Modules", DrawCustomModules);
 
-            serializedObject.ApplyModifiedProperties();
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
         }
 
         private void DrawModuleSummary()
         {
             EditorGUILayout.BeginHorizontal();
 
-            DrawModuleSummaryItem("HorizontalMovementModule", "", horizontalMovementModuleProperty.objectReferenceValue != null ? 1 : 0);
-            DrawModuleSummaryItem("VerticalMovementModule", "", verticalMovementModuleProperty.objectReferenceValue != null ? 1 : 0);
-            DrawModuleSummaryItem("ActionModule", "", actionModulesProperty.arraySize);
-            DrawModuleSummaryItem("InteractionModule", "", interactionModulesProperty.arraySize);
-            DrawModuleSummaryItem("ResourceModule", "", resourceModulesProperty.arraySize);
-            DrawModuleSummaryItem("InventoryModule", "", inventoryModulesProperty.arraySize);
-            DrawModuleSummaryItem("AnimationModule", "", animationModuleProperty.objectReferenceValue != null ? 1 : 0);
-            DrawModuleSummaryItem("SoundEffectModule", "", soundEffectModuleProperty.objectReferenceValue != null ? 1 : 0);
-            DrawModuleSummaryItem("CustomModule", "", customModulesProperty.arraySize);
+            DrawModuleSummaryItem("HorizontalMovementModule", horizontalMovementModuleProperty.objectReferenceValue != null ? 1 : 0);
+            DrawModuleSummaryItem("VerticalMovementModule", verticalMovementModuleProperty.objectReferenceValue != null ? 1 : 0);
+            DrawModuleSummaryItem("ActionModule", actionModulesProperty.arraySize);
+            DrawModuleSummaryItem("InteractionModule", interactionModulesProperty.arraySize);
+            DrawModuleSummaryItem("ResourceModule", resourceModulesProperty.arraySize);
+            DrawModuleSummaryItem("InventoryModule", inventoryModulesProperty.arraySize);
+            DrawModuleSummaryItem("AnimationModule", animationModuleProperty.objectReferenceValue != null ? 1 : 0);
+            DrawModuleSummaryItem("SoundEffectModule", soundEffectModuleProperty.objectReferenceValue != null ? 1 : 0);
+            DrawModuleSummaryItem("CustomModule", customModulesProperty.arraySize);
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
         }
 
 
-        private void DrawModuleSummaryItem(string iconKey, string label, int count)
+        private void DrawModuleSummaryItem(string iconKey, int count)
         {
             Texture2D icon = icons.ContainsKey(iconKey) ? icons[iconKey] : null;
 
@@ -255,7 +271,7 @@ namespace PlatformCrafterModularSystem
 
         private void DrawSingleModule(SerializedProperty moduleProperty, ref bool foldout, string label, string colorHex)
         {
-            DrawPropertyBackground(label, colorHex);
+            DrawPropertyBackground(colorHex);
 
             EditorGUILayout.PropertyField(moduleProperty, new GUIContent(label), true);
 
@@ -284,7 +300,7 @@ namespace PlatformCrafterModularSystem
 
         private void DrawModuleList(SerializedProperty modulesProperty, List<bool> foldouts, string label, string colorHex)
         {
-            DrawPropertyBackground(label, colorHex);
+            DrawPropertyBackground(colorHex);
 
             EditorGUILayout.PropertyField(modulesProperty, new GUIContent(label), true);
 
@@ -328,7 +344,7 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        private void DrawPropertyBackground(string label, string colorHex)
+        private void DrawPropertyBackground(string colorHex)
         {
             Rect rect = GUILayoutUtility.GetRect(20, EditorGUIUtility.singleLineHeight);
             rect.x -= 5;
