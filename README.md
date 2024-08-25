@@ -7,6 +7,14 @@ Meant for unexperienced and experienced game devs that want an easy way to creat
 # Change Log
 All notable changes of the project
 
+## [0.9.2] - 25-08-2024
+
+### Added
+- (Editor) Added a check change for the GUI to minimize unnecessary repaints.
+
+### Changed
+- (Editor) Changed the save and load of the foldout states so it reduces redundancy, improves performance and ensures consistency across different types of modules using a more general method.
+
 ## [0.9.1] - 23-08-2024
 
 ### Added
