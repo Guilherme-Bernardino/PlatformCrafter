@@ -91,7 +91,7 @@ namespace PlatformCrafterModularSystem
                     break;
             }
 
-            if (rb.velocity.x != 0 && IsGrounded() && movementModule.CurrentState != HorizontalMovementTypeModule.HorizontalState.Sprinting)
+            if (rb.velocity.x != 0 && IsGrounded() && movementModule.CurrentState != HorizontalMovementTypeModule.HorizontalState.Sprinting && movementModule.CurrentState != HorizontalMovementTypeModule.HorizontalState.Dashing)
             {
                 isWalking = true;
             }
@@ -103,6 +103,11 @@ namespace PlatformCrafterModularSystem
 
         private void HandleConstantSpeed()
         {
+            if (movementModule.Dash.IsDashing)
+            {
+                return;
+            }
+
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -119,6 +124,11 @@ namespace PlatformCrafterModularSystem
 
         private void HandleAccelerationSpeed()
         {
+            if (movementModule.Dash.IsDashing)
+            {
+                return;
+            }
+
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -145,6 +155,11 @@ namespace PlatformCrafterModularSystem
 
         private void HandleVehicleLike()
         {
+            if (movementModule.Dash.IsDashing)
+            {
+                return;
+            }
+
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey) && !isBraking)

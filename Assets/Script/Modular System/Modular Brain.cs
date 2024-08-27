@@ -28,7 +28,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private SoundEffectTypeModule soundEffectModule;
 
         //Custom
-        [SerializeField] private List<Module> customModules;
+        [SerializeField] private List<Module> customModules = new();
 
         //Entity Components
         private Rigidbody2D rb;
@@ -138,6 +138,27 @@ namespace PlatformCrafterModularSystem
                     customModules.RemoveAt(i);
                 }
             }
+        }
+
+        private void Reset()
+        {
+            if (GetComponent<ShadowEffect>() == null)
+                gameObject.AddComponent<ShadowEffect>();
+
+            if (GetComponent<SpriteRenderer>() == null)
+                gameObject.AddComponent<SpriteRenderer>();
+
+            if (GetComponent<Rigidbody2D>() == null)
+                gameObject.AddComponent<Rigidbody2D>();
+
+            if (GetComponent<CapsuleCollider2D>() == null)
+                gameObject.AddComponent<CapsuleCollider2D>();
+
+            if (GetComponent<Animator>() == null)
+                gameObject.AddComponent<Animator>();
+
+            if (GetComponent<AudioSource>() == null)
+                gameObject.AddComponent<AudioSource>();
         }
 
         //Getter for all modules
