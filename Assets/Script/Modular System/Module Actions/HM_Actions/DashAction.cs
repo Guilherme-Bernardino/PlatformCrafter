@@ -2,9 +2,12 @@ using NaughtyAttributes;
 using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static PlatformCrafterModularSystem.CrouchAction;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace PlatformCrafterModularSystem
 {
@@ -13,8 +16,12 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode dashKey;
         [SerializeField] private bool allowDoubleTap;
+        [SerializeField] private bool shadowEffect;
+        public bool ShadowEffect => shadowEffect;
 
-        private AnimationTypeModule animModule;
+        private ShadowEffect shadowsEffect;
+        public ShadowEffect ShadowsEffect { get => shadowsEffect; set => shadowsEffect = value; }
+
         private HorizontalMovementTypeModule movementModule;
 
         private KeyCode rightKey;
@@ -22,7 +29,6 @@ namespace PlatformCrafterModularSystem
 
         private Rigidbody2D rb;
         private float dashCooldownTimer;
-        private int dashesLeft;
 
         private float lastRightKeyPressTime;
         private float lastLeftKeyPressTime;
@@ -33,6 +39,7 @@ namespace PlatformCrafterModularSystem
 
         private float dashStartTime;
         private float dashDirection;
+
 
         [SerializeField] private Dash dashSettings;
 
@@ -45,7 +52,7 @@ namespace PlatformCrafterModularSystem
             leftKey = ((HorizontalMovementTypeModule)module).LeftKey;
 
             movementModule = (HorizontalMovementTypeModule)module;
-            animModule = modularBrain.AnimationTypeModule;
+            shadowsEffect = modularBrain.GetComponent<ShadowEffect>();
         }
 
         public override void UpdateAction()
@@ -82,10 +89,13 @@ namespace PlatformCrafterModularSystem
                 isDashing = true;
                 isActive = true;
                 dashStartTime = Time.time;
-                dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
+
+                dashDirection = movementModule.IsFacingRight ? 1f : -1f;
                 rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
 
-                movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Dashing); 
+                movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Dashing);
+
+                dashCooldownTimer = 0f;
             }
         }
 
@@ -101,6 +111,12 @@ namespace PlatformCrafterModularSystem
         private void UpdateDash()
         {
             float dashDuration = dashSettings.DashDistance / dashSettings.DashSpeed;
+
+            if (shadowEffect && shadowsEffect != null)
+            {
+                shadowsEffect.ShadowSkill();
+            }
+
             if (Time.time - dashStartTime >= dashDuration)
             {
                 Deactivate();
@@ -111,17 +127,7 @@ namespace PlatformCrafterModularSystem
         {
             if (dashCooldownTimer >= dashSettings.Cooldown && Input.GetKeyDown(dashKey))
             {
-                if (!isDashing && dashCooldownTimer >= dashSettings.Cooldown)
-                {
-                    isDashing = true;
-                    isActive = true;
-                    dashStartTime = Time.time;
-                    dashDirection = Input.GetKey(rightKey) ? 1f : -1f;
-                    rb.velocity = new Vector2(dashDirection * dashSettings.DashSpeed, rb.velocity.y);
-
-                    movementModule.ChangeState(HorizontalMovementTypeModule.HorizontalState.Dashing);
-                }
-                dashCooldownTimer = 0;
+                Activate();
             }
         }
 
@@ -129,7 +135,7 @@ namespace PlatformCrafterModularSystem
         {
             float currentTime = Time.time;
 
-            if (Input.GetKeyDown(rightKey))
+            if (Input.GetKeyDown(rightKey) && movementModule.IsFacingRight)
             {
                 if (currentTime - lastRightKeyPressTime < 0.3f)
                 {
@@ -137,7 +143,7 @@ namespace PlatformCrafterModularSystem
                 }
                 lastRightKeyPressTime = currentTime;
             }
-            else if (Input.GetKeyDown(leftKey))
+            else if (Input.GetKeyDown(leftKey) && !movementModule.IsFacingRight)
             {
                 if (currentTime - lastLeftKeyPressTime < 0.3f)
                 {

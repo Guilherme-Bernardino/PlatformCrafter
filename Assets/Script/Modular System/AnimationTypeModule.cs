@@ -46,19 +46,28 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateModule()
         {
-            PlayCombinedAnimation();
+            if (IsActive)
+            {
+                PlayCombinedAnimation();
+            }
         }
 
         public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
-            PlayCombinedAnimation();
+            if (IsActive)
+            {
+                PlayCombinedAnimation();
+            }
         }
 
         public void OnVerticalStateChange(VerticalMovementTypeModule.VerticalState newState)
         {
             verticalState = newState;
-            PlayCombinedAnimation();
+            if (IsActive)
+            {
+                PlayCombinedAnimation();
+            }
         }
 
         private void PlayCombinedAnimation()

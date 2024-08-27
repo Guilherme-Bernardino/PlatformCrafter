@@ -51,8 +51,9 @@ MonoBehaviour:
       deceleration: 25.5
   dash:
     dashKey: 101
-    allowDoubleTap: 0
+    allowDoubleTap: 1
+    shadowEffect: 1
     dashSettings:
-      dashDistance: 31.6
-      dashSpeed: 11.1
-      cooldown: 2.4
+      dashDistance: 7.3
+      dashSpeed: 30.7
+      cooldown: 3.1

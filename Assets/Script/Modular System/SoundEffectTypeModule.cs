@@ -59,13 +59,19 @@ namespace PlatformCrafterModularSystem
         public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
-            PlaySound();
+            if (IsActive)
+            {
+                PlaySound();
+            }
         }
 
         public void OnVerticalStateChange(VerticalMovementTypeModule.VerticalState newState)
         {
             verticalState = newState;
-            PlaySound();
+            if (IsActive)
+            {
+                PlaySound();
+            }
         }
 
         private void PlaySound()

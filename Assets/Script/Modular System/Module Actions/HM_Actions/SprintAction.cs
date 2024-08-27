@@ -90,6 +90,11 @@ namespace PlatformCrafterModularSystem
 
         private void HandleConstantSpeed()
         {
+            if (movementModule.Dash.IsDashing)
+            {
+                return;
+            }
+
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -106,6 +111,11 @@ namespace PlatformCrafterModularSystem
 
         private void HandleAccelerationSpeed()
         {
+            if (movementModule.Dash.IsDashing)
+            {
+                return;
+            }
+
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -133,6 +143,11 @@ namespace PlatformCrafterModularSystem
 
         private void HandleDoubleTap()
         {
+            if (movementModule.Dash.IsDashing)
+            {
+                return;
+            }
+
             float currentTime = Time.time;
 
             if (Input.GetKeyDown(rightKey))
