@@ -3,7 +3,7 @@
 </p>
 <br />
 <p align="center">
- <img src="https://img.shields.io/badge/build-v0.9-ffffff" />
+ <img src="https://img.shields.io/badge/build-v0.9.3-ffffff" />
    <a href="https://github/Guilherme-Bernardino/PlatformCrafter/downloads">
     <img alt="Total" src="https://img.shields.io/github/downloads/Guilherme-Bernardino/PlatformCrafter/total.svg" />
    </a>
@@ -19,6 +19,18 @@ Guilherme Bernardino
 
 # Change Log
 All notable changes of the project
+
+## [0.9.3] - 27-08-2024
+
+### Added
+- Added a function to the ModularBrain that adds all the necessary game object components to the entity, such as SpriteRenderer, RigidBody2D, CapsuleCollider2D, Animator, AudioSource and the ShadowEffect.
+- Added a new script named ShadowEffect, that instantiates shadows that vanish with time.
+- Added a new script named Solid, that represents a shadow.
+- Added a way to toggle this effect on the Dash Action of the HM Module, so now the dash can create an effect of after images or shadows.
+
+### Fixed
+- Fixed Dash Action not working when Walk Action and Sprint Action are on Constant Speed.
+- Fixed Animation and Sound Effect modules playing when unactive.
 
 ## [0.9.2] - 25-08-2024
 
