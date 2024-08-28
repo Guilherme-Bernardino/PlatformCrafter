@@ -26,3 +26,4 @@ MonoBehaviour:
   climbSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
   crouchSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
   crouchWalkSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+  airDashSFX: {fileID: 8300000, guid: 5837d1a6249ef47459b1da6b7ee2a7d4, type: 3}

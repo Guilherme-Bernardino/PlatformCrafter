@@ -52,17 +52,17 @@ MonoBehaviour:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
-    groundCheckRange: 0.1
-    crouchMode: 0
+    groundCheckRange: 0.15
+    crouchMode: 1
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50
       linearDrag: 50
     platformCrouchSettings:
-      crouchHeightReductionPercentage: 0
-      linearDrag: 0
-      platformTag: 
+      crouchHeightReductionPercentage: 50
+      linearDrag: 50
+      platformTag: Platform
       platformHoldTime: 0
-      platformDropTime: 0
+      platformDropTime: 0.2
   climb:
     climbUpKey: 273
     climbDownKey: 274

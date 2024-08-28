@@ -78,7 +78,11 @@ namespace PlatformCrafterModularSystem
                 if (dropTimer <= 0f)
                 {
                     isDroppingThroughPlatform = false;
-                    collider.enabled = true;
+                    if (verticalModule.Collider is not BoxCollider2D)
+                        capsuleCollider.enabled = true;
+                    else
+                        collider.enabled = true;
+
                     isCrouching = false;
                 }
             }
@@ -166,7 +170,11 @@ namespace PlatformCrafterModularSystem
                 {
                     isDroppingThroughPlatform = true;
                     dropTimer = platformCrouchSettings.PlatformDropTime;
-                    collider.enabled = false;
+
+                    if (verticalModule.Collider is not BoxCollider2D)
+                       capsuleCollider.enabled = false;
+                    else
+                       collider.enabled = false;
                 }
             }
 
@@ -205,7 +213,18 @@ namespace PlatformCrafterModularSystem
 
         private bool IsOnPlatform()
         {
-            Collider2D[] colliders = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0f, groundLayer);
+            Collider2D[] colliders;
+
+            if (verticalModule.Collider is not BoxCollider2D)
+            {
+
+                colliders = Physics2D.OverlapCapsuleAll(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, groundLayer);
+            }
+            else
+            {
+                colliders = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0f, groundLayer);
+            }
+
             foreach (Collider2D col in colliders)
             {
                 if (col.CompareTag(platformCrouchSettings.PlatformTag))
