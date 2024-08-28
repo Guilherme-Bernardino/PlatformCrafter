@@ -53,7 +53,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.1
-    crouchMode: 0
+    crouchMode: 1
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50.4
       linearDrag: 9.5

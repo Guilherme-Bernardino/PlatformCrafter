@@ -21,6 +21,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private string climbAnimation;
         [SerializeField] private string crouchAnimation;
         [SerializeField] private string crouchWalkAnimation; // Combined animation (Crouch + Walk)
+        [SerializeField] private string airDashAnimation; // Combined animation (Jump + Dash)
 
         private HorizontalMovementTypeModule.HorizontalState horizontalState;
         private VerticalMovementTypeModule.VerticalState verticalState;
@@ -36,7 +37,8 @@ namespace PlatformCrafterModularSystem
             AirJump,
             Climb,
             Crouch,
-            CrouchWalk // Combined action (Crouch + Walk)
+            CrouchWalk, // Combined action (Crouch + Walk)
+            AirDash // Combined action (Jump + Dash)
         }
 
         protected override void InitializeModule()
@@ -72,7 +74,27 @@ namespace PlatformCrafterModularSystem
 
         private void PlayCombinedAnimation()
         {
-            if (verticalState == VerticalMovementTypeModule.VerticalState.Jumping)
+            if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
+            {
+                if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking ||
+                    horizontalState == HorizontalMovementTypeModule.HorizontalState.Sprinting)
+                {
+                    DoAnimation(AnimationAction.CrouchWalk); // Crouch + Walk or Crouch + Sprint
+                }
+                else
+                {
+                    DoAnimation(AnimationAction.Crouch);
+                }
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.Jumping && horizontalState == HorizontalMovementTypeModule.HorizontalState.Dashing)
+            {
+                DoAnimation(AnimationAction.AirDash); // Jump + Dash
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.AirJumping && horizontalState == HorizontalMovementTypeModule.HorizontalState.Dashing)
+            {
+                DoAnimation(AnimationAction.AirDash); // AirJump + Dash
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.Jumping)
             {
                 DoAnimation(AnimationAction.Jump);
             }
@@ -83,17 +105,6 @@ namespace PlatformCrafterModularSystem
             else if (verticalState == VerticalMovementTypeModule.VerticalState.Climbing)
             {
                 DoAnimation(AnimationAction.Climb);
-            }
-            else if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
-            {
-                if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
-                {
-                    DoAnimation(AnimationAction.CrouchWalk);
-                }
-                else
-                {
-                    DoAnimation(AnimationAction.Crouch);
-                }
             }
             else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
             {
@@ -131,6 +142,7 @@ namespace PlatformCrafterModularSystem
                 case AnimationAction.Climb: animator.Play(climbAnimation); break;
                 case AnimationAction.Crouch: animator.Play(crouchAnimation); break;
                 case AnimationAction.CrouchWalk: animator.Play(crouchWalkAnimation); break;
+                case AnimationAction.AirDash: animator.Play(airDashAnimation); break;
             }
         }
 

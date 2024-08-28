@@ -3,6 +3,7 @@ using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlatformCrafterModularSystem.AnimationTypeModule;
 
 namespace PlatformCrafterModularSystem
 {
@@ -27,7 +28,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private AudioClip airJumpSFX;
         [SerializeField] private AudioClip climbSFX;
         [SerializeField] private AudioClip crouchSFX;
-        [SerializeField] private AudioClip crouchWalkSFX;
+        [SerializeField] private AudioClip crouchWalkSFX; // Combined sound (Crouch + Walk)
+        [SerializeField] private AudioClip airDashSFX; // Combined sound (Jump + Dash)
 
         private HorizontalMovementTypeModule.HorizontalState horizontalState;
         private VerticalMovementTypeModule.VerticalState verticalState;
@@ -43,7 +45,8 @@ namespace PlatformCrafterModularSystem
             AirJump,
             Climb,
             Crouch,
-            CrouchWalk // Combined action (Crouch + Walk)
+            CrouchWalk, // Combined action (Crouch + Walk)
+            AirDash // Combined action (Jump + Dash)
         }
 
         protected override void InitializeModule()
@@ -76,7 +79,26 @@ namespace PlatformCrafterModularSystem
 
         private void PlaySound()
         {
-            if (verticalState == VerticalMovementTypeModule.VerticalState.Jumping)
+            if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
+            {
+                if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
+                {
+                    SetSoundEffect(SoundEffectAction.CrouchWalk);
+                }
+                else
+                {
+                    SetSoundEffect(SoundEffectAction.Crouch);
+                }
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.Jumping && horizontalState == HorizontalMovementTypeModule.HorizontalState.Dashing)
+            {
+                SetSoundEffect(SoundEffectAction.AirDash); // Jump + Dash
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.AirJumping && horizontalState == HorizontalMovementTypeModule.HorizontalState.Dashing)
+            {
+                SetSoundEffect(SoundEffectAction.AirDash); // AirJump + Dash
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.Jumping)
             {
                 SetSoundEffect(SoundEffectAction.Jump);
             }
@@ -87,17 +109,6 @@ namespace PlatformCrafterModularSystem
             else if (verticalState == VerticalMovementTypeModule.VerticalState.Climbing)
             {
                 SetSoundEffect(SoundEffectAction.Climb);
-            }
-            else if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
-            {
-                if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
-                {
-                    SetSoundEffect(SoundEffectAction.CrouchWalk);
-                }
-                else
-                {
-                    SetSoundEffect(SoundEffectAction.Crouch);
-                }
             }
             else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
             {
@@ -125,26 +136,17 @@ namespace PlatformCrafterModularSystem
         {
             switch (audioClipName) 
             {
-                case SoundEffectAction.Idle:
-                    soundSource.clip = idleSFX; break;
-                case SoundEffectAction.Walk:
-                    soundSource.clip = walkSFX; break;
-                case SoundEffectAction.Sprint:
-                    soundSource.clip = sprintSFX; break;
-                case SoundEffectAction.Dash:
-                    soundSource.clip = dashSFX; break;
-                case SoundEffectAction.Brake:
-                    soundSource.clip = brakeSFX; break;
-                case SoundEffectAction.Jump:
-                    soundSource.clip = jumpSFX; break;
-                case SoundEffectAction.AirJump:
-                    soundSource.clip = airJumpSFX; break;
-                case SoundEffectAction.Climb:
-                    soundSource.clip = climbSFX; break;
-                case SoundEffectAction.Crouch:
-                    soundSource.clip = crouchSFX; break;
-                case SoundEffectAction.CrouchWalk:
-                    soundSource.clip = crouchWalkSFX; break;
+                case SoundEffectAction.Idle: soundSource.clip = idleSFX; break;
+                case SoundEffectAction.Walk: soundSource.clip = walkSFX; break;
+                case SoundEffectAction.Sprint: soundSource.clip = sprintSFX; break;
+                case SoundEffectAction.Dash: soundSource.clip = dashSFX; break;
+                case SoundEffectAction.Brake: soundSource.clip = brakeSFX; break;
+                case SoundEffectAction.Jump: soundSource.clip = jumpSFX; break;
+                case SoundEffectAction.AirJump: soundSource.clip = airJumpSFX; break;
+                case SoundEffectAction.Climb: soundSource.clip = climbSFX; break;
+                case SoundEffectAction.Crouch: soundSource.clip = crouchSFX; break;
+                case SoundEffectAction.CrouchWalk: soundSource.clip = crouchWalkSFX; break;
+                case SoundEffectAction.AirDash: soundSource.clip = airDashSFX; break;
             }
 
             soundSource.volume = volume;

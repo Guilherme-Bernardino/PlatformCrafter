@@ -102,7 +102,7 @@ namespace PlatformCrafterModularSystem
             {
                 if (verticalClimbSettings.HoldClimb)
                 {
-                    rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
                     isFrozen = true;
                 }
                 else
