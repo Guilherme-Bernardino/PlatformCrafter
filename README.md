@@ -20,6 +20,18 @@ Guilherme Bernardino
 # Change Log
 All notable changes of the project
 
+## [0.9.4] - 28-08-2024
+
+### Added
+- Added a new combined animation and SFX named AirDash, that can be performed when jumping or air jumping and dashing.
+
+### Changed
+- Changed the combined action CrouchWalk to now being able to be performed while walking or sprinting and crouching.
+
+### Fixed
+- Fixed RigidBody rotation not freezing when holding climb on Climb Action.
+- Fixed Crouch Action Platform Crouch not working with a Capsule Collider 2D.
+
 ## [0.9.3] - 27-08-2024
 
 ### Added
@@ -47,7 +59,7 @@ All notable changes of the project
 - (Editor) Added an icon to the SoundEffectType Module.
 - (Editor) Added buttons to pause and unpause audio on the editor.
 
-### Changes
+### Changed
 - Changed HM MovementState to HorizontalState.
 - Changed all icons on editor and each module to new ones.
 
@@ -61,7 +73,7 @@ All notable changes of the project
 - (Editor) Added buttons to pause and unpause animations on the editor.
 - (Spelunky Recreation) Added multiple animations to the Spelunky Player entity, namely Walk, Jump, Crouch, Climb and CrouchWalking.
 
-### Changes
+### Changed
 - (Editor) Changed the icons and the labels display.
 
 ### Fixed
