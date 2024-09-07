@@ -8,7 +8,7 @@ using static PlatformCrafterModularSystem.HorizontalMovementTypeModule;
 namespace PlatformCrafterModularSystem 
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "VMModule", menuName = "Platform Crafter's Modular System/Type - VM")]
+    [CreateAssetMenu(fileName = "VMModule", menuName = "Platform Crafter's Modular System/Modules/Type - VM")]
     public class VerticalMovementTypeModule : Module
     {
         public enum VerticalState

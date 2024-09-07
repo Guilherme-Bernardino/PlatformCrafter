@@ -8,7 +8,7 @@ namespace PlatformCrafterModularSystem
 {
     public abstract class InteractionReceptor : MonoBehaviour
     {
-        [SerializeField] protected ScriptableGameObjectChannel interactionChannel;
+        [SerializeField] protected InteractionChannel interactionChannel;
 
         [SerializeField] protected UnityEvent actionEvent;
 

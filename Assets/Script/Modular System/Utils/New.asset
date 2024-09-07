@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00563a8dfbfc76145b577faee5b00d20, type: 3}
-  m_Name: Apple
+  m_Script: {fileID: 11500000, guid: 382b02ebbd087a14aa8662d920e546c7, type: 3}
+  m_Name: New
   m_EditorClassIdentifier: 
-  itemName: Apple
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  isStackable: 1
-  maxStackSize: 20
+  _unityChannelEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _valueToInject: {fileID: 0}

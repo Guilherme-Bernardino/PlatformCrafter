@@ -8,7 +8,7 @@ using UnityEngine;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ActionModule", menuName = "Platform Crafter's Modular System/Type - Action")]
+    [CreateAssetMenu(fileName = "ActionModule", menuName = "Platform Crafter's Modular System/Modules/Type - Action")]
     public class ActionTypeModule : Module
     {
         [SerializeField] private KeyCode actionInput;

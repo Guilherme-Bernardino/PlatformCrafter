@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "InteractionModule", menuName = "Platform Crafter's Modular System/Type - Interaction")]
+    [CreateAssetMenu(fileName = "InteractionModule", menuName = "Platform Crafter's Modular System/Modules/Type - Interaction")]
     public class InteractionTypeModule : Module
     {
         [SerializeField] private bool automaticInteraction;
         [SerializeField] private KeyCode interactionKey;
-        [SerializeField] private ScriptableChannel<GameObject> interactionChannel;
+        [SerializeField] private InteractionChannel interactionChannel;
 
         [Range(0f,20f)]
         [SerializeField] private float interactionRadius = 1.0f;
