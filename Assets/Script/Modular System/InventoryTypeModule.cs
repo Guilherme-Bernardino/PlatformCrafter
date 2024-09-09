@@ -9,7 +9,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "InventoryModule", menuName = "Platform Crafter's Modular System/Type - Inventory")]
+    [CreateAssetMenu(fileName = "InventoryModule", menuName = "Platform Crafter's Modular System/Modules/Type - Inventory")]
     public class InventoryTypeModule : Module
     {
         [SerializeField] private int gridWidth = 5;
@@ -18,12 +18,12 @@ namespace PlatformCrafterModularSystem
 
         protected override void InitializeModule()
         {
-            
+            //Empty
         }
 
         public override void UpdateModule()
         {
-
+            //Empty
         }
 
         public void InitializeInventory()
@@ -112,6 +112,15 @@ namespace PlatformCrafterModularSystem
             return inventorySlots;
         }
 
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
+        }
     }
 
     [CustomEditor(typeof(InventoryTypeModule))]
@@ -134,6 +143,8 @@ namespace PlatformCrafterModularSystem
 
             EditorGUILayout.PropertyField(gridWidth);
             EditorGUILayout.PropertyField(gridHeight);
+
+            GUILayout.Label($"Slots: {gridWidth.intValue * gridHeight.intValue}", new GUIStyle(EditorStyles.boldLabel) { fontSize = 12, alignment = TextAnchor.MiddleLeft });
 
             if (GUILayout.Button("Initialize Inventory"))
             {

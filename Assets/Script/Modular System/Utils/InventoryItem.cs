@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PlatformCrafterModularSystem
 {
-    [CreateAssetMenu(fileName = "InventoryItem", menuName = "Platform Crafter's Modular System/InventoryItem")]
+    [CreateAssetMenu(fileName = "InventoryItem", menuName = "Platform Crafter's Modular System/Utils/Inventory Item")]
     public class InventoryItem : ScriptableObject
     {
         public string itemName;

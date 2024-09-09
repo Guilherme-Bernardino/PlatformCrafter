@@ -22,6 +22,10 @@ namespace PlatformCrafterModularSystem
 
         public abstract void UpdateModule();
 
+        public abstract void FixedUpdateModule();
+
+        public abstract void LateUpdateModule();
+
         public bool IsActive { get { return isActive; } set { isActive = value; } }
 
         public void SetModuleState(bool state)

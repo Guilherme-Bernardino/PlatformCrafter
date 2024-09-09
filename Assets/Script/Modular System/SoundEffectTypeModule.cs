@@ -8,28 +8,31 @@ using static PlatformCrafterModularSystem.AnimationTypeModule;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "SoundEffectTypeModule", menuName = "Platform Crafter's Modular System/Type - SFX")]
+    [CreateAssetMenu(fileName = "SoundEffectTypeModule", menuName = "Platform Crafter's Modular System/Modules/Type - SFX")]
     public class SoundEffectTypeModule : Module
     {
         private AudioSource soundSource;
 
-        [Range(0f, 1f)]
-        [SerializeField] private float volume;
-        [SerializeField] private bool loop;
-        [Range(-3f, 3f)]
-        [SerializeField] private float pitch = 1f;
+        [System.Serializable]
+        public class SoundEffectSettings
+        {
+            public AudioClip clip;
+            [Range(0f, 1f)] public float volume = 1f;
+            public bool loop = false;
+            [Range(-3f, 3f)] public float pitch = 1f;
+        }
 
-        [SerializeField] private AudioClip idleSFX;
-        [SerializeField] private AudioClip walkSFX;
-        [SerializeField] private AudioClip sprintSFX;
-        [SerializeField] private AudioClip dashSFX;
-        [SerializeField] private AudioClip brakeSFX;
-        [SerializeField] private AudioClip jumpSFX;
-        [SerializeField] private AudioClip airJumpSFX;
-        [SerializeField] private AudioClip climbSFX;
-        [SerializeField] private AudioClip crouchSFX;
-        [SerializeField] private AudioClip crouchWalkSFX; // Combined sound (Crouch + Walk)
-        [SerializeField] private AudioClip airDashSFX; // Combined sound (Jump + Dash)
+        [SerializeField] private SoundEffectSettings idleSFX;
+        [SerializeField] private SoundEffectSettings walkSFX;
+        [SerializeField] private SoundEffectSettings sprintSFX;
+        [SerializeField] private SoundEffectSettings dashSFX;
+        [SerializeField] private SoundEffectSettings brakeSFX;
+        [SerializeField] private SoundEffectSettings jumpSFX;
+        [SerializeField] private SoundEffectSettings airJumpSFX;
+        [SerializeField] private SoundEffectSettings climbSFX;
+        [SerializeField] private SoundEffectSettings crouchSFX;
+        [SerializeField] private SoundEffectSettings crouchWalkSFX; // Combined sound (Crouch + Walk)
+        [SerializeField] private SoundEffectSettings airDashSFX; // Combined sound (Jump + Dash)
 
         private HorizontalMovementTypeModule.HorizontalState horizontalState;
         private VerticalMovementTypeModule.VerticalState verticalState;
@@ -134,26 +137,31 @@ namespace PlatformCrafterModularSystem
 
         private void SetSoundEffect(SoundEffectAction audioClipName)
         {
-            switch (audioClipName) 
+            SoundEffectSettings sfxSettings = null;
+
+            switch (audioClipName)
             {
-                case SoundEffectAction.Idle: soundSource.clip = idleSFX; break;
-                case SoundEffectAction.Walk: soundSource.clip = walkSFX; break;
-                case SoundEffectAction.Sprint: soundSource.clip = sprintSFX; break;
-                case SoundEffectAction.Dash: soundSource.clip = dashSFX; break;
-                case SoundEffectAction.Brake: soundSource.clip = brakeSFX; break;
-                case SoundEffectAction.Jump: soundSource.clip = jumpSFX; break;
-                case SoundEffectAction.AirJump: soundSource.clip = airJumpSFX; break;
-                case SoundEffectAction.Climb: soundSource.clip = climbSFX; break;
-                case SoundEffectAction.Crouch: soundSource.clip = crouchSFX; break;
-                case SoundEffectAction.CrouchWalk: soundSource.clip = crouchWalkSFX; break;
-                case SoundEffectAction.AirDash: soundSource.clip = airDashSFX; break;
+                case SoundEffectAction.Idle: sfxSettings = idleSFX; break;
+                case SoundEffectAction.Walk: sfxSettings = walkSFX; break;
+                case SoundEffectAction.Sprint: sfxSettings = sprintSFX; break;
+                case SoundEffectAction.Dash: sfxSettings = dashSFX; break;
+                case SoundEffectAction.Brake: sfxSettings = brakeSFX; break;
+                case SoundEffectAction.Jump: sfxSettings = jumpSFX; break;
+                case SoundEffectAction.AirJump: sfxSettings = airJumpSFX; break;
+                case SoundEffectAction.Climb: sfxSettings = climbSFX; break;
+                case SoundEffectAction.Crouch: sfxSettings = crouchSFX; break;
+                case SoundEffectAction.CrouchWalk: sfxSettings = crouchWalkSFX; break;
+                case SoundEffectAction.AirDash: sfxSettings = airDashSFX; break;
             }
 
-            soundSource.volume = volume;
-            soundSource.loop = loop;
-            soundSource.pitch = pitch;
-
-            soundSource.Play();
+            if (sfxSettings != null)
+            {
+                soundSource.clip = sfxSettings.clip;
+                soundSource.volume = sfxSettings.volume;
+                soundSource.loop = sfxSettings.loop;
+                soundSource.pitch = sfxSettings.pitch;
+                soundSource.Play();
+            }
         }
 
         [Button("Pause Audio")]
@@ -166,6 +174,16 @@ namespace PlatformCrafterModularSystem
         public void UnpauseAudio()
         {
             soundSource.Play();
+        }
+
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
         }
     }
 }

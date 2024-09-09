@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ResourceModule", menuName = "Platform Crafter's Modular System/Type - Resource")]
+    [CreateAssetMenu(fileName = "ResourceModule", menuName = "Platform Crafter's Modular System/Modules/Type - Resource")]
     public class ResourceTypeModule : Module
     {
         [SerializeField] private string resourceName;
@@ -87,6 +87,16 @@ namespace PlatformCrafterModularSystem
                 Deplete(passiveDepletionRate);
                 passiveDepletionTimer = 0f;
             }
+        }
+
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
         }
 
         //[Button("Test Recover", EButtonEnableMode.Always)]

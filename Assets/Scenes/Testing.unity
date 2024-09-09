@@ -1595,6 +1595,7 @@ GameObject:
   - component: {fileID: 1305030372}
   - component: {fileID: 1305030374}
   - component: {fileID: 1305030373}
+  - component: {fileID: 1305030375}
   m_Layer: 4
   m_Name: Square (11)
   m_TagString: Untagged
@@ -1714,6 +1715,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1305030375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305030371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66cb7e0c9d9617c41935305572cc83f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionChannel: {fileID: 11400000, guid: 7ee3eab8668f65f4fae8ee244e784811, type: 2}
+  actionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1305030375}
+        m_TargetAssemblyTypeName: Receptor, Assembly-CSharp
+        m_MethodName: AddAppleToInventory
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 105256816d4ebd84b9c07031ce27ff8a, type: 2}
+          m_ObjectArgumentAssemblyTypeName: PlatformCrafterModularSystem.InventoryItem,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  inventoryModuleName: InventoryModule
+  amount: 1
+  mb: {fileID: 776631866}
+  item: {fileID: 0}
 --- !u!1 &1365920760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1725,7 +1759,6 @@ GameObject:
   - component: {fileID: 1365920765}
   - component: {fileID: 1365920764}
   - component: {fileID: 1365920763}
-  - component: {fileID: 1365920761}
   m_Layer: 6
   m_Name: Square (1)
   m_TagString: Untagged
@@ -1733,38 +1766,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1365920761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1365920760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66cb7e0c9d9617c41935305572cc83f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionChannel: {fileID: 11400000, guid: d87d9bbfec939ef4ab08c3439278ae4a, type: 2}
-  actionEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1365920761}
-        m_TargetAssemblyTypeName: Receptor, Assembly-CSharp
-        m_MethodName: AddAppleToInventory
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 3f3a6d0be16762143a9488a95e76e455, type: 2}
-          m_ObjectArgumentAssemblyTypeName: PlatformCrafterModularSystem.InventoryItem,
-            Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  inventoryModuleName: InventoryModule
-  amount: 3
-  mb: {fileID: 776631866}
 --- !u!61 &1365920763
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2419,18 +2420,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: customModules.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: customModules.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: f9eb6c13859147f42baf70a56f410948, type: 2}
-    - target: {fileID: 3244442297419460967, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name
       value: Platformer
@@ -2452,6 +2441,7 @@ GameObject:
   - component: {fileID: 1984113404}
   - component: {fileID: 1984113403}
   - component: {fileID: 1984113402}
+  - component: {fileID: 1984113405}
   m_Layer: 3
   m_Name: 9-Sliced (3)
   m_TagString: Platform
@@ -2598,6 +2588,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1984113405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984113400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66cb7e0c9d9617c41935305572cc83f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionChannel: {fileID: 11400000, guid: 7ee3eab8668f65f4fae8ee244e784811, type: 2}
+  actionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  inventoryModuleName: 
+  amount: 0
+  mb: {fileID: 0}
+  item: {fileID: 0}
 --- !u!1 &2145745204
 GameObject:
   m_ObjectHideFlags: 0

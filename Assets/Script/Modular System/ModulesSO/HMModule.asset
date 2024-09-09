@@ -15,7 +15,7 @@ MonoBehaviour:
   isActive: 1
   rightKey: 275
   leftKey: 276
-  extraActions: 0
+  extraActions: -1
   walk:
     groundLayer:
       serializedVersion: 2
@@ -41,7 +41,7 @@ MonoBehaviour:
   sprint:
     sprintKey: 0
     allowDoubleTap: 0
-    mode: 0
+    mode: 1
     constantSpeedSettings:
       speed: 0
     acceleratingSpeedSettings:
@@ -52,6 +52,7 @@ MonoBehaviour:
   dash:
     dashKey: 0
     allowDoubleTap: 0
+    shadowEffect: 0
     dashSettings:
       dashDistance: 0
       dashSpeed: 0

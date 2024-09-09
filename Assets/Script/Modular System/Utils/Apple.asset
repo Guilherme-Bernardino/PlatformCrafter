@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aefb5c483b26684d984fb5b73858377, type: 3}
-  m_Name: InteractionModule
+  m_Script: {fileID: 11500000, guid: 00563a8dfbfc76145b577faee5b00d20, type: 3}
+  m_Name: Apple
   m_EditorClassIdentifier: 
-  isActive: 1
-  automaticInteraction: 0
-  interactionKey: 101
-  interactionChannel: {fileID: 11400000, guid: 7ee3eab8668f65f4fae8ee244e784811, type: 2}
-  interactionRadius: 3.88
+  itemName: Apple
+  icon: {fileID: 21300000, guid: 3fe59be7ead89fb4494746902c3762eb, type: 3}
+  isStackable: 1
+  maxStackSize: 1

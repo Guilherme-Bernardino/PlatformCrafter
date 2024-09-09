@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf87098b686ac1944a6907c1fed45771, type: 3}
   m_Name: Camera Follow Module
   m_EditorClassIdentifier: 
-  isActive: 0
-  mainCamera: {fileID: 6632608628608643093, guid: 3dc42c2a00716b74e98c3c1fcf52fa41, type: 3}
+  isActive: 1
+  smoothSpeed: 1
+  offset: {x: 0, y: 0, z: -10}

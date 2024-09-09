@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -122,6 +123,82 @@ namespace PlatformCrafterModularSystem
             foreach (var module in customModules)
             {
                 module.UpdateModule();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            FixedUpdateModules();
+        }
+
+        private void FixedUpdateModules()
+        {
+            horizontalMovementModule?.FixedUpdateModule();
+            verticalMovementModule?.FixedUpdateModule();
+            animationModule?.FixedUpdateModule();
+            soundEffectModule?.FixedUpdateModule();
+
+            foreach (var module in actionModules)
+            {
+                module.FixedUpdateModule();
+            }
+
+            foreach (var module in interactionModules)
+            {
+                module.FixedUpdateModule();
+            }
+
+            foreach (var module in resourceModules)
+            {
+                module.FixedUpdateModule();
+            }
+
+            foreach (var module in inventoryModules)
+            {
+                module.FixedUpdateModule();
+            }
+
+            foreach (var module in customModules)
+            {
+                module.FixedUpdateModule();
+            }
+        }
+
+        private void LateUpdate()
+        {
+            LateUpdateModules();
+        }
+
+        private void LateUpdateModules()
+        {
+            horizontalMovementModule?.LateUpdateModule();
+            verticalMovementModule?.LateUpdateModule();
+            animationModule?.LateUpdateModule();
+            soundEffectModule?.LateUpdateModule();
+
+            foreach (var module in actionModules)
+            {
+                module.LateUpdateModule();
+            }
+
+            foreach (var module in interactionModules)
+            {
+                module.LateUpdateModule();
+            }
+
+            foreach (var module in resourceModules)
+            {
+                module.LateUpdateModule();
+            }
+
+            foreach (var module in inventoryModules)
+            {
+                module.LateUpdateModule();
+            }
+
+            foreach (var module in customModules)
+            {
+                module.LateUpdateModule();
             }
         }
 

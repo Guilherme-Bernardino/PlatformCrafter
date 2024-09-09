@@ -9,7 +9,7 @@ using static PlatformCrafterModularSystem.HorizontalMovementTypeModule;
 namespace PlatformCrafterModularSystem
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "HMModule", menuName = "Platform Crafter's Modular System/Type - HM")]
+    [CreateAssetMenu(fileName = "HMModule", menuName = "Platform Crafter's Modular System/Modules/Type - HM")]
     public class HorizontalMovementTypeModule : Module
     {
         public enum HorizontalState
@@ -110,6 +110,16 @@ namespace PlatformCrafterModularSystem
                 modularBrain.AnimationTypeModule?.OnHorizontalStateChange(newState);
                 modularBrain.SoundEffectTypeModule?.OnHorizontalStateChange(newState);
             }
+        }
+
+        public override void FixedUpdateModule()
+        {
+           
+        }
+
+        public override void LateUpdateModule()
+        {
+           
         }
     }
 
