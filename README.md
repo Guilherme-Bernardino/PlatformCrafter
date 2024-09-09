@@ -20,6 +20,21 @@ Guilherme Bernardino
 # Change Log
 All notable changes of the project
 
+## [0.9.5] - 09-09-2024
+
+### Added
+- Added a Size label that tells the amount of slots on an Inventory.
+- Added Icons for the Shadow Effect, Solid, Interaction Channel and Interaction Receptor.
+- Added FixedUpdate and LateUpdate cycles for the Modular Brain and the Modules.
+- Added a smoothness and offset vector to the CameraFollow custom module.
+- Added a new Asset menu named Utils and added create assets of Inventory Item, External Action Test and Interaction Channel.
+- Added a new create menu tab named "Custom" and added the CameraFollow custom module to it.
+
+### Changed
+- Changed the general settings of the Sound Effect Module, like sound, pitch and loop to individual settings for each SFX.
+- Changed all create assets for the modules.
+- Changed Abstract folder to Utils.
+
 ## [0.9.4] - 28-08-2024
 
 ### Added
