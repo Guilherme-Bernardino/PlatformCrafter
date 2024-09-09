@@ -1747,6 +1747,7 @@ MonoBehaviour:
   inventoryModuleName: InventoryModule
   amount: 1
   mb: {fileID: 776631866}
+  item: {fileID: 0}
 --- !u!1 &1365920760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2419,18 +2420,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: customModules.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2382293500059001820, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: customModules.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: f9eb6c13859147f42baf70a56f410948, type: 2}
-    - target: {fileID: 3244442297419460967, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 8848904959969383487, guid: a00f9bfe1ca2be64caf67eaa16525c7a, type: 3}
       propertyPath: m_Name
       value: Platformer
@@ -2618,6 +2607,7 @@ MonoBehaviour:
   inventoryModuleName: 
   amount: 0
   mb: {fileID: 0}
+  item: {fileID: 0}
 --- !u!1 &2145745204
 GameObject:
   m_ObjectHideFlags: 0

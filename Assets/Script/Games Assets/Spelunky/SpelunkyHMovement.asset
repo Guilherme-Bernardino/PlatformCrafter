@@ -15,7 +15,7 @@ MonoBehaviour:
   isActive: 1
   rightKey: 275
   leftKey: 276
-  extraActions: 0
+  extraActions: 2
   walk:
     groundLayer:
       serializedVersion: 2

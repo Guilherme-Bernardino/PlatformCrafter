@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4750528949413741044}
   - component: {fileID: 6262888339081423142}
   - component: {fileID: 189097101134010739}
+  - component: {fileID: 1900393826516347720}
   m_Layer: 0
   m_Name: Platformer
   m_TagString: Untagged
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b1e31b5c2a20347928a99770fd4be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableEditorFeatures: 0
   horizontalMovementModule: {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
   verticalMovementModule: {fileID: 11400000, guid: 025e630db232f3a49aea6076e3beeee5, type: 2}
   actionModules:
@@ -59,7 +61,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fe9b507cf3cfeb847a3787abcc25daaf, type: 2}
   inventoryModules:
   - {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
-  customModules: []
+  animationModule: {fileID: 0}
+  soundEffectModule: {fileID: 11400000, guid: cf14a65491a8674479c408c96caaed36, type: 2}
+  customModules:
+  - {fileID: 11400000, guid: f9eb6c13859147f42baf70a56f410948, type: 2}
 --- !u!212 &7127116229475881017
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -301,3 +306,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1900393826516347720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848904959969383487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19717a945efe90a428a138ec895572dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shadow: {fileID: 0}
+  speed: 0
+  _color: {r: 0, g: 0, b: 0, a: 0}

@@ -189,6 +189,16 @@ namespace PlatformCrafterModularSystem
 
             modularBrain.AudioSource.Play();
         }
+
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
+        }
     }
 
     [System.Serializable]

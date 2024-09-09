@@ -111,6 +111,16 @@ namespace PlatformCrafterModularSystem
                 modularBrain.SoundEffectTypeModule?.OnHorizontalStateChange(newState);
             }
         }
+
+        public override void FixedUpdateModule()
+        {
+           
+        }
+
+        public override void LateUpdateModule()
+        {
+           
+        }
     }
 
     [System.Serializable]

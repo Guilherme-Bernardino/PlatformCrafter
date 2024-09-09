@@ -157,5 +157,15 @@ namespace PlatformCrafterModularSystem
         {
             animator.speed = 1f;
         }
+
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
+        }
     }
 }

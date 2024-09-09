@@ -89,6 +89,16 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
+        }
+
         //[Button("Test Recover", EButtonEnableMode.Always)]
         //public void TestRecover()
         //{

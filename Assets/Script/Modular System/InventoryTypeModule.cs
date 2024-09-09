@@ -112,6 +112,15 @@ namespace PlatformCrafterModularSystem
             return inventorySlots;
         }
 
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
+        }
     }
 
     [CustomEditor(typeof(InventoryTypeModule))]

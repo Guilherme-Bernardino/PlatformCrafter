@@ -12,18 +12,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8151e3a397f5e439573503ca228fc6, type: 3}
   m_Name: SoundEffectTypeModule
   m_EditorClassIdentifier: 
-  isActive: 0
-  volume: 0.316
-  loop: 0
-  pitch: 1
-  idleSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  walkSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  sprintSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  dashSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  brakeSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  jumpSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  airJumpSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  climbSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  crouchSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  crouchWalkSFX: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-  airDashSFX: {fileID: 8300000, guid: 5837d1a6249ef47459b1da6b7ee2a7d4, type: 3}
+  isActive: 1
+  idleSFX:
+    clip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+    volume: 0.078
+    loop: 0
+    pitch: 1
+  walkSFX:
+    clip: {fileID: 8300000, guid: 5837d1a6249ef47459b1da6b7ee2a7d4, type: 3}
+    volume: 0.113
+    loop: 1
+    pitch: 1
+  sprintSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  dashSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  brakeSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  jumpSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  airJumpSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  climbSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  crouchSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  crouchWalkSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1
+  airDashSFX:
+    clip: {fileID: 0}
+    volume: 1
+    loop: 0
+    pitch: 1

@@ -73,5 +73,15 @@ namespace PlatformCrafterModularSystem
 
             ClearCurrentInteractable();
         }
+
+        public override void FixedUpdateModule()
+        {
+            
+        }
+
+        public override void LateUpdateModule()
+        {
+            
+        }
     }
 }
