@@ -22,5 +22,5 @@ MonoBehaviour:
   airJumpAnimation: airjump
   climbAnimation: climb
   crouchAnimation: crouch
-  crouchWalkAnimation: crouchwalk
+  crawlAnimation: crouchwalk
   airDashAnimation: airdash

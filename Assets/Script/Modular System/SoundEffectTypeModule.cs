@@ -31,7 +31,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private SoundEffectSettings airJumpSFX;
         [SerializeField] private SoundEffectSettings climbSFX;
         [SerializeField] private SoundEffectSettings crouchSFX;
-        [SerializeField] private SoundEffectSettings crouchWalkSFX; // Combined sound (Crouch + Walk)
+        [SerializeField] private SoundEffectSettings crawlSFX; // Combined sound (Crouch + Walk)
         [SerializeField] private SoundEffectSettings airDashSFX; // Combined sound (Jump + Dash)
 
         private HorizontalMovementTypeModule.HorizontalState horizontalState;
@@ -48,7 +48,7 @@ namespace PlatformCrafterModularSystem
             AirJump,
             Climb,
             Crouch,
-            CrouchWalk, // Combined action (Crouch + Walk)
+            Crawl, // Combined action (Crouch + Walk)
             AirDash // Combined action (Jump + Dash)
         }
 
@@ -86,7 +86,7 @@ namespace PlatformCrafterModularSystem
             {
                 if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
                 {
-                    SetSoundEffect(SoundEffectAction.CrouchWalk);
+                    SetSoundEffect(SoundEffectAction.Crawl);
                 }
                 else
                 {
@@ -150,7 +150,7 @@ namespace PlatformCrafterModularSystem
                 case SoundEffectAction.AirJump: sfxSettings = airJumpSFX; break;
                 case SoundEffectAction.Climb: sfxSettings = climbSFX; break;
                 case SoundEffectAction.Crouch: sfxSettings = crouchSFX; break;
-                case SoundEffectAction.CrouchWalk: sfxSettings = crouchWalkSFX; break;
+                case SoundEffectAction.Crawl: sfxSettings = crawlSFX; break;
                 case SoundEffectAction.AirDash: sfxSettings = airDashSFX; break;
             }
 

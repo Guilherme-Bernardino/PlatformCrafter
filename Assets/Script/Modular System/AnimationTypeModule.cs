@@ -20,7 +20,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private string airJumpAnimation;
         [SerializeField] private string climbAnimation;
         [SerializeField] private string crouchAnimation;
-        [SerializeField] private string crouchWalkAnimation; // Combined animation (Crouch + Walk)
+        [SerializeField] private string crawlAnimation; // Combined animation (Crouch + Walk)
         [SerializeField] private string airDashAnimation; // Combined animation (Jump + Dash)
 
         private HorizontalMovementTypeModule.HorizontalState horizontalState;
@@ -37,7 +37,7 @@ namespace PlatformCrafterModularSystem
             AirJump,
             Climb,
             Crouch,
-            CrouchWalk, // Combined action (Crouch + Walk)
+            Crawl, // Combined action (Crouch + Walk)
             AirDash // Combined action (Jump + Dash)
         }
 
@@ -79,7 +79,7 @@ namespace PlatformCrafterModularSystem
                 if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking ||
                     horizontalState == HorizontalMovementTypeModule.HorizontalState.Sprinting)
                 {
-                    DoAnimation(AnimationAction.CrouchWalk); // Crouch + Walk or Crouch + Sprint
+                    DoAnimation(AnimationAction.Crawl); // Crouch + Walk or Crouch + Sprint
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace PlatformCrafterModularSystem
                 case AnimationAction.AirJump: animator.Play(airJumpAnimation); break;
                 case AnimationAction.Climb: animator.Play(climbAnimation); break;
                 case AnimationAction.Crouch: animator.Play(crouchAnimation); break;
-                case AnimationAction.CrouchWalk: animator.Play(crouchWalkAnimation); break;
+                case AnimationAction.Crawl: animator.Play(crawlAnimation); break;
                 case AnimationAction.AirDash: animator.Play(airDashAnimation); break;
             }
         }
