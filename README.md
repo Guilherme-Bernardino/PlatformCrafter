@@ -20,6 +20,14 @@ Guilherme Bernardino
 # Change Log
 All notable changes of the project
 
+## [0.9.5.1] - 10-09-2024
+
+### Added
+- Added the Platform Crafter's User Guide.
+
+### Changed
+- Changed the Sound Effects and Animation Modules fused actions from CrouchWalk to Crawl.
+
 ## [0.9.5] - 09-09-2024
 
 ### Added
