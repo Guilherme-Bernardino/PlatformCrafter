@@ -41,7 +41,7 @@ namespace PlatformCrafterModularSystem
         private float dashDirection;
 
 
-        [SerializeField] private Dash dashSettings;
+        [SerializeField] private NormalDash dashSettings;
 
         public KeyCode DashKey => dashKey;
 
