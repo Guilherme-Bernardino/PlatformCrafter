@@ -15,42 +15,46 @@ MonoBehaviour:
   isActive: 1
   rightKey: 275
   leftKey: 276
+  spriteFacingDirection: 0
   groundCheckRange: 0.15
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  canMoveOnAir: 1
+  canMoveOnAir: 0
+  doubleTapThreshold: 0.3
   walkAction:
-    walkMode: 0
+    walkMode: 1
     walkConstantSpeed:
       speed: 9.3
     walkAccelerationSettings:
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
+      speed: 11.4
+      maxSpeed: 28.7
+      acceleration: 17.4
+      deceleration: 16.5
     walkVehicleSettings:
-      brakeInput: 0
+      brakeInput: 324
       horizontalBrake: 0
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
-      brakeForce: 0
+      speed: 10.5
+      maxSpeed: 14.6
+      acceleration: 14.6
+      deceleration: 14.6
+      brakeForce: 3.5
   sprintAction:
     sprintKey: 304
+    allowDoubleTap: 0
     sprintMode: 0
     sprintConstantSpeed:
       speed: 27.3
     sprintAccelerationSettings:
-      speed: 14.8
-      maxSpeed: 12.9
-      acceleration: 10.7
-      deceleration: 9.3
+      speed: 26.5
+      maxSpeed: 28.2
+      acceleration: 22
+      deceleration: 20.3
   dashAction:
     dashKey: 32
-    dashSettings:
-      dashDistance: 28.1
-      dashSpeed: 25.6
-      cooldown: 18.7
+    allowDoubleTap: 1
+    normalDashSettings:
+      dashDistance: 3.5
+      dashSpeed: 35.9
+      cooldown: 1
       dashOnAir: 0

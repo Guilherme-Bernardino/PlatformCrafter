@@ -19,35 +19,50 @@ namespace PlatformCrafterModularSystem {
             Braking
         }
 
+        public enum SpriteFacingDirection
+        {
+            Left,
+            Right
+        }
+
         public HorizontalState CurrentState { get; private set; } = HorizontalState.Idle;
 
-        //General Settings
 
+        //General Settings
         [SerializeField] private KeyCode rightKey;
         [SerializeField] private KeyCode leftKey;
+        [SerializeField] private SpriteFacingDirection spriteFacingDirection;
 
         [SerializeField] private float groundCheckRange = 0.1f;
         [SerializeField] private LayerMask groundLayer;
-        [SerializeField] private bool canMoveOnAir;
-
-        // Movement variables
-        private bool isWalking;
-        private bool isSprinting;
-        private bool isDashing;
-        private bool isBraking;
+        [SerializeField] private bool canMoveOnAir; // Allows for horizontal input off ground.
+        [SerializeField] private float doubleTapThreshold = 0.25f;
 
         //HM Actions
         [SerializeField] private Walk walkAction;
         [SerializeField] private Sprint sprintAction;
         [SerializeField] private Dash dashAction;
 
+        //Components
         private Rigidbody2D rb;
+        private ShadowEffect shadowEffect;
+
+        //Checks
         private bool isGrounded;
         private bool isFacingRight;
+        private bool isBraking;
+        private bool isSprintActive = false;
+
+        private float dashStartTime;
+        private float dashDuration;
+        private float lastRightKeyPressTime;
+        private float lastLeftKeyPressTime;
 
         protected override void InitializeModule()
         {
             rb = modularBrain.Rigidbody;
+            shadowEffect = modularBrain.GetComponent<ShadowEffect>();
+
             isFacingRight = true;
             CurrentState = HorizontalState.Idle;
         }
@@ -60,48 +75,180 @@ namespace PlatformCrafterModularSystem {
             UpdateGroundCheck();
             HandleInput();
             UpdateDirection();
+            HandleDoubleTapForMovement();
 
-            Debug.Log(isWalking);
-            Debug.Log(isSprinting);
-            Debug.Log(isDashing);
+
+            if (isSprintActive && CurrentState == HorizontalState.Sprinting)
+                MaintainSprint();
+
+            Debug.Log(CurrentState);
         }
 
         private void HandleInput()
         {
-            isWalking = (Input.GetKey(rightKey) || Input.GetKey(leftKey)) && (!isSprinting && !isDashing);
-            isSprinting = Input.GetKey(sprintAction.SprintKey);
-            isDashing = Input.GetKeyDown(dashAction.DashKey);
-
-            if (isDashing && CanDash())
+            switch (CurrentState)
             {
-                ActivateDash();
+                case HorizontalState.Idle:
+                    if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)))
+                    {
+                        SetState(HorizontalState.Walking);
+                    }
+                    if (Input.GetKey(sprintAction.SprintKey) && (Input.GetKey(rightKey) || Input.GetKey(leftKey)))
+                    {
+                        SetState(HorizontalState.Sprinting);
+                    }
+                    else if (Input.GetKeyDown(dashAction.DashKey) && CanDash())
+                    {
+                        StartDash();
+                    }
+                    break;
+
+                case HorizontalState.Walking:
+                    if (Input.GetKey(sprintAction.SprintKey))
+                    {
+                        SetState(HorizontalState.Sprinting);
+                    }
+                    else if (Input.GetKeyDown(dashAction.DashKey) && CanDash())
+                    {
+                        StartDash();
+                    }
+                    else if ((!Input.GetKey(rightKey) && !Input.GetKey(leftKey)) && walkAction.WalkMode == Walk.WalkMovementMode.ConstantSpeed)
+                    {
+                        rb.velocity = new Vector2(0, rb.velocity.y);
+                        SetState(HorizontalState.Idle);
+                    }
+                    break;
+
+                case HorizontalState.Sprinting:
+                    if (!Input.GetKey(sprintAction.SprintKey) && !isSprintActive)
+                    {
+                        SetState(HorizontalState.Walking);
+                    }
+                    else if (Input.GetKeyDown(dashAction.DashKey) && CanDash())
+                    {
+                        StartDash();
+                    }
+                    break;
+
+                case HorizontalState.Dashing:
+                    // Transition out of dashing is handled in FixedUpdate when dash ends
+                    break;
+
+                case HorizontalState.Braking:
+                    break;
             }
+        }
+
+        private void HandleDoubleTapForMovement()
+        {
+            // Double tap right key
+            if (Input.GetKeyDown(rightKey))
+            {
+                if (Time.time - lastRightKeyPressTime < doubleTapThreshold)
+                {
+                    if (sprintAction.AllowDoubleTap && isGrounded)
+                    {
+                        SetState(HorizontalState.Sprinting);
+                        isSprintActive = true;
+                    }
+                    if (dashAction.AllowDoubleTap && CanDash())
+                    {
+                        StartDash();
+                    }
+                }
+                lastRightKeyPressTime = Time.time;
+            }
+
+            // Double tap left key
+            if (Input.GetKeyDown(leftKey))
+            {
+                if (Time.time - lastLeftKeyPressTime < doubleTapThreshold)
+                {
+                    if (sprintAction.AllowDoubleTap && isGrounded)
+                    {
+                        SetState(HorizontalState.Sprinting);
+                        isSprintActive = true;
+ 
+                    }
+                    if (dashAction.AllowDoubleTap && CanDash())
+                    {
+                        StartDash();
+                    }
+                }
+                lastLeftKeyPressTime = Time.time;
+            }
+
+        }
+
+        private void MaintainSprint()
+        {
+            if (Math.Abs(rb.velocity.x) > 0 && isGrounded) // Continue sprinting if moving and grounded
+            {
+                SetState(HorizontalState.Sprinting);
+            }
+            else
+            {
+                SetState(HorizontalState.Idle);
+                isSprintActive = false;
+            }
+        }
+
+        private void SetState(HorizontalState newState)
+        {
+            CurrentState = newState;
+        }
+
+        private bool CanMove()
+        {
+            return isGrounded || canMoveOnAir;
         }
 
         private void UpdateDirection()
         {
-            if ((isWalking && isGrounded))
+            if (!isGrounded && !canMoveOnAir)
             {
-                if (Input.GetKey(rightKey))
-                {
-                    isFacingRight = true;
-                    modularBrain.SpriteRenderer.flipX = false;
-                }
-                else if (Input.GetKey(leftKey))
-                {
-                    isFacingRight = false;
-                    modularBrain.SpriteRenderer.flipX = true;
-                }
+                return;
+            }
+
+            if (Input.GetKey(rightKey))
+            {
+                isFacingRight = true;
+
+                if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = true;
+                else modularBrain.SpriteRenderer.flipX = false;
+            }
+            else if (Input.GetKey(leftKey))
+            {
+                isFacingRight = false;
+
+                if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = false;
+                else modularBrain.SpriteRenderer.flipX = true;
             }
         }
 
         public override void FixedUpdateModule()
         {
-            if (isDashing)
+            switch (CurrentState)
             {
-                UpdateDash();
-                return;
+                case HorizontalState.Walking:
+                    HandleWalk();
+                    break;
+                case HorizontalState.Sprinting:
+                    HandleSprint();
+                    break;
+                case HorizontalState.Dashing:
+                    UpdateDash();
+                    break;
             }
+
+            if (ShouldTransitionToIdle())
+            {
+                SetState(HorizontalState.Idle);
+            }
+        }
+        private void HandleWalk()
+        {
+            if (!CanMove()) return;
 
             switch (walkAction.WalkMode)
             {
@@ -115,23 +262,28 @@ namespace PlatformCrafterModularSystem {
                     HandleWalkVehicleLike();
                     break;
             }
+        }
+
+        private void HandleSprint()
+        {
+            if (!CanMove()) return;
 
             switch (sprintAction.SprintMode)
-            {  
+            {
                 case Sprint.SprintMovementMode.ConstantSpeed:
                     HandleSprintConstantSpeed();
                     break;
-                case Sprint.SprintMovementMode.AccelerationSpeed: 
-                    HandleSprintAccelerationSpeed(); 
+                case Sprint.SprintMovementMode.AccelerationSpeed:
+                    HandleSprintAccelerationSpeed();
                     break;
             }
         }
 
         private void HandleWalkConstantSpeed()
         {
-            if (!isWalking && isGrounded && !isDashing) rb.velocity = new Vector2(0, rb.velocity.y); //bug no dash
+            //if (!isWalking && isGrounded && !isDashing) rb.velocity = new Vector2(0, rb.velocity.y); //bug no dash
 
-            if (!isWalking || !isGrounded || isSprinting || isDashing) return;
+            //if (!isWalking || !isGrounded || isSprinting || isDashing) return;
 
             float targetSpeed = 0f;
 
@@ -149,7 +301,7 @@ namespace PlatformCrafterModularSystem {
 
         private void HandleWalkAccelerationSpeed()
         {
-            if (!isWalking || !isGrounded || isSprinting || isDashing) return;
+            //if (!isWalking || !isGrounded || isSprinting || isDashing) return;
 
             float targetSpeed = 0f;
 
@@ -174,11 +326,16 @@ namespace PlatformCrafterModularSystem {
             }
 
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkAccelerationSettings.MaxSpeed, walkAction.WalkAccelerationSettings.MaxSpeed), rb.velocity.y);
+
+            if (Mathf.Abs(rb.velocity.x) > 0.01f)
+            {
+                SetState(HorizontalState.Walking);
+            }
         }
 
         private void HandleWalkVehicleLike()
         {
-            if (!isWalking || !isGrounded || isSprinting || isDashing) return;
+            //if (!isWalking || !isGrounded || isSprinting || isDashing) return;
 
             float targetSpeed = 0f;
 
@@ -206,6 +363,7 @@ namespace PlatformCrafterModularSystem {
                 (walkAction.WalkVehicleSettings.HorizontalBrake && ((currentSpeed > 0 && Input.GetKey(leftKey)) || (currentSpeed < 0 && Input.GetKey(rightKey)))))
             {
                 isBraking = true;
+                SetState(HorizontalState.Braking);
                 currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleSettings.BrakeForce * Time.fixedDeltaTime);
             }
             else
@@ -214,11 +372,16 @@ namespace PlatformCrafterModularSystem {
             }
 
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkVehicleSettings.MaxSpeed, walkAction.WalkVehicleSettings.MaxSpeed), rb.velocity.y);
+
+            if (Mathf.Abs(rb.velocity.x) > 0.01f && !isBraking)
+            {
+                SetState(HorizontalState.Walking);
+            }
         }
 
         private void HandleSprintConstantSpeed()
         {
-            if(!isSprinting || !isGrounded || isDashing) return;
+            //if(!isSprinting || !isGrounded || isDashing) return;
 
             float targetSpeed = 0f;
 
@@ -236,7 +399,7 @@ namespace PlatformCrafterModularSystem {
 
         private void HandleSprintAccelerationSpeed()
         {
-            if (!isSprinting || !isGrounded || isDashing) return;
+            //if (!isSprinting || !isGrounded || isDashing) return;
 
             float targetSpeed = 0f;
 
@@ -261,37 +424,47 @@ namespace PlatformCrafterModularSystem {
             }
 
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -sprintAction.SprintAccelerationSettings.MaxSpeed, sprintAction.SprintAccelerationSettings.MaxSpeed), rb.velocity.y);
-        }
 
-        private bool CanDash()
-        {
-            if (dashAction.DashSettings.DashOnAir)
+            if (Mathf.Abs(rb.velocity.x) > 0.01f)
             {
-                return Time.time - dashAction.DashSettings.Cooldown >= 0; 
+                SetState(HorizontalState.Sprinting);
             }
-
-            return isGrounded && Time.time - dashAction.DashSettings.Cooldown >= 0;
         }
 
-        private void ActivateDash()
+        private void StartDash()
         {
-            isDashing = true;
+            SetState(HorizontalState.Dashing);
+
+            dashDuration = dashAction.DashSettings.DashDistance / dashAction.DashSettings.DashSpeed;
+            dashStartTime = Time.time;
+
             rb.velocity = new Vector2(isFacingRight ? dashAction.DashSettings.DashSpeed : -dashAction.DashSettings.DashSpeed, rb.velocity.y);
+
         }
 
         private void UpdateDash()
         {
-            float dashDuration = dashAction.DashSettings.DashDistance / dashAction.DashSettings.DashSpeed;
-            if (Time.time - dashDuration > dashAction.DashSettings.Cooldown)
+            if (Time.time - dashStartTime >= dashDuration)
             {
-                rb.velocity = Vector2.zero;
-                isDashing = false;
+                EndDash();
             }
         }
 
-        public override void LateUpdateModule()
+        private void EndDash()
         {
-            // Empty
+            rb.velocity = Vector2.zero; // Stop movement after the dash
+            SetState(HorizontalState.Idle);
+        }
+
+        private bool CanDash()
+        {
+            return (isGrounded || dashAction.DashSettings.DashOnAir) && Time.time - dashStartTime > dashAction.DashSettings.Cooldown;
+        }
+
+        private bool ShouldTransitionToIdle()
+        {
+            // Transition to Idle when there's no more horizontal velocity
+            return Mathf.Abs(rb.velocity.x) <= 0.01f && CurrentState != HorizontalState.Dashing && (!Input.GetKey(rightKey) && !Input.GetKey(leftKey));
         }
 
         private void UpdateGroundCheck()
@@ -302,6 +475,11 @@ namespace PlatformCrafterModularSystem {
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, groundLayer);
             isGrounded = hit.collider != null;
+        }
+
+        public override void LateUpdateModule()
+        {
+            // Empty
         }
     }
 
@@ -350,6 +528,7 @@ namespace PlatformCrafterModularSystem {
         }
 
         [SerializeField] private KeyCode sprintKey;
+        [Label("Allow Double Tap?")][SerializeField] private bool allowDoubleTap;
         [SerializeField] private SprintMovementMode sprintMode;
 
         [ShowIf("sprintMode", SprintMovementMode.ConstantSpeed)]
@@ -361,6 +540,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private AcceleratingSpeed sprintAccelerationSettings;
 
         public KeyCode SprintKey { get => sprintKey; set => sprintKey = value; }
+        public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
         public SprintMovementMode SprintMode { get => sprintMode; set => sprintMode = value; }
         public ConstantSpeed SprintConstantSpeed { get => sprintConstantSpeed; set => sprintConstantSpeed = value; }
         public AcceleratingSpeed SprintAccelerationSettings { get => sprintAccelerationSettings; set => sprintAccelerationSettings = value; }
@@ -372,10 +552,12 @@ namespace PlatformCrafterModularSystem {
     public struct Dash
     {
         [SerializeField] private KeyCode dashKey;
-        [SerializeField] private NormalDash dashSettings;
+        [Label("Allow Double Tap?")][SerializeField] private bool allowDoubleTap;
+        [SerializeField] private NormalDash normalDashSettings;
 
         public KeyCode DashKey { get => dashKey; set => dashKey = value; }
-        public NormalDash DashSettings { get => dashSettings; set => dashSettings = value; }
+        public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
+        public NormalDash DashSettings { get => normalDashSettings; set => normalDashSettings = value; }
     }
 
 
