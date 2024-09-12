@@ -23,7 +23,7 @@ MonoBehaviour:
   canMoveOnAir: 0
   doubleTapThreshold: 0.3
   walkAction:
-    walkMode: 1
+    walkMode: 2
     walkConstantSpeed:
       speed: 9.3
     walkAccelerationSettings:
@@ -33,12 +33,13 @@ MonoBehaviour:
       deceleration: 16.5
     walkVehicleSettings:
       brakeInput: 324
-      horizontalBrake: 0
+      horizontalBrake: 1
       speed: 10.5
       maxSpeed: 14.6
       acceleration: 14.6
       deceleration: 14.6
       brakeForce: 3.5
+    useShadowEffect: 0
   sprintAction:
     sprintKey: 304
     allowDoubleTap: 0
@@ -50,11 +51,13 @@ MonoBehaviour:
       maxSpeed: 28.2
       acceleration: 22
       deceleration: 20.3
+    useShadowEffect: 0
   dashAction:
     dashKey: 32
     allowDoubleTap: 1
     normalDashSettings:
       dashDistance: 3.5
-      dashSpeed: 35.9
+      dashSpeed: 35.1
       cooldown: 1
       dashOnAir: 0
+    useShadowEffect: 1

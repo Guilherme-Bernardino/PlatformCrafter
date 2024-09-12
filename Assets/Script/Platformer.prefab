@@ -319,6 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19717a945efe90a428a138ec895572dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Shadow: {fileID: 0}
-  speed: 0
-  _color: {r: 0, g: 0, b: 0, a: 0}
+  Shadow: {fileID: 4351637713240009246, guid: 9740a884883a64c408df19045697ad3e, type: 3}
+  speed: 20
+  _color: {r: 0, g: 0, b: 0, a: 1}

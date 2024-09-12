@@ -104,7 +104,7 @@ namespace PlatformCrafterModularSystem
                 ChangeState(VerticalState.Idle);
             }
 
-                Debug.Log(CurrentState);
+                //Debug.Log(CurrentState);
         }
 
         public void ChangeState(VerticalState newState)

@@ -36,7 +36,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private float groundCheckRange = 0.1f;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private bool canMoveOnAir; // Allows for horizontal input off ground.
-        [SerializeField] private float doubleTapThreshold = 0.25f;
+        [Range(0.1f, 2f)][SerializeField] private float doubleTapThreshold = 0.25f;
 
         //HM Actions
         [SerializeField] private Walk walkAction;
@@ -61,9 +61,16 @@ namespace PlatformCrafterModularSystem {
         protected override void InitializeModule()
         {
             rb = modularBrain.Rigidbody;
-            shadowEffect = modularBrain.GetComponent<ShadowEffect>();
+            shadowEffect = modularBrain.ShadowEffect;
 
             isFacingRight = true;
+            isSprintActive = false;
+            isBraking = false;
+            dashStartTime = 0;
+            dashDuration = 0;  
+            lastRightKeyPressTime = 0;
+            lastLeftKeyPressTime = 0;
+
             CurrentState = HorizontalState.Idle;
         }
 
@@ -81,6 +88,7 @@ namespace PlatformCrafterModularSystem {
             if (isSprintActive && CurrentState == HorizontalState.Sprinting)
                 MaintainSprint();
 
+            Debug.Log(isBraking);
             Debug.Log(CurrentState);
         }
 
@@ -131,7 +139,6 @@ namespace PlatformCrafterModularSystem {
                     break;
 
                 case HorizontalState.Dashing:
-                    // Transition out of dashing is handled in FixedUpdate when dash ends
                     break;
 
                 case HorizontalState.Braking:
@@ -182,7 +189,7 @@ namespace PlatformCrafterModularSystem {
 
         private void MaintainSprint()
         {
-            if (Math.Abs(rb.velocity.x) > 0 && isGrounded) // Continue sprinting if moving and grounded
+            if (Math.Abs(rb.velocity.x) > 0 && isGrounded) 
             {
                 SetState(HorizontalState.Sprinting);
             }
@@ -239,9 +246,12 @@ namespace PlatformCrafterModularSystem {
                 case HorizontalState.Dashing:
                     UpdateDash();
                     break;
+                case HorizontalState.Braking:
+                    HandleWalkVehicleLike();
+                    break;
             }
 
-            if (ShouldTransitionToIdle())
+            if (ShouldTransitionToIdle() && !isBraking)
             {
                 SetState(HorizontalState.Idle);
             }
@@ -262,6 +272,11 @@ namespace PlatformCrafterModularSystem {
                     HandleWalkVehicleLike();
                     break;
             }
+
+            if (walkAction.UseShadowEffect && shadowEffect != null)
+            {
+                shadowEffect.ShadowSkill();
+            }
         }
 
         private void HandleSprint()
@@ -277,14 +292,15 @@ namespace PlatformCrafterModularSystem {
                     HandleSprintAccelerationSpeed();
                     break;
             }
+
+            if (sprintAction.UseShadowEffect && shadowEffect != null)
+            {
+                shadowEffect.ShadowSkill();
+            }
         }
 
         private void HandleWalkConstantSpeed()
         {
-            //if (!isWalking && isGrounded && !isDashing) rb.velocity = new Vector2(0, rb.velocity.y); //bug no dash
-
-            //if (!isWalking || !isGrounded || isSprinting || isDashing) return;
-
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -301,8 +317,6 @@ namespace PlatformCrafterModularSystem {
 
         private void HandleWalkAccelerationSpeed()
         {
-            //if (!isWalking || !isGrounded || isSprinting || isDashing) return;
-
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -335,22 +349,22 @@ namespace PlatformCrafterModularSystem {
 
         private void HandleWalkVehicleLike()
         {
-            //if (!isWalking || !isGrounded || isSprinting || isDashing) return;
-
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey))
+            // Set target speed based on input and ensure braking flag is false unless brake input is active
+            if (Input.GetKey(rightKey) && !isBraking)
             {
                 targetSpeed = walkAction.WalkVehicleSettings.Speed;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey) && !isBraking)
             {
                 targetSpeed = -walkAction.WalkVehicleSettings.Speed;
             }
 
             float currentSpeed = rb.velocity.x;
 
-            if (targetSpeed != 0 && !isBraking)
+            // Adjust current speed based on input and movement settings
+            if (targetSpeed != 0)
             {
                 currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, walkAction.WalkVehicleSettings.Acceleration * Time.fixedDeltaTime);
             }
@@ -359,6 +373,7 @@ namespace PlatformCrafterModularSystem {
                 currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleSettings.Deceleration * Time.fixedDeltaTime);
             }
 
+            // Handle braking based on input
             if (Input.GetKey(walkAction.WalkVehicleSettings.BrakeInput) ||
                 (walkAction.WalkVehicleSettings.HorizontalBrake && ((currentSpeed > 0 && Input.GetKey(leftKey)) || (currentSpeed < 0 && Input.GetKey(rightKey)))))
             {
@@ -366,13 +381,25 @@ namespace PlatformCrafterModularSystem {
                 SetState(HorizontalState.Braking);
                 currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleSettings.BrakeForce * Time.fixedDeltaTime);
             }
-            else
+            else if (!Input.GetKey(walkAction.WalkVehicleSettings.BrakeInput))  // Exit braking when brake input is released
             {
                 isBraking = false;
+
+                // If input exists, return to walking state
+                if (Input.GetKey(rightKey) || Input.GetKey(leftKey))
+                {
+                    SetState(HorizontalState.Walking);
+                }
+                else
+                {
+                    SetState(HorizontalState.Idle);
+                }
             }
 
+            // Apply the clamped speed to the Rigidbody
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkVehicleSettings.MaxSpeed, walkAction.WalkVehicleSettings.MaxSpeed), rb.velocity.y);
 
+            // Transition back to walking if the character is moving but not braking
             if (Mathf.Abs(rb.velocity.x) > 0.01f && !isBraking)
             {
                 SetState(HorizontalState.Walking);
@@ -381,8 +408,6 @@ namespace PlatformCrafterModularSystem {
 
         private void HandleSprintConstantSpeed()
         {
-            //if(!isSprinting || !isGrounded || isDashing) return;
-
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -399,8 +424,6 @@ namespace PlatformCrafterModularSystem {
 
         private void HandleSprintAccelerationSpeed()
         {
-            //if (!isSprinting || !isGrounded || isDashing) return;
-
             float targetSpeed = 0f;
 
             if (Input.GetKey(rightKey))
@@ -444,6 +467,11 @@ namespace PlatformCrafterModularSystem {
 
         private void UpdateDash()
         {
+            if (dashAction.UseShadowEffect && shadowEffect != null)
+            {
+                shadowEffect.ShadowSkill();
+            }
+
             if (Time.time - dashStartTime >= dashDuration)
             {
                 EndDash();
@@ -452,18 +480,19 @@ namespace PlatformCrafterModularSystem {
 
         private void EndDash()
         {
-            rb.velocity = Vector2.zero; // Stop movement after the dash
+            rb.velocity = Vector2.zero;
             SetState(HorizontalState.Idle);
+
+            dashStartTime = Time.time;
         }
 
         private bool CanDash()
         {
-            return (isGrounded || dashAction.DashSettings.DashOnAir) && Time.time - dashStartTime > dashAction.DashSettings.Cooldown;
+            return (isGrounded || dashAction.DashSettings.DashOnAir) && (Time.time - dashStartTime > dashAction.DashSettings.Cooldown);
         }
 
         private bool ShouldTransitionToIdle()
         {
-            // Transition to Idle when there's no more horizontal velocity
             return Mathf.Abs(rb.velocity.x) <= 0.01f && CurrentState != HorizontalState.Dashing && (!Input.GetKey(rightKey) && !Input.GetKey(leftKey));
         }
 
@@ -509,10 +538,13 @@ namespace PlatformCrafterModularSystem {
         [AllowNesting]
         [SerializeField] private VehicleLike walkVehicleSettings;
 
+        [SerializeField] private bool useShadowEffect;
+
         public WalkMovementMode WalkMode { get => walkMode; set => walkMode = value; }
         public ConstantSpeed WalkConstantSpeed { get => walkConstantSpeed; set => walkConstantSpeed = value; }
         public AcceleratingSpeed WalkAccelerationSettings { get => walkAccelerationSettings; set => walkAccelerationSettings = value; }
         public VehicleLike WalkVehicleSettings { get => walkVehicleSettings; set => walkVehicleSettings = value; }
+        public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
     }
 
 
@@ -539,11 +571,14 @@ namespace PlatformCrafterModularSystem {
         [AllowNesting]
         [SerializeField] private AcceleratingSpeed sprintAccelerationSettings;
 
+        [SerializeField] private bool useShadowEffect;
+
         public KeyCode SprintKey { get => sprintKey; set => sprintKey = value; }
         public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
         public SprintMovementMode SprintMode { get => sprintMode; set => sprintMode = value; }
         public ConstantSpeed SprintConstantSpeed { get => sprintConstantSpeed; set => sprintConstantSpeed = value; }
         public AcceleratingSpeed SprintAccelerationSettings { get => sprintAccelerationSettings; set => sprintAccelerationSettings = value; }
+        public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
     }
 
     //------------------------------------ Dash Settings ------------------------------------ 
@@ -552,12 +587,14 @@ namespace PlatformCrafterModularSystem {
     public struct Dash
     {
         [SerializeField] private KeyCode dashKey;
-        [Label("Allow Double Tap?")][SerializeField] private bool allowDoubleTap;
+        [SerializeField] private bool allowDoubleTap;
         [SerializeField] private NormalDash normalDashSettings;
+        [SerializeField] private bool useShadowEffect;
 
         public KeyCode DashKey { get => dashKey; set => dashKey = value; }
         public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
         public NormalDash DashSettings { get => normalDashSettings; set => normalDashSettings = value; }
+        public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
     }
 
 
@@ -566,7 +603,7 @@ namespace PlatformCrafterModularSystem {
     [System.Serializable]
     public struct ConstantSpeed
     {
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float speed;
 
         public float Speed => speed;
@@ -575,13 +612,13 @@ namespace PlatformCrafterModularSystem {
     [System.Serializable]
     public struct AcceleratingSpeed
     {
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float speed;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 200.0f)]
         [SerializeField] private float maxSpeed;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float acceleration;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float deceleration;
 
         public float Speed => speed;
@@ -595,15 +632,15 @@ namespace PlatformCrafterModularSystem {
     {
         [SerializeField] private KeyCode brakeInput;
         [SerializeField] private bool horizontalBrake;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float speed;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 200.0f)]
         [SerializeField] private float maxSpeed;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float acceleration;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float deceleration;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float brakeForce;
 
 
@@ -619,11 +656,11 @@ namespace PlatformCrafterModularSystem {
     [System.Serializable]
     public struct NormalDash
     {
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float dashDistance;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float dashSpeed;
-        [Range(0.0f, 50.0f)]
+        [Range(0.0f, 100.0f)]
         [SerializeField] private float cooldown;
         [SerializeField] private bool dashOnAir;
 
