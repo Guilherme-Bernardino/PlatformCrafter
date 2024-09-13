@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c543a5938ca9614eb74b37636fd8409, type: 3}
   m_Name: VMModule
   m_EditorClassIdentifier: 
-  isActive: 1
+  isActive: 0
   jumpKey: 273
   extraActions: 6
   jump:

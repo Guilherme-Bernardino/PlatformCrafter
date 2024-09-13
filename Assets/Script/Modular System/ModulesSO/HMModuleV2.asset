@@ -21,43 +21,58 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   canMoveOnAir: 0
-  doubleTapThreshold: 0.3
+  doubleTapThreshold: 0.1
   walkAction:
     walkMode: 2
     walkConstantSpeed:
       speed: 9.3
     walkAccelerationSettings:
-      speed: 11.4
-      maxSpeed: 28.7
-      acceleration: 17.4
-      deceleration: 16.5
+      speed: 25.2
+      maxSpeed: 72.8
+      acceleration: 24.8
+      deceleration: 0.5
     walkVehicleSettings:
       brakeInput: 324
       horizontalBrake: 1
-      speed: 10.5
-      maxSpeed: 14.6
+      speed: 30.1
+      maxSpeed: 39.1
       acceleration: 14.6
       deceleration: 14.6
       brakeForce: 3.5
+    transitionToSprint: 1
+    transitionSpeedThreshold: 20
     useShadowEffect: 0
   sprintAction:
     sprintKey: 304
     allowDoubleTap: 0
-    sprintMode: 0
+    sprintMode: 1
     sprintConstantSpeed:
-      speed: 27.3
+      speed: 87.2
     sprintAccelerationSettings:
       speed: 26.5
-      maxSpeed: 28.2
+      maxSpeed: 67.8
       acceleration: 22
       deceleration: 20.3
-    useShadowEffect: 0
+    transitionToWalk: 1
+    transitionWalkThreshold: 20
+    useShadowEffect: 1
+  slideAction:
+    slideKey: 9
+    slideMode: 0
+    colliderHeightPercentage: 50
+    rollSlideSettings:
+      slideSpeed: 27.7
+      slideDistance: 8
+      cooldown: 1
+    longSlideSettings:
+      slideSpeed: 37.3
+      slideSpeedReduction: 2.3
   dashAction:
     dashKey: 32
     allowDoubleTap: 1
     normalDashSettings:
       dashDistance: 3.5
       dashSpeed: 35.1
-      cooldown: 1
-      dashOnAir: 0
+      cooldown: 0.3
+      dashOnAir: 1
     useShadowEffect: 1

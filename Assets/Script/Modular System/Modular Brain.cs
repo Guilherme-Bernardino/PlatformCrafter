@@ -52,6 +52,7 @@ namespace PlatformCrafterModularSystem
             animator = GetComponentInChildren<Animator>();
             col = GetComponentInChildren<Collider2D>();
             audioSource = GetComponentInChildren<AudioSource>();
+            shadowEffect = GetComponentInChildren<ShadowEffect>();
 
             InitializeModules();
         }
