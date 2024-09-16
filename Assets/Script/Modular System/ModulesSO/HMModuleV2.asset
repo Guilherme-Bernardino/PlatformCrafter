@@ -24,8 +24,8 @@ MonoBehaviour:
   doubleTapThreshold: 0.1
   walkAction:
     walkMode: 2
-    walkConstantSpeed:
-      speed: 9.3
+    walkConstantSpeedSettings:
+      speed: 0
     walkAccelerationSettings:
       speed: 25.2
       maxSpeed: 72.8
@@ -68,7 +68,7 @@ MonoBehaviour:
       slideSpeed: 37.3
       slideSpeedReduction: 2.3
   dashAction:
-    dashKey: 32
+    dashKey: 0
     allowDoubleTap: 1
     normalDashSettings:
       dashDistance: 3.5

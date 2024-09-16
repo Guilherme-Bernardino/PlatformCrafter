@@ -34,8 +34,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private KeyCode rightKey;
         [SerializeField] private KeyCode leftKey;
         [SerializeField] private SpriteFacingDirection spriteFacingDirection;
-
-        [SerializeField] private float groundCheckRange = 0.1f;
+        [SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private bool canMoveOnAir; // Allows for horizontal input off ground
         [Range(0.1f, 2f)][SerializeField] private float doubleTapThreshold = 0.25f;
@@ -58,7 +57,6 @@ namespace PlatformCrafterModularSystem {
         private bool isBraking;
         private bool isSprintActive = false;
         private bool isSliding = false;
-
 
         //Others
         private float dashStartTime;
@@ -111,9 +109,6 @@ namespace PlatformCrafterModularSystem {
 
             if (isSprintActive && CurrentState == HorizontalState.Sprinting)
                 MaintainSprint();
-
-            Debug.Log(isBraking);
-            Debug.Log(CurrentState);
         }
 
         private void HandleInput()
@@ -341,11 +336,11 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey))
             {
-                targetSpeed = walkAction.WalkConstantSpeed.Speed;
+                targetSpeed = walkAction.WalkConstantSpeedSettings.Speed;
             }
             else if (Input.GetKey(leftKey))
             {
-                targetSpeed = -walkAction.WalkConstantSpeed.Speed;
+                targetSpeed = -walkAction.WalkConstantSpeedSettings.Speed;
             }
 
             rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
@@ -629,11 +624,12 @@ namespace PlatformCrafterModularSystem {
 
         private void UpdateGroundCheck()
         {
-            Vector2 rayOrigin = rb.position;
-            Vector2 rayDirection = Vector2.down;
-            float rayLength = groundCheckRange;
+            Vector2 boxCenter = rb.position;
+            Vector2 boxSize = groundCheck;
+            float boxAngle = 0f;
 
-            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, groundLayer);
+            RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, boxAngle, Vector2.down, groundCheck.y, groundLayer);
+
             isGrounded = hit.collider != null;
         }
 
@@ -659,7 +655,7 @@ namespace PlatformCrafterModularSystem {
 
         [SerializeField]
         [ShowIf("walkMode", WalkMovementMode.ConstantSpeed)]
-        [AllowNesting] private ConstantSpeed walkConstantSpeed;
+        [AllowNesting] private ConstantSpeed walkConstantSpeedSettings;
 
         [ShowIf("walkMode", WalkMovementMode.AccelerationSpeed)]
         [AllowNesting]
@@ -675,7 +671,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private bool useShadowEffect;
 
         public WalkMovementMode WalkMode { get => walkMode; set => walkMode = value; }
-        public ConstantSpeed WalkConstantSpeed { get => walkConstantSpeed; set => walkConstantSpeed = value; }
+        public ConstantSpeed WalkConstantSpeedSettings { get => walkConstantSpeedSettings; set => walkConstantSpeedSettings = value; }
         public AcceleratingSpeed WalkAccelerationSettings { get => walkAccelerationSettings; set => walkAccelerationSettings = value; }
         public VehicleLike WalkVehicleSettings { get => walkVehicleSettings; set => walkVehicleSettings = value; }
         public bool TransitionToSprint => transitionToSprint;

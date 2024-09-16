@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   jumpKey: 273
-  extraActions: 6
+  extraActions: -1
   jump:
     groundLayer:
       serializedVersion: 2
       m_Bits: 8
     groundCheckRange: 0.15
-    jumpMode: 0
+    jumpMode: 1
     constantHeightJumpSettings:
       jumpHeight: 1.3
       gravityScale: 6
