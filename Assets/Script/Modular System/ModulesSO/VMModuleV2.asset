@@ -47,17 +47,17 @@ MonoBehaviour:
       maxJumpDuration: 0.065
     useShadowEffect: 0
   crouchAction:
-    crouchKey: 0
-    crouchMode: 0
+    crouchKey: 274
+    crouchMode: 1
     normalCrouchSettings:
-      crouchHeightReductionPercentage: 0
-      linearDrag: 0
+      crouchHeightReductionPercentage: 50
+      linearDrag: 3.1
     platformCrouchSettings:
-      crouchHeightReductionPercentage: 0
-      linearDrag: 0
-      platformTag: 
-      platformHoldTime: 0
-      platformDropTime: 0
+      crouchHeightReductionPercentage: 49.8
+      linearDrag: 1.4
+      platformTag: Platform
+      platformHoldTime: 4.44
+      platformDropTime: 0.66
   climbAction:
     climbUpKey: 0
     climbDownKey: 0

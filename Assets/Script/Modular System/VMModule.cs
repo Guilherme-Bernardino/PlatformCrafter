@@ -76,7 +76,13 @@ namespace PlatformCrafterModularSystem
                 originalOffset = collider.offset;
             }
 
+            jumpTime = 0;
+            airJumpTime = 0;
             lastAirJumpTime = 0;
+            dropTimer = 0;
+            crouchTime = 0;
+            lastAirJumpTime = 0;
+            airJumpClicked = false;
 
             defaultGravityScale = rb.gravityScale;
             CurrentState = VerticalState.Idle;
@@ -95,6 +101,19 @@ namespace PlatformCrafterModularSystem
 
             UpdateGroundCheck();
             HandleInput();
+
+            if (isDroppingThroughPlatform)
+            {
+                dropTimer -= Time.deltaTime;
+                if (dropTimer <= 0f)
+                {
+                    isDroppingThroughPlatform = false;
+                    if (modularBrain.Collider is not BoxCollider2D)
+                        capsuleCollider.enabled = true;
+                    else
+                        collider.enabled = true;
+                }
+            }
 
             if (!isJumping && !isAirJumping)
             {
@@ -121,7 +140,6 @@ namespace PlatformCrafterModularSystem
             if (!isGrounded && rb.velocity.y != 0 && CurrentState != VerticalState.Climbing && CurrentState == VerticalState.AirJumping)
             {
                 isAirJumping = true;
-                Debug.Log("here");
                 PerformNaturalFall();
             }
             else
@@ -137,7 +155,7 @@ namespace PlatformCrafterModularSystem
                 case VerticalState.Idle:
                     if (Input.GetKeyDown(jumpKey) && isGrounded)
                         SetState(VerticalState.Jumping);
-                    else if (Input.GetKeyDown(crouchAction.CrouchKey))
+                    else if (Input.GetKeyDown(crouchAction.CrouchKey) && isGrounded)
                         SetState(VerticalState.Crouching);
                     else if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
                         SetState(VerticalState.Climbing);
@@ -164,7 +182,13 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.AirJumping);
                     }
                     break;
-                case VerticalState.Crouching: break;
+                case VerticalState.Crouching:
+                    if (Input.GetKeyUp(crouchAction.CrouchKey))
+                    {
+                        ResetCrouch();
+                        SetState(VerticalState.Idle);
+                    }
+                    break;
                 case VerticalState.Climbing: break;
             }
         }
@@ -180,7 +204,7 @@ namespace PlatformCrafterModularSystem
                     HandleAirJump();
                     break;
                 case VerticalState.Crouching:
-                    
+                    HandleCrouch();
                     break;
                 case VerticalState.Climbing:
                     
@@ -223,6 +247,21 @@ namespace PlatformCrafterModularSystem
             if (airJumpAction.UseShadowEffect && shadowEffect != null)
             {
                 shadowEffect.ShadowSkill();
+            }
+        }
+
+        private void HandleCrouch()
+        {
+            if (!isGrounded) return;
+
+            switch (crouchAction.CrouchMode)
+            {
+                case Crouch.CrouchMovementMode.NormalCrouch:
+                    HandleNormalCrouch();
+                    break;
+                case Crouch.CrouchMovementMode.PlatformCrouch:
+                    HandlePlatformCrouch();
+                    break;
             }
         }
 
@@ -333,6 +372,75 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        private void HandleNormalCrouch()
+        {
+            float heightReduction = originalColliderHeight * (crouchAction.NormalCrouchSettings.CrouchHeightReductionPercentage / 100f);
+
+            if (collider != null)
+            {
+                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
+                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+            }
+            if (capsuleCollider != null)
+            {
+                capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
+                capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
+            }
+
+            rb.drag = crouchAction.NormalCrouchSettings.LinearDrag;   
+        }
+
+        private void HandlePlatformCrouch()
+        {
+            float heightReduction = originalColliderHeight * (crouchAction.PlatformCrouchSettings.CrouchHeightReductionPercentage / 100f);
+
+            if (collider != null)
+            {
+                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
+                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+            }
+            if (capsuleCollider != null)
+            {
+                capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
+                capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
+            }
+
+            rb.drag = crouchAction.PlatformCrouchSettings.LinearDrag;
+
+            if (Input.GetKey(crouchAction.CrouchKey))
+            {
+                Debug.Log(crouchTime);
+                crouchTime += Time.fixedDeltaTime;
+                if (crouchTime >= crouchAction.PlatformCrouchSettings.PlatformHoldTime && IsOnPlatform())
+                {
+                    isDroppingThroughPlatform = true;
+                    dropTimer = crouchAction.PlatformCrouchSettings.PlatformDropTime;
+
+                    if (modularBrain.Collider is not BoxCollider2D)
+                        capsuleCollider.enabled = false;
+                    else
+                        collider.enabled = false;
+                }
+            }
+        }
+
+        private void ResetCrouch()
+        {
+            if (collider != null)
+            {
+                collider.size = new Vector2(collider.size.x, originalColliderHeight);
+                collider.offset = originalOffset;
+            }
+            if (capsuleCollider != null)
+            {
+                capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight);
+                capsuleCollider.offset = originalOffset;
+            }
+
+            crouchTime = 0;
+            rb.drag = 0;
+        }
+
         private void PerformNaturalFall()
         {
             if (rb.velocity.y < 0 && CurrentState == VerticalState.Idle && !isGrounded)
@@ -350,6 +458,29 @@ namespace PlatformCrafterModularSystem
         {
             return true;
         }
+
+        private bool IsOnPlatform()
+        {
+            Collider2D[] colliders;
+
+            if (modularBrain.Collider is not BoxCollider2D)
+            {
+                colliders = Physics2D.OverlapCapsuleAll(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, groundLayer);
+            }
+            else
+            {
+                colliders = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0f, groundLayer);
+            }
+
+            foreach (Collider2D col in colliders)
+            {
+                if (col.CompareTag(crouchAction.PlatformCrouchSettings.PlatformTag))
+                {
+                    return true;
+                }
+            }
+            return false;
+        } 
 
         private void UpdateGroundCheck()
         {
