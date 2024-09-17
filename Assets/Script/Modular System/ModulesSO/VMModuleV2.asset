@@ -59,12 +59,12 @@ MonoBehaviour:
       platformHoldTime: 4.44
       platformDropTime: 0.66
   climbAction:
-    climbUpKey: 0
-    climbDownKey: 0
+    climbUpKey: 273
+    climbDownKey: 274
     climbableLayer:
       serializedVersion: 2
-      m_Bits: 0
-    climbCheckRange: 0
+      m_Bits: 16
+    climbCheckRange: 0.15
     verticalClimbSettings:
-      climbSpeed: 0
+      climbSpeed: 10
       holdClimb: 0

@@ -38,11 +38,13 @@ namespace PlatformCrafterModularSystem
         private ShadowEffect shadowEffect;
         private BoxCollider2D collider;
         private CapsuleCollider2D capsuleCollider;
+        private AnimationTypeModule animModule;
 
         //Checks
         private bool isGrounded;
         private bool isJumping;
         private bool isAirJumping;
+        private bool isClimbing;
         private bool isDroppingThroughPlatform;
         private bool isFrozen;
         private bool airJumpClicked;
@@ -62,6 +64,7 @@ namespace PlatformCrafterModularSystem
         {
             rb = modularBrain.Rigidbody;
             shadowEffect = modularBrain.ShadowEffect;
+            animModule = modularBrain.AnimationTypeModule;
 
             if (modularBrain.Collider is not BoxCollider2D)
             {
@@ -102,6 +105,23 @@ namespace PlatformCrafterModularSystem
             UpdateGroundCheck();
             HandleInput();
 
+            if (isClimbing)
+            {
+                if (animModule != null)
+                {
+                    //verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.Climbing);
+
+                    if (!isFrozen)
+                    {
+                        animModule.UnpauseAnimation();
+                    }
+                    else
+                    {
+                        animModule.PauseAnimation();
+                    }
+                }
+            }
+
             if (isDroppingThroughPlatform)
             {
                 dropTimer -= Time.deltaTime;
@@ -126,7 +146,7 @@ namespace PlatformCrafterModularSystem
                 isAirJumping = false;
             }
 
-            if (!isGrounded && rb.velocity.y != 0 && CurrentState != VerticalState.Climbing &&
+            if (!isGrounded && rb.velocity.y != 0 && !isClimbing &&
             !isAirJumping)
             {
                 isJumping = true;
@@ -137,7 +157,7 @@ namespace PlatformCrafterModularSystem
                 isJumping = false;
             }
 
-            if (!isGrounded && rb.velocity.y != 0 && CurrentState != VerticalState.Climbing && CurrentState == VerticalState.AirJumping)
+            if (!isGrounded && rb.velocity.y != 0 && !isClimbing && CurrentState == VerticalState.AirJumping)
             {
                 isAirJumping = true;
                 PerformNaturalFall();
@@ -146,6 +166,8 @@ namespace PlatformCrafterModularSystem
             {
                 isAirJumping = false;
             }
+
+            Debug.Log(CurrentState);
         }
 
         private void HandleInput()
@@ -153,7 +175,7 @@ namespace PlatformCrafterModularSystem
             switch (CurrentState)
             {
                 case VerticalState.Idle:
-                    if (Input.GetKeyDown(jumpKey) && isGrounded)
+                    if (Input.GetKeyDown(jumpKey) && isGrounded && CurrentState != VerticalState.Climbing)
                         SetState(VerticalState.Jumping);
                     else if (Input.GetKeyDown(crouchAction.CrouchKey) && isGrounded)
                         SetState(VerticalState.Crouching);
@@ -161,7 +183,7 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.Jumping:
-                    if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded)
+                    if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded && CurrentState != VerticalState.Climbing)
                     {
                         airJumpClicked = true;
                         SetState(VerticalState.AirJumping);
@@ -170,17 +192,21 @@ namespace PlatformCrafterModularSystem
                     {
                         SetState(VerticalState.Idle);
                     }
+                    if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
+                        SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.AirJumping:
                     if (!Input.GetKey(airJumpAction.AirJumpKey) && isGrounded)
                     {
                         SetState(VerticalState.Idle);
                     }
-                    else if (Input.GetKeyDown(airJumpAction.AirJumpKey))
+                    else if (Input.GetKeyDown(airJumpAction.AirJumpKey) && CurrentState != VerticalState.Climbing)
                     {
                         airJumpClicked = true;
                         SetState(VerticalState.AirJumping);
                     }
+                    if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
+                        SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.Crouching:
                     if (Input.GetKeyUp(crouchAction.CrouchKey))
@@ -189,7 +215,13 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.Idle);
                     }
                     break;
-                case VerticalState.Climbing: break;
+                case VerticalState.Climbing:
+                    if (!CanClimb())
+                    {
+                        StopClimbing();
+                    }
+                       
+                    break;
             }
         }
 
@@ -207,7 +239,7 @@ namespace PlatformCrafterModularSystem
                     HandleCrouch();
                     break;
                 case VerticalState.Climbing:
-                    
+                    HandleClimbing();
                     break;
             }
         }
@@ -409,7 +441,6 @@ namespace PlatformCrafterModularSystem
 
             if (Input.GetKey(crouchAction.CrouchKey))
             {
-                Debug.Log(crouchTime);
                 crouchTime += Time.fixedDeltaTime;
                 if (crouchTime >= crouchAction.PlatformCrouchSettings.PlatformHoldTime && IsOnPlatform())
                 {
@@ -441,6 +472,55 @@ namespace PlatformCrafterModularSystem
             rb.drag = 0;
         }
 
+        private void HandleClimbing()
+        {
+            isClimbing = true;
+            rb.gravityScale = 0f;
+
+            float verticalInput = 0f;
+            if (Input.GetKey(climbAction.ClimbUpKey))
+            {
+                verticalInput = 1f;
+            }
+            else if (Input.GetKey(climbAction.ClimbDownKey))
+            {
+                verticalInput = -1f;
+            }
+
+            rb.velocity = new Vector2(rb.velocity.x, verticalInput * climbAction.VerticalClimbSettings.ClimbSpeed);
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+            isFrozen = false;
+            
+            if (!(Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)))
+            {
+                if (climbAction.VerticalClimbSettings.HoldClimb)
+                {
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
+                    isFrozen = true;
+                }
+                else
+                {
+                    Debug.Log("HERE");
+                    StopClimbing();
+                    
+                }
+            }
+        }
+
+        private void StopClimbing()
+        {
+            if (isClimbing)
+            {
+                SetState(VerticalState.Idle);
+                isClimbing = false;
+                rb.gravityScale = defaultGravityScale;
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                animModule.UnpauseAnimation();
+            }
+        }
+
         private void PerformNaturalFall()
         {
             if (rb.velocity.y < 0 && CurrentState == VerticalState.Idle && !isGrounded)
@@ -456,7 +536,12 @@ namespace PlatformCrafterModularSystem
 
         private bool CanClimb()
         {
-            return true;
+            RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.up, climbAction.ClimbCheckRange, climbAction.ClimbableLayer);
+            Debug.DrawRay(rb.position, Vector2.up * climbAction.ClimbCheckRange, Color.green);
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+            return hit.collider != null;
         }
 
         private bool IsOnPlatform()
@@ -480,7 +565,7 @@ namespace PlatformCrafterModularSystem
                 }
             }
             return false;
-        } 
+        }
 
         private void UpdateGroundCheck()
         {
