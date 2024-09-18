@@ -16,13 +16,14 @@ MonoBehaviour:
   rightKey: 275
   leftKey: 276
   spriteFacingDirection: 0
-  groundCheckRange: 0.15
+  groundCheck: {x: 0.5, y: 0.15}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   canMoveOnAir: 0
   doubleTapThreshold: 0.1
   walkAction:
+    isAutomatic: 0
     walkMode: 2
     walkConstantSpeedSettings:
       speed: 0
@@ -44,20 +45,22 @@ MonoBehaviour:
     useShadowEffect: 0
   sprintAction:
     sprintKey: 304
+    isAutomatic: 0
     allowDoubleTap: 0
     sprintMode: 1
     sprintConstantSpeed:
       speed: 87.2
     sprintAccelerationSettings:
-      speed: 26.5
-      maxSpeed: 67.8
-      acceleration: 22
+      speed: 20.3
+      maxSpeed: 46.7
+      acceleration: 40.6
       deceleration: 20.3
     transitionToWalk: 1
     transitionWalkThreshold: 20
     useShadowEffect: 1
   slideAction:
     slideKey: 9
+    isAutomatic: 0
     slideMode: 0
     colliderHeightPercentage: 50
     rollSlideSettings:
@@ -67,8 +70,10 @@ MonoBehaviour:
     longSlideSettings:
       slideSpeed: 37.3
       slideSpeedReduction: 2.3
+    useShadowEffect: 0
   dashAction:
     dashKey: 0
+    isAutomatic: 0
     allowDoubleTap: 1
     normalDashSettings:
       dashDistance: 3.5

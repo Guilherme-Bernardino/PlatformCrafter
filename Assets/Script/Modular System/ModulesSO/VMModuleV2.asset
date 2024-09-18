@@ -20,6 +20,7 @@ MonoBehaviour:
     m_Bits: 8
   naturalFallingGravityScale: 5
   jumpAction:
+    isAutomatic: 0
     jumpMode: 0
     constantHeightJumpSettings:
       jumpHeight: 3.3
@@ -33,6 +34,7 @@ MonoBehaviour:
     useShadowEffect: 1
   airJumpAction:
     airJumpKey: 273
+    isAutomatic: 0
     maxExtraJumps: 1
     timeBetweenJumps: 0.2
     airJumpMode: 1
@@ -48,6 +50,7 @@ MonoBehaviour:
     useShadowEffect: 0
   crouchAction:
     crouchKey: 274
+    isAutomatic: 0
     crouchMode: 1
     normalCrouchSettings:
       crouchHeightReductionPercentage: 50
@@ -60,6 +63,7 @@ MonoBehaviour:
       platformDropTime: 0.66
   climbAction:
     climbUpKey: 273
+    isAutomatic: 2
     climbDownKey: 274
     climbableLayer:
       serializedVersion: 2
@@ -67,4 +71,4 @@ MonoBehaviour:
     climbCheckRange: 0.15
     verticalClimbSettings:
       climbSpeed: 10
-      holdClimb: 0
+      holdClimb: 1

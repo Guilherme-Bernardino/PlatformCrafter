@@ -104,13 +104,12 @@ namespace PlatformCrafterModularSystem
 
             UpdateGroundCheck();
             HandleInput();
+            HandleAutomatic();
 
             if (isClimbing)
             {
                 if (animModule != null)
                 {
-                    //verticalModule.ChangeState(VerticalMovementTypeModule.VerticalState.Climbing);
-
                     if (!isFrozen)
                     {
                         animModule.UnpauseAnimation();
@@ -220,7 +219,23 @@ namespace PlatformCrafterModularSystem
                     {
                         StopClimbing();
                     }
-                       
+                    break;
+            }
+        }
+
+        private void HandleAutomatic()
+        {
+            switch (CurrentState)
+            {
+                case VerticalState.Idle:
+                    if (jumpAction.IsAutomatic && isGrounded) SetState(VerticalState.Jumping);
+                    if (airJumpAction.IsAutomatic && !isGrounded) SetState(VerticalState.AirJumping);
+                    if (crouchAction.IsAutomatic && isGrounded) SetState(VerticalState.Crouching);
+                    if (climbAction.IsAutomatic != ClimbAutomaticMode.No && CanClimb()) SetState(VerticalState.Climbing);
+                    break;
+                case VerticalState.Crouching:
+                    if(!crouchAction.IsAutomatic && isGrounded)
+                        ResetCrouch();
                     break;
             }
         }
@@ -478,11 +493,11 @@ namespace PlatformCrafterModularSystem
             rb.gravityScale = 0f;
 
             float verticalInput = 0f;
-            if (Input.GetKey(climbAction.ClimbUpKey))
+            if (Input.GetKey(climbAction.ClimbUpKey) || climbAction.IsAutomatic == ClimbAutomaticMode.Up)
             {
                 verticalInput = 1f;
             }
-            else if (Input.GetKey(climbAction.ClimbDownKey))
+            else if (Input.GetKey(climbAction.ClimbDownKey) || (climbAction.IsAutomatic == ClimbAutomaticMode.Down && !isGrounded))
             {
                 verticalInput = -1f;
             }
@@ -493,7 +508,7 @@ namespace PlatformCrafterModularSystem
 
             isFrozen = false;
             
-            if (!(Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)))
+            if (!(Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && climbAction.IsAutomatic == ClimbAutomaticMode.No)
             {
                 if (climbAction.VerticalClimbSettings.HoldClimb)
                 {
@@ -502,9 +517,7 @@ namespace PlatformCrafterModularSystem
                 }
                 else
                 {
-                    Debug.Log("HERE");
                     StopClimbing();
-                    
                 }
             }
         }
@@ -515,7 +528,7 @@ namespace PlatformCrafterModularSystem
             {
                 SetState(VerticalState.Idle);
                 isClimbing = false;
-                rb.gravityScale = defaultGravityScale;
+                rb.gravityScale = naturalFallingGravityScale;
                 rb.velocity = new Vector2(rb.velocity.x, 0);
                 animModule.UnpauseAnimation();
             }
@@ -593,6 +606,7 @@ namespace PlatformCrafterModularSystem
             DerivativeHeightJump
         }
 
+        [SerializeField] private bool isAutomatic;
         [SerializeField] private JumpMovementMode jumpMode;
 
         [ShowIf("jumpMode", JumpMovementMode.ConstantHeightJump)]
@@ -605,6 +619,7 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private bool useShadowEffect;
 
+        public bool IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public JumpMovementMode JumpMode { get => jumpMode; set => jumpMode = value; }
         public ConstantHeightJump ConstantHeightJumpSettings { get => constantHeightJumpSettings; set => constantHeightJumpSettings = value; }
         public DerivativeHeightJump DerivativeHeightJumpSettings { get => derivativeHeightJumpSettings; set => derivativeHeightJumpSettings = value; }
@@ -621,6 +636,7 @@ namespace PlatformCrafterModularSystem
         }
 
         [SerializeField] private KeyCode airJumpKey;
+        [SerializeField] private bool isAutomatic;
         [SerializeField] private int maxExtraJumps;
         [SerializeField] private float timeBetweenJumps;
 
@@ -637,6 +653,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private bool useShadowEffect;
 
         public KeyCode AirJumpKey { get => airJumpKey; set => airJumpKey = value; }
+        public bool IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public int MaxExtraJumps { get => maxExtraJumps; set => maxExtraJumps = value; }
         public float TimeBetweenJumps { get => timeBetweenJumps; set => timeBetweenJumps = value; }
         public AirJumpMovementMode AirJumpMode { get => airJumpMode; set => airJumpMode = value; }
@@ -655,7 +672,7 @@ namespace PlatformCrafterModularSystem
         }
 
         [SerializeField] private KeyCode crouchKey;
-
+        [SerializeField] private bool isAutomatic;
         [SerializeField] private CrouchMovementMode crouchMode;
 
         [ShowIf("crouchMode", CrouchMovementMode.NormalCrouch)]
@@ -667,6 +684,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private PlatformCrouch platformCrouchSettings;
 
         public KeyCode CrouchKey { get => crouchKey; set => crouchKey = value; }
+        public bool IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public CrouchMovementMode CrouchMode { get => crouchMode; set => crouchMode = value; }
         public NormalCrouch NormalCrouchSettings { get => normalCrouchSettings; set => normalCrouchSettings = value; }
         public PlatformCrouch PlatformCrouchSettings { get => platformCrouchSettings; set => platformCrouchSettings = value; }
@@ -676,6 +694,7 @@ namespace PlatformCrafterModularSystem
     public struct Climb 
     {
         [SerializeField] private KeyCode climbUpKey;
+        [SerializeField] private ClimbAutomaticMode isAutomatic;
         [SerializeField] private KeyCode climbDownKey;
         [SerializeField] private LayerMask climbableLayer;
         [SerializeField] private float climbCheckRange;
@@ -683,6 +702,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private VerticalClimb verticalClimbSettings;
 
         public KeyCode ClimbUpKey { get => climbUpKey; set => climbUpKey = value; }
+        public ClimbAutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public KeyCode ClimbDownKey { get => climbDownKey; set => climbDownKey = value; }
         public LayerMask ClimbableLayer { get => climbableLayer; set => climbableLayer = value; }
         public float ClimbCheckRange { get => climbCheckRange; set => climbCheckRange = value; }
@@ -769,5 +789,12 @@ namespace PlatformCrafterModularSystem
 
         public float ClimbSpeed => climbSpeed;
         public bool HoldClimb => holdClimb;
+    }
+
+    public enum ClimbAutomaticMode
+    {
+        No,
+        Up,
+        Down
     }
 }

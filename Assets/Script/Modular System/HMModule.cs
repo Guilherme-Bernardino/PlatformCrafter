@@ -106,6 +106,7 @@ namespace PlatformCrafterModularSystem {
             HandleInput();
             UpdateDirection();
             HandleDoubleTapForMovement();
+            HandleAutomatic();
 
             if (isSprintActive && CurrentState == HorizontalState.Sprinting)
                 MaintainSprint();
@@ -181,6 +182,19 @@ namespace PlatformCrafterModularSystem {
                     break;
 
                 case HorizontalState.Braking:
+                    break;
+            }
+        }
+
+        private void HandleAutomatic()
+        {
+            switch (CurrentState)
+            {
+                case HorizontalState.Idle:
+                    if (walkAction.IsAutomatic != AutomaticMode.No) SetState(HorizontalState.Walking);
+                    if (sprintAction.IsAutomatic != AutomaticMode.No) SetState(HorizontalState.Sprinting);
+                    if (slideAction.IsAutomatic != AutomaticMode.No && isGrounded) StartSlide();
+                    if (dashAction.IsAutomatic != AutomaticMode.No && CanDash()) StartDash();
                     break;
             }
         }
@@ -334,11 +348,11 @@ namespace PlatformCrafterModularSystem {
         {
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKey(rightKey) || walkAction.IsAutomatic == AutomaticMode.Right)
             {
                 targetSpeed = walkAction.WalkConstantSpeedSettings.Speed;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey) || walkAction.IsAutomatic == AutomaticMode.Left)
             {
                 targetSpeed = -walkAction.WalkConstantSpeedSettings.Speed;
             }
@@ -350,11 +364,11 @@ namespace PlatformCrafterModularSystem {
         {
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKey(rightKey) || walkAction.IsAutomatic == AutomaticMode.Right)
             {
                 targetSpeed = walkAction.WalkAccelerationSettings.Speed;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey) || walkAction.IsAutomatic == AutomaticMode.Left)
             {
                 targetSpeed = -walkAction.WalkAccelerationSettings.Speed;
             }
@@ -372,7 +386,6 @@ namespace PlatformCrafterModularSystem {
 
             rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkAccelerationSettings.MaxSpeed, walkAction.WalkAccelerationSettings.MaxSpeed), rb.velocity.y);
 
-
             if (Mathf.Abs(currentSpeed) > 0.01f && !walkAction.TransitionToSprint)
             {
                 SetState(HorizontalState.Walking);
@@ -388,11 +401,11 @@ namespace PlatformCrafterModularSystem {
         {
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey) && !isBraking)
+            if (Input.GetKey(rightKey) && !isBraking || walkAction.IsAutomatic == AutomaticMode.Right)
             {
                 targetSpeed = walkAction.WalkVehicleSettings.Speed;
             }
-            else if (Input.GetKey(leftKey) && !isBraking)
+            else if (Input.GetKey(leftKey) && !isBraking || walkAction.IsAutomatic == AutomaticMode.Left)
             {
                 targetSpeed = -walkAction.WalkVehicleSettings.Speed;
             }
@@ -446,11 +459,11 @@ namespace PlatformCrafterModularSystem {
         {
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKey(rightKey) || sprintAction.IsAutomatic == AutomaticMode.Right)
             {
                 targetSpeed = sprintAction.SprintConstantSpeed.Speed;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey) || sprintAction.IsAutomatic == AutomaticMode.Left)
             {
                 targetSpeed = -sprintAction.SprintConstantSpeed.Speed;
             }
@@ -462,13 +475,13 @@ namespace PlatformCrafterModularSystem {
         {
             float targetSpeed = 0f;
 
-            if (Input.GetKey(rightKey))
+            if (Input.GetKey(rightKey) || sprintAction.IsAutomatic == AutomaticMode.Right)
             {
                 targetSpeed = sprintAction.SprintAccelerationSettings.Speed;
             }
-            else if (Input.GetKey(leftKey))
+            else if (Input.GetKey(leftKey) || sprintAction.IsAutomatic == AutomaticMode.Left)
             {
-                targetSpeed = -sprintAction.SprintConstantSpeed.Speed;
+                targetSpeed = -sprintAction.SprintAccelerationSettings.Speed;
             }
 
             float currentSpeed = rb.velocity.x;
@@ -519,19 +532,33 @@ namespace PlatformCrafterModularSystem {
 
             if (slideAction.SlideMode == Slide.SlideMovementMode.RollSlide)
             {
-                rb.velocity = new Vector2(isFacingRight ? slideAction.RollSlideSettings.SlideSpeed : -slideAction.RollSlideSettings.SlideSpeed, rb.velocity.y);
+                if (slideAction.IsAutomatic == AutomaticMode.Right)
+                    rb.velocity = new Vector2(slideAction.RollSlideSettings.SlideSpeed, rb.velocity.y);
+                else if (slideAction.IsAutomatic == AutomaticMode.Left)
+                    rb.velocity = new Vector2(-slideAction.RollSlideSettings.SlideSpeed, rb.velocity.y);
+                else 
+                    rb.velocity = new Vector2(isFacingRight ? slideAction.RollSlideSettings.SlideSpeed : -slideAction.RollSlideSettings.SlideSpeed, rb.velocity.y);
             }
             else if (slideAction.SlideMode == Slide.SlideMovementMode.LongSlide)
             {
-                float slideSpeed = Mathf.Abs(rb.velocity.x); 
-                if (!isFacingRight) slideSpeed = -slideSpeed;
+                float slideSpeed = Mathf.Abs(rb.velocity.x);
 
-                rb.velocity = new Vector2(slideSpeed, rb.velocity.y);
+                if (slideAction.IsAutomatic == AutomaticMode.Right)
+                    rb.velocity = new Vector2(slideSpeed * slideAction.LongSlideSettings.SlideSpeed, rb.velocity.y);
+                else if (slideAction.IsAutomatic == AutomaticMode.Left)
+                    rb.velocity = new Vector2(slideSpeed * slideAction.LongSlideSettings.SlideSpeed, rb.velocity.y);
+                else
+                    rb.velocity = new Vector2(isFacingRight ? slideSpeed * slideAction.LongSlideSettings.SlideSpeed: -slideSpeed * slideAction.LongSlideSettings.SlideSpeed, rb.velocity.y);
             }
         }
 
         private void UpdateSlide()
         {
+            if (slideAction.UseShadowEffect && shadowEffect != null)
+            {
+                shadowEffect.ShadowSkill();
+            }
+
             if (slideAction.SlideMode == Slide.SlideMovementMode.RollSlide)
             {
                 if (Time.time - slideStartTime >= slideAction.RollSlideSettings.SlideDistance / slideAction.RollSlideSettings.SlideSpeed)
@@ -576,8 +603,12 @@ namespace PlatformCrafterModularSystem {
             dashDuration = dashAction.DashSettings.DashDistance / dashAction.DashSettings.DashSpeed;
             dashStartTime = Time.time;
 
-            rb.velocity = new Vector2(isFacingRight ? dashAction.DashSettings.DashSpeed : -dashAction.DashSettings.DashSpeed, rb.velocity.y);
-
+            if (dashAction.IsAutomatic == AutomaticMode.Right)
+                rb.velocity = new Vector2(dashAction.DashSettings.DashSpeed, rb.velocity.y);
+            else if (dashAction.IsAutomatic == AutomaticMode.Left)
+                rb.velocity = new Vector2(-dashAction.DashSettings.DashSpeed, rb.velocity.y);
+            else
+                rb.velocity = new Vector2(isFacingRight ? dashAction.DashSettings.DashSpeed : -dashAction.DashSettings.DashSpeed, rb.velocity.y);
         }
 
         private void UpdateDash()
@@ -651,6 +682,7 @@ namespace PlatformCrafterModularSystem {
             VehicleLike
         }
 
+        [SerializeField] private AutomaticMode isAutomatic;
         [SerializeField] private WalkMovementMode walkMode;
 
         [SerializeField]
@@ -670,6 +702,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private float transitionSpeedThreshold;
         [SerializeField] private bool useShadowEffect;
 
+        public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public WalkMovementMode WalkMode { get => walkMode; set => walkMode = value; }
         public ConstantSpeed WalkConstantSpeedSettings { get => walkConstantSpeedSettings; set => walkConstantSpeedSettings = value; }
         public AcceleratingSpeed WalkAccelerationSettings { get => walkAccelerationSettings; set => walkAccelerationSettings = value; }
@@ -692,6 +725,7 @@ namespace PlatformCrafterModularSystem {
         }
 
         [SerializeField] private KeyCode sprintKey;
+        [SerializeField] private AutomaticMode isAutomatic;
         [Label("Allow Double Tap?")][SerializeField] private bool allowDoubleTap;
         [SerializeField] private SprintMovementMode sprintMode;
 
@@ -709,6 +743,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private bool useShadowEffect;
 
         public KeyCode SprintKey { get => sprintKey; set => sprintKey = value; }
+        public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
         public SprintMovementMode SprintMode { get => sprintMode; set => sprintMode = value; }
         public ConstantSpeed SprintConstantSpeed { get => sprintConstantSpeed; set => sprintConstantSpeed = value; }
@@ -729,7 +764,8 @@ namespace PlatformCrafterModularSystem {
             LongSlide 
         }
 
-        [SerializeField] private KeyCode slideKey; 
+        [SerializeField] private KeyCode slideKey;
+        [SerializeField] private AutomaticMode isAutomatic;
         [SerializeField] private SlideMovementMode slideMode;
 
         [Range(0f, 100f)][SerializeField] private float colliderHeightPercentage;
@@ -742,12 +778,16 @@ namespace PlatformCrafterModularSystem {
         [AllowNesting]
         [SerializeField] private LongSlide longSlideSettings;
 
+        [SerializeField] private bool useShadowEffect;
 
         public KeyCode SlideKey => slideKey;
+        public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public SlideMovementMode SlideMode => slideMode;
         public float ColliderHeightPercentage => colliderHeightPercentage;
         public RollSlide RollSlideSettings => rollSlideSettings;
         public LongSlide LongSlideSettings => longSlideSettings;
+
+        public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
     }
 
     //------------------------------------ Dash Settings ------------------------------------ 
@@ -756,11 +796,13 @@ namespace PlatformCrafterModularSystem {
     public struct Dash
     {
         [SerializeField] private KeyCode dashKey;
+        [SerializeField] private AutomaticMode isAutomatic;
         [SerializeField] private bool allowDoubleTap;
         [SerializeField] private NormalDash normalDashSettings;
         [SerializeField] private bool useShadowEffect;
 
         public KeyCode DashKey { get => dashKey; set => dashKey = value; }
+        public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
         public NormalDash DashSettings { get => normalDashSettings; set => normalDashSettings = value; }
         public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
@@ -838,7 +880,7 @@ namespace PlatformCrafterModularSystem {
     [System.Serializable]
     public struct LongSlide
     {
-        [Range(0.0f, 100.0f)][SerializeField] private float slideSpeed;
+        [Range(1f, 100.0f)][SerializeField] private float slideSpeed;
         [Range(0.0f, 100.0f)][SerializeField] private float slideSpeedReduction;
 
         public float SlideSpeed => slideSpeed;
@@ -862,6 +904,13 @@ namespace PlatformCrafterModularSystem {
         public float DashSpeed => dashSpeed;
         public float Cooldown => cooldown;
         public bool DashOnAir => dashOnAir;
+    }
+
+    public enum AutomaticMode
+    {
+        No = 0,
+        Left = 1,
+        Right = 2,
     }
 }
 
