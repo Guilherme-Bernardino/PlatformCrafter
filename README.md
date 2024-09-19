@@ -20,7 +20,30 @@ Guilherme Bernardino
 # Change Log
 All notable changes of the project
 
-## [0.9.5.1] - 10-09-2024
+## [0.9.7] - 19-09-2024
+
+### Added
+- Added a new HM Action called Slide.
+- Added two modes for Slide: Roll and Long Slide.
+- Added Transition from Walk state to Sprint and vice-versa through speed treshold.
+- Added Shadow Effect setting to all HM Module's actions and Jump and AirJump on VM Module.
+- Added a Shadow Effect getter on Modular Brain.
+- Added HM property that allows to adjust sprite's facing direction.
+- Added Natural Fall Gravity Scale property to the VM Module.
+- Added Time Between Jump on the Air Jump settings.
+- Added automatic modes for every actions on HM and VM. HM isAutomatic setting allows for No automatic, Right direction and Left direction. VM isAutomatic settings is a bool and Climb is "No" , "Up" & "Down".
+- Added Slide Action settings to Animation and Sound Effect Modules.
+
+### Changed
+- Changed the Physics Category Modules to now having all in the same script, and utilizing FixedUpdate for physics and Update for inputs.
+- Changed the use of Module Actions to none.
+- Changed the range values of all properties.
+- Changed ground check range to ground check as a box check, with now width(X) and height(y) on both HM and VM modules.
+
+### Fixed
+- Fixed Shadow Effect Shadows not being the same scale as the original sprite.
+
+## [0.9.6] - 10-09-2024
 
 ### Added
 - Added the Platform Crafter's User Guide.
