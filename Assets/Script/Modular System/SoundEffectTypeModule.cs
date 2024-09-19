@@ -25,6 +25,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private SoundEffectSettings idleSFX;
         [SerializeField] private SoundEffectSettings walkSFX;
         [SerializeField] private SoundEffectSettings sprintSFX;
+        [SerializeField] private SoundEffectSettings slideSFX;
         [SerializeField] private SoundEffectSettings dashSFX;
         [SerializeField] private SoundEffectSettings brakeSFX;
         [SerializeField] private SoundEffectSettings jumpSFX;
@@ -43,6 +44,7 @@ namespace PlatformCrafterModularSystem
             Walk,
             Sprint,
             Dash,
+            Slide,
             Brake,
             Jump,
             AirJump,
@@ -74,6 +76,7 @@ namespace PlatformCrafterModularSystem
         public void OnVerticalStateChange(VerticalMovementTypeModule.VerticalState newState)
         {
             verticalState = newState;
+
             if (IsActive)
             {
                 PlaySound();
@@ -125,6 +128,10 @@ namespace PlatformCrafterModularSystem
             {
                 SetSoundEffect(SoundEffectAction.Dash);
             }
+            else if(horizontalState == HorizontalMovementTypeModule.HorizontalState.Sliding)
+            {
+                SetSoundEffect(SoundEffectAction.Slide);
+            }
             else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Braking)
             {
                 SetSoundEffect(SoundEffectAction.Brake);
@@ -144,6 +151,7 @@ namespace PlatformCrafterModularSystem
                 case SoundEffectAction.Idle: sfxSettings = idleSFX; break;
                 case SoundEffectAction.Walk: sfxSettings = walkSFX; break;
                 case SoundEffectAction.Sprint: sfxSettings = sprintSFX; break;
+                case SoundEffectAction.Slide: sfxSettings = slideSFX; break;
                 case SoundEffectAction.Dash: sfxSettings = dashSFX; break;
                 case SoundEffectAction.Brake: sfxSettings = brakeSFX; break;
                 case SoundEffectAction.Jump: sfxSettings = jumpSFX; break;

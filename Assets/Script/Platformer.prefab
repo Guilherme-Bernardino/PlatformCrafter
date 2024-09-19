@@ -65,8 +65,6 @@ MonoBehaviour:
   soundEffectModule: {fileID: 11400000, guid: cf14a65491a8674479c408c96caaed36, type: 2}
   customModules:
   - {fileID: 11400000, guid: f9eb6c13859147f42baf70a56f410948, type: 2}
-  - {fileID: 11400000, guid: 15e9762b13dbe34408f07faba371e3f6, type: 2}
-  - {fileID: 11400000, guid: a516184fc71691a4793d14235a2ea6c7, type: 2}
 --- !u!212 &7127116229475881017
 SpriteRenderer:
   m_ObjectHideFlags: 0

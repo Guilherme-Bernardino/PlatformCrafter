@@ -14,6 +14,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private string idleAnimation;
         [SerializeField] private string walkAnimation;
         [SerializeField] private string sprintAnimation;
+        [SerializeField] private string slideAnimation;
         [SerializeField] private string dashAnimation;
         [SerializeField] private string brakeAnimation;
         [SerializeField] private string jumpAnimation;
@@ -31,6 +32,7 @@ namespace PlatformCrafterModularSystem
             Idle,
             Walk,
             Sprint,
+            Slide,
             Dash,
             Brake,
             Jump,
@@ -118,6 +120,10 @@ namespace PlatformCrafterModularSystem
             {
                 DoAnimation(AnimationAction.Dash);
             }
+            else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Sliding)
+            {
+                DoAnimation(AnimationAction.Slide);
+            }
             else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Braking)
             {
                 DoAnimation(AnimationAction.Brake);
@@ -135,6 +141,7 @@ namespace PlatformCrafterModularSystem
                 case AnimationAction.Idle: animator.Play(idleAnimation); break;
                 case AnimationAction.Walk: animator.Play(walkAnimation); break;
                 case AnimationAction.Sprint: animator.Play(sprintAnimation); break;
+                case AnimationAction.Slide: animator.Play(slideAnimation); break;
                 case AnimationAction.Dash: animator.Play(dashAnimation); break;
                 case AnimationAction.Brake: animator.Play(brakeAnimation); break;
                 case AnimationAction.Jump: animator.Play(jumpAnimation); break;

@@ -16,6 +16,7 @@ MonoBehaviour:
   idleAnimation: Idle
   walkAnimation: walk
   sprintAnimation: sprint
+  slideAnimation: slide
   dashAnimation: dash
   brakeAnimation: brake
   jumpAnimation: jump
