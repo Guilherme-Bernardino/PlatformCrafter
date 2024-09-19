@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Camera Follow Module
   m_EditorClassIdentifier: 
   isActive: 1
-  smoothSpeed: 1
+  smoothSpeed: 0.415
   offset: {x: 0, y: 0, z: -10}

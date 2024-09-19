@@ -8,7 +8,7 @@ public class ShadowEffect : MonoBehaviour
     [SerializeField] private GameObject Shadow;
     private List<GameObject> pool = new List<GameObject>();
     private float duration;
-    [SerializeField] private float speed;
+    [Range(1f,100f)][SerializeField] private float speed;
     [SerializeField] private Color _color;
 
     private void Awake()
@@ -25,6 +25,7 @@ public class ShadowEffect : MonoBehaviour
                 pool[i].SetActive(true);
                 pool[i].transform.position = transform.position;
                 pool[i].transform.rotation = transform.rotation;
+                pool[i].transform.localScale = transform.localScale;
                 pool[i].GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
                 pool[i].GetComponent<Solid>().MyColor = _color;
                 pool[i].GetComponent<SpriteRenderer>().flipX = GetComponent<SpriteRenderer>().flipX;

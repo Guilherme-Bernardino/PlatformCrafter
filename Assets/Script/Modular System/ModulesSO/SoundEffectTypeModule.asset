@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   idleSFX:
-    clip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+    clip: {fileID: 0}
     volume: 0.078
     loop: 0
     pitch: 1
@@ -28,6 +28,11 @@ MonoBehaviour:
     volume: 1
     loop: 0
     pitch: 1
+  slideSFX:
+    clip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+    volume: 0.219
+    loop: 0
+    pitch: 1
   dashSFX:
     clip: {fileID: 0}
     volume: 1
@@ -39,8 +44,8 @@ MonoBehaviour:
     loop: 0
     pitch: 1
   jumpSFX:
-    clip: {fileID: 0}
-    volume: 1
+    clip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+    volume: 0.106
     loop: 0
     pitch: 1
   airJumpSFX:
@@ -58,7 +63,7 @@ MonoBehaviour:
     volume: 1
     loop: 0
     pitch: 1
-  crouchWalkSFX:
+  crawlSFX:
     clip: {fileID: 0}
     volume: 1
     loop: 0

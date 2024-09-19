@@ -9,51 +9,75 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 091208a9ef59154418063146089116a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b10a072b81facc42a6ed03f60a6dc9a, type: 3}
   m_Name: SpelunkyHMovement
   m_EditorClassIdentifier: 
   isActive: 1
   rightKey: 275
   leftKey: 276
-  extraActions: 2
-  walk:
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-    groundCheckRange: 0.15
-    canMoveOnAir: 0
+  spriteFacingDirection: 0
+  groundCheck: {x: 0.5, y: 0.15}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  canMoveOnAir: 0
+  doubleTapThreshold: 0.25
+  walkAction:
+    isAutomatic: 0
     walkMode: 0
-    constantSpeedSettings:
-      speed: 12
-    acceleratingSpeedSettings:
-      speed: 11.1
-      maxSpeed: 15.5
-      acceleration: 6.8
-      deceleration: 24.4
-    vehicleLikeSettings:
-      brakeInput: 32
-      horizontalBrake: 1
-      speed: 10.4
-      maxSpeed: 20.5
-      acceleration: 8.3
-      deceleration: 7.6
-      brakeForce: 5
-  sprint:
+    walkConstantSpeedSettings:
+      speed: 8.1
+    walkAccelerationSettings:
+      speed: 11.4
+      maxSpeed: 37.6
+      acceleration: 0
+      deceleration: 0
+    walkVehicleSettings:
+      brakeInput: 0
+      horizontalBrake: 0
+      speed: 0
+      maxSpeed: 0
+      acceleration: 0
+      deceleration: 0
+      brakeForce: 0
+    transitionToSprint: 0
+    transitionSpeedThreshold: 0
+    useShadowEffect: 0
+  sprintAction:
     sprintKey: 304
+    isAutomatic: 0
     allowDoubleTap: 0
-    mode: 0
-    constantSpeedSettings:
-      speed: 16.5
-    acceleratingSpeedSettings:
-      speed: 27
-      maxSpeed: 26.7
-      acceleration: 12.2
-      deceleration: 25.5
-  dash:
-    dashKey: 101
+    sprintMode: 0
+    sprintConstantSpeed:
+      speed: 15.8
+    sprintAccelerationSettings:
+      speed: 0
+      maxSpeed: 0
+      acceleration: 0
+      deceleration: 0
+    transitionToWalk: 0
+    transitionWalkThreshold: 0
+    useShadowEffect: 0
+  slideAction:
+    slideKey: 0
+    isAutomatic: 0
+    slideMode: 0
+    colliderHeightPercentage: 0
+    rollSlideSettings:
+      slideSpeed: 5.7
+      slideDistance: 2.3
+      cooldown: 1
+    longSlideSettings:
+      slideSpeed: 0
+      slideSpeedReduction: 0
+    useShadowEffect: 0
+  dashAction:
+    dashKey: 0
+    isAutomatic: 0
     allowDoubleTap: 1
-    shadowEffect: 1
-    dashSettings:
-      dashDistance: 7.3
-      dashSpeed: 30.7
-      cooldown: 3.1
+    normalDashSettings:
+      dashDistance: 6.2
+      dashSpeed: 22.8
+      cooldown: 1.6
+      dashOnAir: 0
+    useShadowEffect: 1

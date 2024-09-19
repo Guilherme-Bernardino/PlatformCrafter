@@ -37,12 +37,13 @@ namespace PlatformCrafterModularSystem
         private Animator animator;
         private Collider2D col;
         private AudioSource audioSource;
-
+        private ShadowEffect shadowEffect;
         public Rigidbody2D Rigidbody => rb;
         public SpriteRenderer SpriteRenderer => spriteRenderer;
         public Animator Animator => animator;
         public Collider2D Collider => col;
         public AudioSource AudioSource => audioSource;
+        public ShadowEffect ShadowEffect => shadowEffect;
 
         private void Start()
         {
@@ -51,6 +52,7 @@ namespace PlatformCrafterModularSystem
             animator = GetComponentInChildren<Animator>();
             col = GetComponentInChildren<Collider2D>();
             audioSource = GetComponentInChildren<AudioSource>();
+            shadowEffect = GetComponentInChildren<ShadowEffect>();
 
             InitializeModules();
         }

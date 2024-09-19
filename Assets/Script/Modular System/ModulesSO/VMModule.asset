@@ -9,67 +9,66 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c543a5938ca9614eb74b37636fd8409, type: 3}
+  m_Script: {fileID: 11500000, guid: 63cf377649a90034db8d786122d539fa, type: 3}
   m_Name: VMModule
   m_EditorClassIdentifier: 
   isActive: 1
   jumpKey: 273
-  extraActions: 6
-  jump:
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-    groundCheckRange: 0.15
+  groundCheck: {x: 0.5, y: 0.15}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  naturalFallingGravityScale: 5
+  jumpAction:
+    isAutomatic: 0
     jumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 1.3
-      gravityScale: 6
-      fallGravityScale: 6
+      jumpHeight: 3.3
+      gravityScale: 3.1
+      fallGravityScale: 3.8
     derivativeHeightJumpSettings:
-      initialJumpForce: 12.6
-      gravityScale: 6
-      fallGravityScale: 14.4
-      maxJumpDuration: 0.34
-  airJump:
+      initialJumpForce: 12.2
+      gravityScale: 6.7
+      fallGravityScale: 6.7
+      maxJumpDuration: 0.105
+    useShadowEffect: 0
+  airJumpAction:
     airJumpKey: 273
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-    groundCheckRange: 0.1
+    isAutomatic: 0
     maxExtraJumps: 2
+    timeBetweenJumps: 0.5
     airJumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 4.8
-      gravityScale: 6
-      fallGravityScale: 9
+      jumpHeight: 0
+      gravityScale: 0
+      fallGravityScale: 0
     derivativeHeightJumpSettings:
-      initialJumpForce: 16.9
-      gravityScale: 6
-      fallGravityScale: 12
-      maxJumpDuration: 0.29
-  crouch:
+      initialJumpForce: 0
+      gravityScale: 0
+      fallGravityScale: 0
+      maxJumpDuration: 0
+    useShadowEffect: 0
+  crouchAction:
     crouchKey: 274
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 8
-    groundCheckRange: 0.1
-    crouchMode: 1
+    isAutomatic: 0
+    crouchMode: 0
     normalCrouchSettings:
-      crouchHeightReductionPercentage: 50.4
-      linearDrag: 9.5
+      crouchHeightReductionPercentage: 50.2
+      linearDrag: 10
     platformCrouchSettings:
-      crouchHeightReductionPercentage: 50.4
-      linearDrag: 2
+      crouchHeightReductionPercentage: 51.1
+      linearDrag: 9.3
       platformTag: Platform
-      platformHoldTime: 1
-      platformDropTime: 1.02
-  climb:
+      platformHoldTime: 0.86
+      platformDropTime: 0.91
+  climbAction:
     climbUpKey: 273
     climbDownKey: 274
+    isAutomatic: 0
     climbableLayer:
       serializedVersion: 2
       m_Bits: 16
-    climbCheckRange: 0.5
+    climbCheckRange: 0.15
     verticalClimbSettings:
-      climbSpeed: 8.63
-      holdClimb: 1
+      climbSpeed: 10
+      holdClimb: 0
