@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74a83871b3b38f64a814f1513e25ecda, type: 3}
   m_Name: AnimationTypeModule
   m_EditorClassIdentifier: 
-  isActive: 1
+  isActive: 0
   idleAnimation: Idle
   walkAnimation: walk
   sprintAnimation: sprint

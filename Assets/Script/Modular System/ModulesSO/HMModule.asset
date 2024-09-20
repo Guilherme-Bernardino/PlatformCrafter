@@ -16,7 +16,7 @@ MonoBehaviour:
   rightKey: 275
   leftKey: 276
   spriteFacingDirection: 0
-  groundCheck: {x: 0.5, y: 0.15}
+  groundCheck: {x: 0.7, y: 0.15}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -24,21 +24,21 @@ MonoBehaviour:
   doubleTapThreshold: 0.25
   walkAction:
     isAutomatic: 0
-    walkMode: 0
+    walkMode: 1
     walkConstantSpeedSettings:
       speed: 15.7
-    walkAccelerationSettings:
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
-    walkVehicleSettings:
+    walkAccelerationSpeedSettings:
+      speed: 22.4
+      maxSpeed: 31.6
+      acceleration: 20.5
+      deceleration: 34.4
+    walkVehicleLikeSettings:
+      speed: 67.9
+      maxSpeed: 29.5
+      acceleration: 15.2
+      deceleration: 14.3
       brakeInput: 0
       horizontalBrake: 0
-      speed: 0
-      maxSpeed: 0
-      acceleration: 0
-      deceleration: 0
       brakeForce: 0
     transitionToSprint: 0
     transitionSpeedThreshold: 0
@@ -48,9 +48,9 @@ MonoBehaviour:
     isAutomatic: 0
     allowDoubleTap: 0
     sprintMode: 0
-    sprintConstantSpeed:
-      speed: 24.8
-    sprintAccelerationSettings:
+    sprintConstantSpeedSettings:
+      speed: 31
+    sprintAccelerationSpeedSettings:
       speed: 0
       maxSpeed: 0
       acceleration: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
     slideKey: 9
     isAutomatic: 0
     slideMode: 0
-    colliderHeightPercentage: 50.4
+    colliderHeightReduction: 0
     rollSlideSettings:
       slideSpeed: 7.1
       slideDistance: 5.7

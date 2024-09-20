@@ -53,7 +53,8 @@ MonoBehaviour:
   disableEditorFeatures: 0
   horizontalMovementModule: {fileID: 11400000, guid: 421c07f9f07a2264992aa0605cec001d, type: 2}
   verticalMovementModule: {fileID: 11400000, guid: f8755f3a2ede78f4e8d726382802d831, type: 2}
-  actionModules: []
+  actionModules:
+  - {fileID: 11400000, guid: 5dd0540781391844abe2005810b700d8, type: 2}
   interactionModules: []
   resourceModules: []
   inventoryModules: []

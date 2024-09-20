@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   jumpKey: 273
-  groundCheck: {x: 0.5, y: 0.15}
+  groundCheck: {x: 0.7, y: 0.15}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -23,7 +23,7 @@ MonoBehaviour:
     isAutomatic: 0
     jumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 3.3
+      jumpHeight: 4.6
       gravityScale: 3.1
       fallGravityScale: 3.8
     derivativeHeightJumpSettings:
@@ -37,16 +37,16 @@ MonoBehaviour:
     isAutomatic: 0
     maxExtraJumps: 2
     timeBetweenJumps: 0.5
-    airJumpMode: 0
+    airJumpMode: 1
     constantHeightJumpSettings:
-      jumpHeight: 0
-      gravityScale: 0
-      fallGravityScale: 0
+      jumpHeight: 3.9
+      gravityScale: 4.3
+      fallGravityScale: 4.5
     derivativeHeightJumpSettings:
-      initialJumpForce: 0
-      gravityScale: 0
-      fallGravityScale: 0
-      maxJumpDuration: 0
+      initialJumpForce: 11.4
+      gravityScale: 4.2
+      fallGravityScale: 4.2
+      maxJumpDuration: 0.655
     useShadowEffect: 0
   crouchAction:
     crouchKey: 274

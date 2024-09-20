@@ -13,12 +13,15 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode actionInput;
 
-        private float cooldownTimer = 0f;
+        private float cooldownTimer;
+        private bool isWielding;
+        private float wieldDurationTimer;
 
         private enum ActionType
         {
             Instantiate,
             Consumption,
+            Wield,
             ExternalAction, 
             SoundEffect,
             Animation,
@@ -29,6 +32,10 @@ namespace PlatformCrafterModularSystem
         [ShowIf("actionType", ActionType.Instantiate)]
         [AllowNesting]
         [SerializeField] private InstantiateType instantiationTypeSettings;
+
+        [ShowIf("actionType", ActionType.Wield)]
+        [AllowNesting]
+        [SerializeField] private WieldType wieldTypeSettings;
 
         [ShowIf("actionType", ActionType.Consumption)]
         [AllowNesting]
@@ -47,7 +54,9 @@ namespace PlatformCrafterModularSystem
 
         protected override void InitializeModule()
         {
-            
+            cooldownTimer = 0;
+            wieldDurationTimer = 0;
+            isWielding = false;
         }
 
         public override void UpdateModule()
@@ -58,6 +67,7 @@ namespace PlatformCrafterModularSystem
                 {
                     case ActionType.Instantiate: ExecuteInstantiation(); break;
                     case ActionType.Consumption: ExecuteConsumption(); break;
+                    case ActionType.Wield: ExecuteWield(); break;
                     case ActionType.ExternalAction: ExecuteExternalAction(); break;
                     case ActionType.Animation: ExecuteAnimation(); break;
                     case ActionType.SoundEffect: ExecuteSoundEffect(); break;
@@ -67,6 +77,17 @@ namespace PlatformCrafterModularSystem
             if (cooldownTimer > 0)
             {
                 cooldownTimer -= Time.deltaTime;
+            }
+
+            if (isWielding && wieldDurationTimer > 0)
+            {
+                wieldDurationTimer -= Time.deltaTime;
+                if (wieldDurationTimer <= 0)
+                {
+                    EndWield();
+                }
+                else
+                    UpdateWieldPosition();
             }
         }
 
@@ -118,6 +139,68 @@ namespace PlatformCrafterModularSystem
 
                 rb.velocity = launchDirection * speed;
             }
+        }
+
+        private void ExecuteWield()
+        {
+            if (cooldownTimer > 0 || isWielding)
+            {
+                return;
+            }
+
+            cooldownTimer = wieldTypeSettings.Cooldown;
+
+            if (!wieldTypeSettings.WieldObject)
+            {
+                wieldTypeSettings.WieldObject = Instantiate(wieldTypeSettings.ToolPrefab, modularBrain.transform);
+                wieldTypeSettings.WieldObject.SetActive(true);
+            }
+
+            Collider2D wieldCollider = wieldTypeSettings.WieldObject.GetComponent<Collider2D>();
+            if (wieldCollider != null)
+            {
+                wieldCollider.enabled = true;
+                wieldCollider.transform.localScale = new Vector2(wieldTypeSettings.HitWidth, wieldTypeSettings.HitHeight);
+            }
+
+            UpdateWieldPosition();
+
+            wieldTypeSettings.WieldObject.SetActive(true);
+
+            wieldDurationTimer = wieldTypeSettings.WieldDuration;
+            isWielding = true;
+        }
+
+        private void UpdateWieldPosition()
+        {
+            HorizontalMovementTypeModule horizontalMovementModule = modularBrain.HorizontalMovementTypeModule;
+            Vector2 characterPosition = modularBrain.transform.position;
+
+            float offsetX = horizontalMovementModule.IsFacingRight ? wieldTypeSettings.DistanceFromEntity.x : -wieldTypeSettings.DistanceFromEntity.x;
+
+            Vector2 wieldPosition = new Vector2(characterPosition.x + offsetX, characterPosition.y + wieldTypeSettings.DistanceFromEntity.y);
+            wieldTypeSettings.WieldObject.transform.position = wieldPosition;
+
+            if (!horizontalMovementModule.IsFacingRight)
+                wieldTypeSettings.WieldObject.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            else
+                wieldTypeSettings.WieldObject.transform.localRotation = Quaternion.identity;
+        }
+
+        private void EndWield()
+        {
+            Collider2D wieldCollider = wieldTypeSettings.WieldObject.GetComponent<Collider2D>();
+            if (wieldCollider != null)
+            {
+                wieldCollider.enabled = false;
+            }
+
+            if (!wieldTypeSettings.AlwaysVisible)
+            {
+                wieldTypeSettings.WieldObject.SetActive(false);
+            }
+
+            isWielding = false;
         }
 
         private void ExecuteConsumption()
@@ -222,6 +305,31 @@ namespace PlatformCrafterModularSystem
         public bool UseCharacterDirection => useCharacterDirection;
         public float Cooldown => cooldown;
         public bool UseMouseToAim => useMouseToAim;
+    }
+
+    [System.Serializable]
+    public struct WieldType
+    {
+        [SerializeField] private GameObject toolPrefab;
+        [Range(0f, 10f)]
+        [SerializeField] private float hitWidth;
+        [Range(0f, 10f)]
+        [SerializeField] private float hitHeight;
+        [Range(0f, 5f)]
+        [SerializeField] private float wieldDuration;
+        [SerializeField] private Vector2 distanceFromEntity;
+        [SerializeField] private bool alwaysVisible;
+        [SerializeField] private float cooldown;
+
+        [HideInInspector] public GameObject WieldObject;
+
+        public GameObject ToolPrefab => toolPrefab;
+        public float HitWidth => hitWidth;
+        public float HitHeight => hitHeight;
+        public float WieldDuration => wieldDuration;
+        public Vector2 DistanceFromEntity => distanceFromEntity;
+        public bool AlwaysVisible => alwaysVisible;
+        public float Cooldown => cooldown;
     }
 
     [System.Serializable]

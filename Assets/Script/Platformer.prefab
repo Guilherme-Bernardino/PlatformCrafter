@@ -61,7 +61,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fe9b507cf3cfeb847a3787abcc25daaf, type: 2}
   inventoryModules:
   - {fileID: 11400000, guid: a828e809587023044ae26216875bcce4, type: 2}
-  animationModule: {fileID: 0}
+  animationModule: {fileID: 11400000, guid: d6543923dcb25224d8d6be0d361796b0, type: 2}
   soundEffectModule: {fileID: 11400000, guid: cf14a65491a8674479c408c96caaed36, type: 2}
   customModules:
   - {fileID: 11400000, guid: f9eb6c13859147f42baf70a56f410948, type: 2}

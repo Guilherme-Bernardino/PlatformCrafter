@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   actionInput: 323
-  actionType: 0
+  actionType: 5
   instantiationTypeSettings:
     prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
     positionOffset: {x: 0.12, y: 1.71}
@@ -23,6 +23,15 @@ MonoBehaviour:
     useCharacterDirection: 0
     cooldown: 0
     useMouseToAim: 1
+  wieldTypeSettings:
+    toolPrefab: {fileID: 0}
+    hitWidth: 0
+    hitHeight: 0
+    wieldDuration: 0
+    distanceFromEntity: {x: 0, y: 0}
+    alwaysVisible: 0
+    cooldown: 0
+    WieldObject: {fileID: 0}
   consumptionTypeSettings:
     resourceName: HP
     amount: 5

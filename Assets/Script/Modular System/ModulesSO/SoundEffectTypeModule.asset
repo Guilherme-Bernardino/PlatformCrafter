@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8151e3a397f5e439573503ca228fc6, type: 3}
   m_Name: SoundEffectTypeModule
   m_EditorClassIdentifier: 
-  isActive: 1
+  isActive: 0
   idleSFX:
     clip: {fileID: 0}
     volume: 0.078
