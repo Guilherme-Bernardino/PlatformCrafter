@@ -20,6 +20,17 @@ Guilherme Bernardino
 # Change Log
 All notable changes of the project
 
+## [0.9.8] - 20-09-2024
+
+### Added
+- Added new Action type to Action Module named Wield, that allows for the wielding of a tool or weapon close to the entity.
+
+### Changed
+- Changed a few settings names for clarity.
+
+### Fixed
+- Fixed Air Jump auto mode not working.
+
 ## [0.9.7] - 19-09-2024
 
 ### Added
