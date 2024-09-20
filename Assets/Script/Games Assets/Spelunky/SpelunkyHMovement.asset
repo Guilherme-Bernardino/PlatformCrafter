@@ -20,19 +20,19 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  canMoveOnAir: 0
+  canMoveOnAir: 1
   doubleTapThreshold: 0.25
   walkAction:
     isAutomatic: 0
     walkMode: 0
     walkConstantSpeedSettings:
       speed: 8.1
-    walkAccelerationSettings:
-      speed: 11.4
-      maxSpeed: 37.6
+    walkAccelerationSpeedSettings:
+      speed: 0
+      maxSpeed: 0
       acceleration: 0
       deceleration: 0
-    walkVehicleSettings:
+    walkVehicleLikeSettings:
       brakeInput: 0
       horizontalBrake: 0
       speed: 0
@@ -44,13 +44,13 @@ MonoBehaviour:
     transitionSpeedThreshold: 0
     useShadowEffect: 0
   sprintAction:
-    sprintKey: 304
+    sprintKey: 0
     isAutomatic: 0
     allowDoubleTap: 0
     sprintMode: 0
-    sprintConstantSpeed:
-      speed: 15.8
-    sprintAccelerationSettings:
+    sprintConstantSpeedSettings:
+      speed: 0
+    sprintAccelerationSpeedSettings:
       speed: 0
       maxSpeed: 0
       acceleration: 0
@@ -62,13 +62,13 @@ MonoBehaviour:
     slideKey: 0
     isAutomatic: 0
     slideMode: 0
-    colliderHeightPercentage: 0
+    colliderHeightReduction: 0
     rollSlideSettings:
       slideSpeed: 5.7
       slideDistance: 2.3
       cooldown: 1
     longSlideSettings:
-      slideSpeed: 0
+      slideSpeed: 1
       slideSpeedReduction: 0
     useShadowEffect: 0
   dashAction:

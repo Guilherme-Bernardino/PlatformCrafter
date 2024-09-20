@@ -165,6 +165,8 @@ namespace PlatformCrafterModularSystem
             {
                 isAirJumping = false;
             }
+
+            Debug.Log(CurrentState);
         }
 
         private void HandleInput()
@@ -227,13 +229,31 @@ namespace PlatformCrafterModularSystem
             {
                 case VerticalState.Idle:
                     if (jumpAction.IsAutomatic && isGrounded) SetState(VerticalState.Jumping);
-                    if (airJumpAction.IsAutomatic && !isGrounded) SetState(VerticalState.AirJumping);
+                    if (airJumpAction.IsAutomatic && !isGrounded)
+                    {
+                        SetState(VerticalState.AirJumping);
+                        airJumpClicked = true;
+                    }
                     if (crouchAction.IsAutomatic && isGrounded) SetState(VerticalState.Crouching);
                     if (climbAction.IsAutomatic != ClimbAutomaticMode.No && CanClimb()) SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.Crouching:
                     if(!crouchAction.IsAutomatic && isGrounded && !Input.GetKey(crouchAction.CrouchKey))
                         ResetCrouch();
+                    break;
+                case VerticalState.Jumping:
+                    if (airJumpAction.IsAutomatic && !isGrounded)
+                    {
+                        SetState(VerticalState.AirJumping);
+                        airJumpClicked = true;
+                    }
+                    break;
+                case VerticalState.AirJumping:
+                    if (airJumpAction.IsAutomatic && !isGrounded)
+                    {
+                        SetState(VerticalState.AirJumping);
+                        airJumpClicked = true;
+                    }
                     break;
             }
         }
@@ -362,7 +382,7 @@ namespace PlatformCrafterModularSystem
         public void HandleConstantHeightAirJump()
         {
             if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
-
+            Debug.Log("here");
             if (remainingJumps > 0 && airJumpClicked)
             {
                 rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.GravityScale;
@@ -396,6 +416,7 @@ namespace PlatformCrafterModularSystem
                 rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
                 remainingJumps--;
                 lastAirJumpTime = Time.time;
+                airJumpClicked = false;
             }
 
             if (isAirJumping)

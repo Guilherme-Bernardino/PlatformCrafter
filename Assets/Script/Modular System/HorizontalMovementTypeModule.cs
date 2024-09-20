@@ -367,25 +367,25 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey) || walkAction.IsAutomatic == AutomaticMode.Right)
             {
-                targetSpeed = walkAction.WalkAccelerationSettings.Speed;
+                targetSpeed = walkAction.WalkAccelerationSpeedSettings.Speed;
             }
             else if (Input.GetKey(leftKey) || walkAction.IsAutomatic == AutomaticMode.Left)
             {
-                targetSpeed = -walkAction.WalkAccelerationSettings.Speed;
+                targetSpeed = -walkAction.WalkAccelerationSpeedSettings.Speed;
             }
 
             float currentSpeed = rb.velocity.x;
 
             if (targetSpeed != 0)
             {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, walkAction.WalkAccelerationSettings.Acceleration * Time.deltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, walkAction.WalkAccelerationSpeedSettings.Acceleration * Time.deltaTime);
             }
             else
             {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkAccelerationSettings.Deceleration * Time.deltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkAccelerationSpeedSettings.Deceleration * Time.deltaTime);
             }
 
-            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkAccelerationSettings.MaxSpeed, walkAction.WalkAccelerationSettings.MaxSpeed), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkAccelerationSpeedSettings.MaxSpeed, walkAction.WalkAccelerationSpeedSettings.MaxSpeed), rb.velocity.y);
 
             if (Mathf.Abs(currentSpeed) > 0.01f && !walkAction.TransitionToSprint)
             {
@@ -404,32 +404,32 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey) && !isBraking || walkAction.IsAutomatic == AutomaticMode.Right)
             {
-                targetSpeed = walkAction.WalkVehicleSettings.Speed;
+                targetSpeed = walkAction.WalkVehicleLikeSettings.Speed;
             }
             else if (Input.GetKey(leftKey) && !isBraking || walkAction.IsAutomatic == AutomaticMode.Left)
             {
-                targetSpeed = -walkAction.WalkVehicleSettings.Speed;
+                targetSpeed = -walkAction.WalkVehicleLikeSettings.Speed;
             }
 
             float currentSpeed = rb.velocity.x;
 
             if (targetSpeed != 0)
             {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, walkAction.WalkVehicleSettings.Acceleration * Time.fixedDeltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, walkAction.WalkVehicleLikeSettings.Acceleration * Time.fixedDeltaTime);
             }
             else
             {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleSettings.Deceleration * Time.fixedDeltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleLikeSettings.Deceleration * Time.fixedDeltaTime);
             }
 
-            if (Input.GetKey(walkAction.WalkVehicleSettings.BrakeInput) ||
-                (walkAction.WalkVehicleSettings.HorizontalBrake && ((currentSpeed > 0 && Input.GetKey(leftKey)) || (currentSpeed < 0 && Input.GetKey(rightKey)))))
+            if (Input.GetKey(walkAction.WalkVehicleLikeSettings.BrakeInput) ||
+                (walkAction.WalkVehicleLikeSettings.HorizontalBrake && ((currentSpeed > 0 && Input.GetKey(leftKey)) || (currentSpeed < 0 && Input.GetKey(rightKey)))))
             {
                 isBraking = true;
                 SetState(HorizontalState.Braking);
-                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleSettings.BrakeForce * Time.fixedDeltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, walkAction.WalkVehicleLikeSettings.BrakeForce * Time.fixedDeltaTime);
             }
-            else if (!Input.GetKey(walkAction.WalkVehicleSettings.BrakeInput)) 
+            else if (!Input.GetKey(walkAction.WalkVehicleLikeSettings.BrakeInput)) 
             {
                 isBraking = false;
 
@@ -443,7 +443,7 @@ namespace PlatformCrafterModularSystem {
                 }
             }
 
-            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkVehicleSettings.MaxSpeed, walkAction.WalkVehicleSettings.MaxSpeed), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -walkAction.WalkVehicleLikeSettings.MaxSpeed, walkAction.WalkVehicleLikeSettings.MaxSpeed), rb.velocity.y);
 
             if (Mathf.Abs(rb.velocity.x) > 0.01f && !isBraking && !walkAction.TransitionToSprint)
             {
@@ -462,11 +462,11 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey) || sprintAction.IsAutomatic == AutomaticMode.Right)
             {
-                targetSpeed = sprintAction.SprintConstantSpeed.Speed;
+                targetSpeed = sprintAction.SprintConstantSpeedSettings.Speed;
             }
             else if (Input.GetKey(leftKey) || sprintAction.IsAutomatic == AutomaticMode.Left)
             {
-                targetSpeed = -sprintAction.SprintConstantSpeed.Speed;
+                targetSpeed = -sprintAction.SprintConstantSpeedSettings.Speed;
             }
 
             rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
@@ -478,25 +478,25 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey) || sprintAction.IsAutomatic == AutomaticMode.Right)
             {
-                targetSpeed = sprintAction.SprintAccelerationSettings.Speed;
+                targetSpeed = sprintAction.SprintAccelerationSpeedSettings.Speed;
             }
             else if (Input.GetKey(leftKey) || sprintAction.IsAutomatic == AutomaticMode.Left)
             {
-                targetSpeed = -sprintAction.SprintAccelerationSettings.Speed;
+                targetSpeed = -sprintAction.SprintAccelerationSpeedSettings.Speed;
             }
 
             float currentSpeed = rb.velocity.x;
 
             if (targetSpeed != 0)
             {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, sprintAction.SprintAccelerationSettings.Acceleration * Time.fixedDeltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, sprintAction.SprintAccelerationSpeedSettings.Acceleration * Time.fixedDeltaTime);
             }
             else
             {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, sprintAction.SprintAccelerationSettings.Deceleration * Time.fixedDeltaTime);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, 0, sprintAction.SprintAccelerationSpeedSettings.Deceleration * Time.fixedDeltaTime);
             }
 
-            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -sprintAction.SprintAccelerationSettings.MaxSpeed, sprintAction.SprintAccelerationSettings.MaxSpeed), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Clamp(currentSpeed, -sprintAction.SprintAccelerationSpeedSettings.MaxSpeed, sprintAction.SprintAccelerationSpeedSettings.MaxSpeed), rb.velocity.y);
 
             if (Mathf.Abs(rb.velocity.x) > 0.01f && !sprintAction.TransitionToWalk)
             {
@@ -514,7 +514,7 @@ namespace PlatformCrafterModularSystem {
             if ((Time.time - slideStartTime < slideAction.RollSlideSettings.Cooldown && slideAction.SlideMode == Slide.SlideMovementMode.RollSlide) || !isGrounded)
                 return;
 
-            float heightReduction = originalColliderHeight * (slideAction.ColliderHeightPercentage / 100f);
+            float heightReduction = originalColliderHeight * (slideAction.ColliderHeightReduction/ 100f);
 
             if (collider != null)
             {
@@ -646,7 +646,6 @@ namespace PlatformCrafterModularSystem {
             return Mathf.Abs(rb.velocity.x) <= 0.01f && CurrentState != HorizontalState.Dashing && !Input.GetKey(rightKey) && !Input.GetKey(leftKey);
         }
 
-
         private bool CanMove()
         {
             return isGrounded || canMoveOnAir;
@@ -695,11 +694,11 @@ namespace PlatformCrafterModularSystem {
 
         [ShowIf("walkMode", WalkMovementMode.AccelerationSpeed)]
         [AllowNesting]
-        [SerializeField] private AcceleratingSpeed walkAccelerationSettings;
+        [SerializeField] private AcceleratingSpeed walkAccelerationSpeedSettings;
 
         [ShowIf("walkMode", WalkMovementMode.VehicleLike)]
         [AllowNesting]
-        [SerializeField] private VehicleLike walkVehicleSettings;
+        [SerializeField] private VehicleLike walkVehicleLikeSettings;
 
         [SerializeField] private bool transitionToSprint;
         [Range(0.0f, 100.0f)]
@@ -709,8 +708,8 @@ namespace PlatformCrafterModularSystem {
         public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public WalkMovementMode WalkMode { get => walkMode; set => walkMode = value; }
         public ConstantSpeed WalkConstantSpeedSettings { get => walkConstantSpeedSettings; set => walkConstantSpeedSettings = value; }
-        public AcceleratingSpeed WalkAccelerationSettings { get => walkAccelerationSettings; set => walkAccelerationSettings = value; }
-        public VehicleLike WalkVehicleSettings { get => walkVehicleSettings; set => walkVehicleSettings = value; }
+        public AcceleratingSpeed WalkAccelerationSpeedSettings { get => walkAccelerationSpeedSettings; set => walkAccelerationSpeedSettings = value; }
+        public VehicleLike WalkVehicleLikeSettings { get => walkVehicleLikeSettings; set => walkVehicleLikeSettings = value; }
         public bool TransitionToSprint => transitionToSprint;
         public float TransitionSpeedThreshold => transitionSpeedThreshold;
         public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
@@ -735,11 +734,11 @@ namespace PlatformCrafterModularSystem {
 
         [ShowIf("sprintMode", SprintMovementMode.ConstantSpeed)]
         [AllowNesting]
-        [SerializeField] private ConstantSpeed sprintConstantSpeed;
+        [SerializeField] private ConstantSpeed sprintConstantSpeedSettings;
 
         [ShowIf("sprintMode", SprintMovementMode.AccelerationSpeed)]
         [AllowNesting]
-        [SerializeField] private AcceleratingSpeed sprintAccelerationSettings;
+        [SerializeField] private AcceleratingSpeed sprintAccelerationSpeedSettings;
 
         [SerializeField] private bool transitionToWalk;
         [Range(0.0f, 100.0f)]
@@ -750,8 +749,8 @@ namespace PlatformCrafterModularSystem {
         public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public bool AllowDoubleTap { get => allowDoubleTap; set => allowDoubleTap = value; }
         public SprintMovementMode SprintMode { get => sprintMode; set => sprintMode = value; }
-        public ConstantSpeed SprintConstantSpeed { get => sprintConstantSpeed; set => sprintConstantSpeed = value; }
-        public AcceleratingSpeed SprintAccelerationSettings { get => sprintAccelerationSettings; set => sprintAccelerationSettings = value; }
+        public ConstantSpeed SprintConstantSpeedSettings { get => sprintConstantSpeedSettings; set => sprintConstantSpeedSettings = value; }
+        public AcceleratingSpeed SprintAccelerationSpeedSettings { get => sprintAccelerationSpeedSettings; set => sprintAccelerationSpeedSettings = value; }
         public bool TransitionToWalk => transitionToWalk;
         public float TransitionWalkThreshold => transitionWalkThreshold;
         public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
@@ -772,7 +771,7 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private AutomaticMode isAutomatic;
         [SerializeField] private SlideMovementMode slideMode;
 
-        [Range(0f, 100f)][SerializeField] private float colliderHeightPercentage;
+        [Range(0f, 100f)][SerializeField] private float colliderHeightReduction;
 
         [ShowIf("slideMode", SlideMovementMode.RollSlide)]
         [AllowNesting]
@@ -787,7 +786,7 @@ namespace PlatformCrafterModularSystem {
         public KeyCode SlideKey => slideKey;
         public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public SlideMovementMode SlideMode => slideMode;
-        public float ColliderHeightPercentage => colliderHeightPercentage;
+        public float ColliderHeightReduction => colliderHeightReduction;
         public RollSlide RollSlideSettings => rollSlideSettings;
         public LongSlide LongSlideSettings => longSlideSettings;
 
@@ -845,8 +844,6 @@ namespace PlatformCrafterModularSystem {
     [System.Serializable]
     public struct VehicleLike
     {
-        [SerializeField] private KeyCode brakeInput;
-        [SerializeField] private bool horizontalBrake;
         [Range(0.0f, 100.0f)]
         [SerializeField] private float speed;
         [Range(0.0f, 200.0f)]
@@ -855,15 +852,17 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private float acceleration;
         [Range(0.0f, 100.0f)]
         [SerializeField] private float deceleration;
+        [SerializeField] private KeyCode brakeInput;
+        [SerializeField] private bool horizontalBrake;
         [Range(0.0f, 100.0f)]
         [SerializeField] private float brakeForce;
 
-        public KeyCode BrakeInput => brakeInput;
-        public bool HorizontalBrake => horizontalBrake;
         public float Speed => speed;
         public float MaxSpeed => maxSpeed;
         public float Acceleration => acceleration;
         public float Deceleration => deceleration;
+        public KeyCode BrakeInput => brakeInput;
+        public bool HorizontalBrake => horizontalBrake;
         public float BrakeForce => brakeForce;
     }
 
