@@ -51,12 +51,13 @@ MonoBehaviour:
   crouchAction:
     crouchKey: 274
     isAutomatic: 0
+    canCrawl: 0
     crouchMode: 0
     normalCrouchSettings:
-      crouchHeightReductionPercentage: 50.7
+      crouchHeightReduction: 50.2
       linearDrag: 10.5
     platformCrouchSettings:
-      crouchHeightReductionPercentage: 0
+      crouchHeightReduction: 0
       linearDrag: 0
       platformTag: 
       platformHoldTime: 0

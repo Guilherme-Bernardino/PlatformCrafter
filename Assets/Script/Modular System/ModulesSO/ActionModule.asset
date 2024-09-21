@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   actionInput: 323
-  actionType: 5
+  actionType: 4
   instantiationTypeSettings:
     prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
     positionOffset: {x: 0.12, y: 1.71}
@@ -43,11 +43,15 @@ MonoBehaviour:
     itemAmount: 1
   externalActionTypeSettings:
     externalAction: {fileID: 11400000, guid: d04e3c183d3ae8644b4ec8fd7c78a197, type: 2}
-  soundEffectTypeSettings:
-    audioClip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
-    volume: 1
-    loop: 0
-    pitch: 0.95
-    cooldown: 0.1
-  animationTypeSettings:
-    triggerName: 
+  specialEffectTypeSettings:
+    usesSoundEffect: 1
+    soundEffectSettings:
+      audioClip: {fileID: 8300000, guid: 5837d1a6249ef47459b1da6b7ee2a7d4, type: 3}
+      volume: 1
+      loop: 0
+      pitch: 1
+      cooldown: 0
+    usesAnimation: 1
+    animationSettings:
+      triggerName: Walking
+    usesParticleEffect: 1
