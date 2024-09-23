@@ -36,12 +36,12 @@ MonoBehaviour:
     airJumpKey: 273
     isAutomatic: 0
     maxExtraJumps: 2
-    timeBetweenJumps: 0.5
-    airJumpMode: 1
+    timeBetweenJumps: 0.3
+    airJumpMode: 0
     constantHeightJumpSettings:
       jumpHeight: 3.9
-      gravityScale: 4.3
-      fallGravityScale: 4.5
+      gravityScale: 3.1
+      fallGravityScale: 3.8
     derivativeHeightJumpSettings:
       initialJumpForce: 11.4
       gravityScale: 4.2
@@ -51,12 +51,13 @@ MonoBehaviour:
   crouchAction:
     crouchKey: 274
     isAutomatic: 0
+    canCrawl: 0
     crouchMode: 0
     normalCrouchSettings:
-      crouchHeightReductionPercentage: 50.2
+      crouchHeightReduction: 50.6
       linearDrag: 10
     platformCrouchSettings:
-      crouchHeightReductionPercentage: 51.1
+      crouchHeightReduction: 0
       linearDrag: 9.3
       platformTag: Platform
       platformHoldTime: 0.86

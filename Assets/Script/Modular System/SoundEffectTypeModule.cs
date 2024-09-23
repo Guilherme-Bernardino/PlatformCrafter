@@ -3,6 +3,7 @@ using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using static PlatformCrafterModularSystem.AnimationTypeModule;
 
 namespace PlatformCrafterModularSystem
@@ -61,12 +62,13 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateModule()
         {
-            //Empty
+
         }
 
         public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
+
             if (IsActive)
             {
                 PlaySound();

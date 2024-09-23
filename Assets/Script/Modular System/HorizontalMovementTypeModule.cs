@@ -33,6 +33,9 @@ namespace PlatformCrafterModularSystem {
         //General Settings
         [SerializeField] private KeyCode rightKey;
         [SerializeField] private KeyCode leftKey;
+        public KeyCode RightKey { get => rightKey; }
+        public KeyCode LeftKey { get => leftKey; }
+
         [SerializeField] private SpriteFacingDirection spriteFacingDirection;
         [SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
         [SerializeField] private LayerMask groundLayer;
@@ -118,11 +121,11 @@ namespace PlatformCrafterModularSystem {
             switch (CurrentState)
             {
                 case HorizontalState.Idle:
-                    if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)))
+                    if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)) && CanMove())
                     {
                         SetState(HorizontalState.Walking);
                     }
-                    if (Input.GetKey(sprintAction.SprintKey) && (Input.GetKey(rightKey) || Input.GetKey(leftKey)))
+                    if (Input.GetKey(sprintAction.SprintKey) && (Input.GetKey(rightKey) || Input.GetKey(leftKey)) && CanMove())
                     {
                         SetState(HorizontalState.Sprinting);
                     }
@@ -742,7 +745,7 @@ namespace PlatformCrafterModularSystem {
 
         [SerializeField] private bool transitionToWalk;
         [Range(0.0f, 100.0f)]
-        [SerializeField] private float transitionWalkThreshold;
+        [SerializeField] private float transitionSpeedThreshold;
         [SerializeField] private bool useShadowEffect;
 
         public KeyCode SprintKey { get => sprintKey; set => sprintKey = value; }
@@ -752,7 +755,7 @@ namespace PlatformCrafterModularSystem {
         public ConstantSpeed SprintConstantSpeedSettings { get => sprintConstantSpeedSettings; set => sprintConstantSpeedSettings = value; }
         public AcceleratingSpeed SprintAccelerationSpeedSettings { get => sprintAccelerationSpeedSettings; set => sprintAccelerationSpeedSettings = value; }
         public bool TransitionToWalk => transitionToWalk;
-        public float TransitionWalkThreshold => transitionWalkThreshold;
+        public float TransitionWalkThreshold => transitionSpeedThreshold;
         public bool UseShadowEffect { get => useShadowEffect; set => useShadowEffect = value; }
     }
 
@@ -769,9 +772,8 @@ namespace PlatformCrafterModularSystem {
 
         [SerializeField] private KeyCode slideKey;
         [SerializeField] private AutomaticMode isAutomatic;
-        [SerializeField] private SlideMovementMode slideMode;
-
         [Range(0f, 100f)][SerializeField] private float colliderHeightReduction;
+        [SerializeField] private SlideMovementMode slideMode;
 
         [ShowIf("slideMode", SlideMovementMode.RollSlide)]
         [AllowNesting]
@@ -785,8 +787,8 @@ namespace PlatformCrafterModularSystem {
 
         public KeyCode SlideKey => slideKey;
         public AutomaticMode IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
-        public SlideMovementMode SlideMode => slideMode;
         public float ColliderHeightReduction => colliderHeightReduction;
+        public SlideMovementMode SlideMode => slideMode;
         public RollSlide RollSlideSettings => rollSlideSettings;
         public LongSlide LongSlideSettings => longSlideSettings;
 
@@ -896,15 +898,15 @@ namespace PlatformCrafterModularSystem {
     public struct NormalDash
     {
         [Range(0.0f, 100.0f)]
-        [SerializeField] private float dashDistance;
-        [Range(0.0f, 100.0f)]
         [SerializeField] private float dashSpeed;
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float dashDistance;
         [Range(0.0f, 100.0f)]
         [SerializeField] private float cooldown;
         [SerializeField] private bool dashOnAir;
 
-        public float DashDistance => dashDistance;
         public float DashSpeed => dashSpeed;
+        public float DashDistance => dashDistance;
         public float Cooldown => cooldown;
         public bool DashOnAir => dashOnAir;
     }

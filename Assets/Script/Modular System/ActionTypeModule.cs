@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace PlatformCrafterModularSystem
 {
@@ -16,6 +17,11 @@ namespace PlatformCrafterModularSystem
         private float cooldownTimer;
         private bool isWielding;
         private float wieldDurationTimer;
+        private float specialEffectTimer;
+        private bool isSpecialEffectActive;
+
+        private bool specialEffectAnimationPlaying;
+        public bool SpecialEffectAnimationPlaying => specialEffectAnimationPlaying;
 
         private enum ActionType
         {
@@ -23,8 +29,7 @@ namespace PlatformCrafterModularSystem
             Consumption,
             Wield,
             ExternalAction, 
-            SoundEffect,
-            Animation,
+            SpecialEffect
         }
 
         [SerializeField] private ActionType actionType;
@@ -44,19 +49,17 @@ namespace PlatformCrafterModularSystem
         [ShowIf("actionType", ActionType.ExternalAction)]
         [SerializeField] private ExternalActionType externalActionTypeSettings; // show than the action settings
 
-        [ShowIf("actionType", ActionType.SoundEffect)]
+        [ShowIf("actionType", ActionType.SpecialEffect)]
         [AllowNesting]
-        [SerializeField] private SoundEffectType soundEffectTypeSettings;
-
-        [ShowIf("actionType", ActionType.Animation)]
-        [AllowNesting]
-        [SerializeField] private AnimationType animationTypeSettings;
+        [SerializeField] private SpecialEffectType specialEffectTypeSettings;
 
         protected override void InitializeModule()
         {
             cooldownTimer = 0;
             wieldDurationTimer = 0;
             isWielding = false;
+            specialEffectTimer = 0f;
+            isSpecialEffectActive = false;
         }
 
         public override void UpdateModule()
@@ -69,8 +72,7 @@ namespace PlatformCrafterModularSystem
                     case ActionType.Consumption: ExecuteConsumption(); break;
                     case ActionType.Wield: ExecuteWield(); break;
                     case ActionType.ExternalAction: ExecuteExternalAction(); break;
-                    case ActionType.Animation: ExecuteAnimation(); break;
-                    case ActionType.SoundEffect: ExecuteSoundEffect(); break;
+                    case ActionType.SpecialEffect: ExecuteSpecialEffect(); break;
                 }
             }
 
@@ -88,6 +90,16 @@ namespace PlatformCrafterModularSystem
                 }
                 else
                     UpdateWieldPosition();
+            }
+
+            if (isSpecialEffectActive)
+            {
+                specialEffectTimer += Time.deltaTime;
+
+                if (specialEffectTimer >= specialEffectTypeSettings.ActionTime)
+                {
+                    StopSpecialEffect();
+                }
             }
         }
 
@@ -245,9 +257,30 @@ namespace PlatformCrafterModularSystem
             externalActionTypeSettings.ExternalAction.Execute();
         }
 
+        private void ExecuteSpecialEffect()
+        {
+            specialEffectTimer = 0f;
+            isSpecialEffectActive = true;
+
+            if (specialEffectTypeSettings.AnimationSettings.UsesAnimation)
+            {
+                ExecuteAnimation();
+            }
+            if (specialEffectTypeSettings.SoundEffectSettings.UseSoundEffect)
+            {
+                ExecuteSoundEffect();
+            }
+            if (specialEffectTypeSettings.ParticlesSettings.UseParticleEffect)
+            {
+                ExecuteParticles();
+            }
+        }
+
         private void ExecuteAnimation()
         {
-            modularBrain.Animator.Play(animationTypeSettings.TriggerName);
+            specialEffectAnimationPlaying = true;
+
+            modularBrain.Animator.Play(specialEffectTypeSettings.AnimationSettings.TriggerName);
         }
 
         private void ExecuteSoundEffect()
@@ -257,7 +290,7 @@ namespace PlatformCrafterModularSystem
                 return;
             }
 
-            cooldownTimer = soundEffectTypeSettings.Cooldown;
+            cooldownTimer = specialEffectTypeSettings.SoundEffectSettings.Cooldown;
 
             if (modularBrain.AudioSource == null)
             {
@@ -265,12 +298,45 @@ namespace PlatformCrafterModularSystem
                 return;
             }
 
-            modularBrain.AudioSource.clip = soundEffectTypeSettings.AudioClip;
-            modularBrain.AudioSource.volume = soundEffectTypeSettings.Volume;
-            modularBrain.AudioSource.loop = soundEffectTypeSettings.Loop;
-            modularBrain.AudioSource.pitch = soundEffectTypeSettings.Pitch;
+            modularBrain.AudioSource.clip = specialEffectTypeSettings.SoundEffectSettings.AudioClip;
+            modularBrain.AudioSource.volume = specialEffectTypeSettings.SoundEffectSettings.Volume;
+            modularBrain.AudioSource.loop = specialEffectTypeSettings.SoundEffectSettings.Loop;
+            modularBrain.AudioSource.pitch = specialEffectTypeSettings.SoundEffectSettings.Pitch;
 
-            modularBrain.AudioSource.Play();
+            modularBrain.AudioSource.Play(); 
+        }
+
+        private void ExecuteParticles()
+        {
+            ParticleSystem ps = modularBrain.GetParticleSystemByName(specialEffectTypeSettings.ParticlesSettings.SelectedParticleSystem);
+
+            if (ps == null)
+            {
+                Debug.LogWarning("No Particle System with that name found on ModularBrain.");
+                return;
+            }
+
+            if (isSpecialEffectActive)
+            {
+                ps.Play();
+            }
+        }
+
+        private void StopSpecialEffect()
+        {
+            isSpecialEffectActive = false;
+            specialEffectAnimationPlaying = false;
+
+            ParticleSystem ps = modularBrain.GetParticleSystemByName(specialEffectTypeSettings.ParticlesSettings.SelectedParticleSystem);
+
+            if (modularBrain.AudioSource.isPlaying)
+            {
+                modularBrain.AudioSource.Stop();
+                modularBrain.SoundEffectTypeModule.OnHorizontalStateChange(modularBrain.HorizontalMovementTypeModule.CurrentState);
+            }
+
+            if (ps != null && ps.isPlaying)
+                ps.Stop();
         }
 
         public override void FixedUpdateModule()
@@ -375,8 +441,35 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct SoundEffectType
+    public struct SpecialEffectType
     {
+        [SerializeField] private float actionTime;
+
+        [SerializeField] private SoundFX soundEffectSettings;
+
+        [SerializeField] private AnimationFX animationSettings;
+
+        [SerializeField] private ParticlesFX particlesSettings;
+
+        public float ActionTime => actionTime;
+
+        public AnimationFX AnimationSettings => animationSettings;
+
+        public SoundFX SoundEffectSettings => soundEffectSettings;
+
+        public ParticlesFX ParticlesSettings
+        {
+            get => particlesSettings;
+            set => particlesSettings = value;
+        }
+    }
+
+    // Special Effect Group Settings
+
+    [System.Serializable]
+    public struct SoundFX
+    {
+        [SerializeField] private bool usesSoundEffect;
         [SerializeField] private AudioClip audioClip;
         [Range(0f, 1f)]
         [SerializeField] private float volume;
@@ -385,6 +478,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private float pitch;
         [SerializeField] private float cooldown;
 
+        public bool UseSoundEffect => usesSoundEffect;
         public AudioClip AudioClip => audioClip;
         public float Volume => volume;
         public bool Loop => loop;
@@ -393,10 +487,26 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct AnimationType
+    public struct AnimationFX
     {
+        [SerializeField] private bool usesAnimation;
         [SerializeField] private string triggerName;
 
+        public bool UsesAnimation => usesAnimation;
         public string TriggerName => triggerName;
+    }
+
+    [System.Serializable]
+    public struct ParticlesFX
+    {
+        [SerializeField] private bool usesParticleEffect;
+        [SerializeField] private string particleSystemName;
+
+        public bool UseParticleEffect => usesParticleEffect;
+        public string SelectedParticleSystem
+        {
+            get => particleSystemName;
+            set => particleSystemName = value;
+        }
     }
 }

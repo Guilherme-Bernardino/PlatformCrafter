@@ -20,7 +20,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  canMoveOnAir: 0
+  canMoveOnAir: 1
   doubleTapThreshold: 0.25
   walkAction:
     isAutomatic: 0
@@ -56,13 +56,13 @@ MonoBehaviour:
       acceleration: 0
       deceleration: 0
     transitionToWalk: 0
-    transitionWalkThreshold: 0
+    transitionSpeedThreshold: 0
     useShadowEffect: 1
   slideAction:
     slideKey: 9
     isAutomatic: 0
-    slideMode: 0
     colliderHeightReduction: 0
+    slideMode: 0
     rollSlideSettings:
       slideSpeed: 7.1
       slideDistance: 5.7
@@ -76,8 +76,8 @@ MonoBehaviour:
     isAutomatic: 0
     allowDoubleTap: 1
     normalDashSettings:
-      dashDistance: 7.8
       dashSpeed: 27.5
+      dashDistance: 7.8
       cooldown: 3.9
       dashOnAir: 0
     useShadowEffect: 1

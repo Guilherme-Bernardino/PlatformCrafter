@@ -48,30 +48,46 @@ namespace PlatformCrafterModularSystem
             animator = modularBrain.Animator;
         }
 
+        private ActionTypeModule ac;
+
         public override void UpdateModule()
         {
-            if (IsActive)
+            ac = modularBrain.ActionTypeModules.Find(U => U.SpecialEffectAnimationPlaying == true);
+
+            if (!IsActive || (ac != null && ac.SpecialEffectAnimationPlaying))
             {
-                PlayCombinedAnimation();
+                return;
             }
+
+            PlayCombinedAnimation();
         }
 
         public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
-            if (IsActive)
+
+            ac = modularBrain.ActionTypeModules.Find(U => U.SpecialEffectAnimationPlaying == true);
+
+            if (!IsActive || (ac != null && ac.SpecialEffectAnimationPlaying))
             {
-                PlayCombinedAnimation();
+                return;
             }
+
+            PlayCombinedAnimation();
         }
 
         public void OnVerticalStateChange(VerticalMovementTypeModule.VerticalState newState)
         {
             verticalState = newState;
-            if (IsActive)
+
+            ac = modularBrain.ActionTypeModules.Find(U => U.SpecialEffectAnimationPlaying == true);
+
+            if (!IsActive || (ac != null && ac.SpecialEffectAnimationPlaying))
             {
-                PlayCombinedAnimation();
+                return;
             }
+
+            PlayCombinedAnimation();
         }
 
         private void PlayCombinedAnimation()

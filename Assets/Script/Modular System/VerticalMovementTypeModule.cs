@@ -39,6 +39,7 @@ namespace PlatformCrafterModularSystem
         private BoxCollider2D collider;
         private CapsuleCollider2D capsuleCollider;
         private AnimationTypeModule animModule;
+        private HorizontalMovementTypeModule horizontalModule;
 
         //Checks
         private bool isGrounded;
@@ -65,6 +66,7 @@ namespace PlatformCrafterModularSystem
             rb = modularBrain.Rigidbody;
             shadowEffect = modularBrain.ShadowEffect;
             animModule = modularBrain.AnimationTypeModule;
+            horizontalModule = modularBrain.HorizontalMovementTypeModule;
 
             if (modularBrain.Collider is not BoxCollider2D)
             {
@@ -165,8 +167,6 @@ namespace PlatformCrafterModularSystem
             {
                 isAirJumping = false;
             }
-
-            Debug.Log(CurrentState);
         }
 
         private void HandleInput()
@@ -208,7 +208,7 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.Crouching:
-                    if (Input.GetKeyUp(crouchAction.CrouchKey) || !isGrounded)
+                    if (Input.GetKeyUp(crouchAction.CrouchKey) || !isGrounded || CannotCrawl())
                     {
                         ResetCrouch();
                         SetState(VerticalState.Idle);
@@ -382,7 +382,7 @@ namespace PlatformCrafterModularSystem
         public void HandleConstantHeightAirJump()
         {
             if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
-            Debug.Log("here");
+
             if (remainingJumps > 0 && airJumpClicked)
             {
                 rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.GravityScale;
@@ -408,15 +408,17 @@ namespace PlatformCrafterModularSystem
 
         private void HandleDerivativeHeightAirJump()
         {
-            if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
-
             if (remainingJumps > 0 && airJumpClicked)
             {
-                airJumpTime = 0;
-                rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
-                remainingJumps--;
-                lastAirJumpTime = Time.time;
-                airJumpClicked = false;
+                if (Time.time - lastAirJumpTime >= airJumpAction.TimeBetweenJumps)
+                {
+                    airJumpTime = 0;
+                    rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
+                    remainingJumps--;
+                    lastAirJumpTime = Time.time;
+                    airJumpClicked = false;
+                    isAirJumping = true;
+                }
             }
 
             if (isAirJumping)
@@ -425,6 +427,11 @@ namespace PlatformCrafterModularSystem
                 {
                     airJumpTime += Time.fixedDeltaTime;
                     rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
+                }
+
+                if (!Input.GetKey(airJumpAction.AirJumpKey))
+                {
+                    airJumpTime = airJumpAction.DerivativeHeightJumpSettings.MaxJumpDuration;
                 }
 
                 if (rb.velocity.y > 0 && isAirJumping)
@@ -579,6 +586,15 @@ namespace PlatformCrafterModularSystem
             return hit.collider != null;
         }
 
+        private bool CannotCrawl()
+        {
+            if ((Input.GetKey(horizontalModule.LeftKey) || Input.GetKey(horizontalModule.RightKey)) && !crouchAction.CanCrawl)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private bool IsOnPlatform()
         {
             Collider2D[] colliders;
@@ -695,6 +711,7 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private KeyCode crouchKey;
         [SerializeField] private bool isAutomatic;
+        [SerializeField] private bool canCrawl;
         [SerializeField] private CrouchMovementMode crouchMode;
 
         [ShowIf("crouchMode", CrouchMovementMode.NormalCrouch)]
@@ -707,6 +724,7 @@ namespace PlatformCrafterModularSystem
 
         public KeyCode CrouchKey { get => crouchKey; set => crouchKey = value; }
         public bool IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
+        public bool CanCrawl { get => canCrawl; set => canCrawl = value; }
         public CrouchMovementMode CrouchMode { get => crouchMode; set => crouchMode = value; }
         public NormalCrouch NormalCrouchSettings { get => normalCrouchSettings; set => normalCrouchSettings = value; }
         public PlatformCrouch PlatformCrouchSettings { get => platformCrouchSettings; set => platformCrouchSettings = value; }
@@ -773,11 +791,11 @@ namespace PlatformCrafterModularSystem
     public struct NormalCrouch
     {
         [Range(0, 100)]
-        [SerializeField] private float crouchHeightReductionPercentage;
+        [SerializeField] private float crouchHeightReduction;
         [Range(0.0f, 50.0f)]
         [SerializeField] private float linearDrag;
 
-        public float CrouchHeightReductionPercentage => crouchHeightReductionPercentage;
+        public float CrouchHeightReductionPercentage => crouchHeightReduction;
         public float LinearDrag => linearDrag;
     }
 
@@ -785,7 +803,7 @@ namespace PlatformCrafterModularSystem
     public struct PlatformCrouch
     {
         [Range(0, 100)]
-        [SerializeField] private float crouchHeightReductionPercentage;
+        [SerializeField] private float crouchHeightReduction;
         [Range(0.0f, 50.0f)]
         [SerializeField] private float linearDrag;
         [Tag]
@@ -796,7 +814,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private float platformDropTime;
 
 
-        public float CrouchHeightReductionPercentage => crouchHeightReductionPercentage;
+        public float CrouchHeightReductionPercentage => crouchHeightReduction;
         public float LinearDrag => linearDrag;
         public string PlatformTag => platformTag;
         public float PlatformHoldTime => platformHoldTime;
