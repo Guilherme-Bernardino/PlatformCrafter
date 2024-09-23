@@ -20,6 +20,23 @@ Guilherme Bernardino
 # Change Log
 All notable changes of the project
 
+## [0.9.9] - 23-09-2024
+
+### Added
+- Added a new type of action on Action Module called Special Effect, that deals with visual and audio effects as an action, such as Sound Effect, Animation and Particles.
+- Added a getter for a list of particle systems on the Modular Brain.
+- Added an option named CanCrawl to the Crouch Action on VM Module, that allows the entity to Crawl, or move horizontally without leaving the Crouching state.
+
+### Changed
+- Changed a few properties for clarity.
+
+### Fixed
+- Fixed Air Jump bug where Time Between Jumps was making the derivative air jump a small bump in the air, than proceed to the long derivative jump with the amount of time pressed.
+- Fixed bug where the animation on Special Effect Type Action wasn't prioritized and played until the end.
+
+### Removed
+- Removed the Animation and Sound Effect type action.
+
 ## [0.9.8] - 20-09-2024
 
 ### Added
