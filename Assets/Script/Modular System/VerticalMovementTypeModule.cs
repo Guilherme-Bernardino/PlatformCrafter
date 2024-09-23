@@ -382,7 +382,7 @@ namespace PlatformCrafterModularSystem
         public void HandleConstantHeightAirJump()
         {
             if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
-            Debug.Log("here");
+
             if (remainingJumps > 0 && airJumpClicked)
             {
                 rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.GravityScale;
@@ -408,15 +408,17 @@ namespace PlatformCrafterModularSystem
 
         private void HandleDerivativeHeightAirJump()
         {
-            if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
-
             if (remainingJumps > 0 && airJumpClicked)
             {
-                airJumpTime = 0;
-                rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
-                remainingJumps--;
-                lastAirJumpTime = Time.time;
-                airJumpClicked = false;
+                if (Time.time - lastAirJumpTime >= airJumpAction.TimeBetweenJumps)
+                {
+                    airJumpTime = 0;
+                    rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
+                    remainingJumps--;
+                    lastAirJumpTime = Time.time;
+                    airJumpClicked = false;
+                    isAirJumping = true;
+                }
             }
 
             if (isAirJumping)
@@ -425,6 +427,11 @@ namespace PlatformCrafterModularSystem
                 {
                     airJumpTime += Time.fixedDeltaTime;
                     rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
+                }
+
+                if (!Input.GetKey(airJumpAction.AirJumpKey))
+                {
+                    airJumpTime = airJumpAction.DerivativeHeightJumpSettings.MaxJumpDuration;
                 }
 
                 if (rb.velocity.y > 0 && isAirJumping)

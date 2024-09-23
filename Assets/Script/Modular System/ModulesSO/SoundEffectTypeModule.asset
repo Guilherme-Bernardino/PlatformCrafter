@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8151e3a397f5e439573503ca228fc6, type: 3}
   m_Name: SoundEffectTypeModule
   m_EditorClassIdentifier: 
-  isActive: 0
+  isActive: 1
   idleSFX:
     clip: {fileID: 0}
     volume: 0.078
@@ -54,9 +54,9 @@ MonoBehaviour:
     loop: 0
     pitch: 1
   climbSFX:
-    clip: {fileID: 0}
-    volume: 1
-    loop: 0
+    clip: {fileID: 8300000, guid: 58f2141213aa143409b94fedc5ba2303, type: 3}
+    volume: 0.27
+    loop: 1
     pitch: 1
   crouchSFX:
     clip: {fileID: 0}

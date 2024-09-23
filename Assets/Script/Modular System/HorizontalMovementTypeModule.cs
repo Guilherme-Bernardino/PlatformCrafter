@@ -121,11 +121,11 @@ namespace PlatformCrafterModularSystem {
             switch (CurrentState)
             {
                 case HorizontalState.Idle:
-                    if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)))
+                    if ((Input.GetKey(rightKey) || Input.GetKey(leftKey)) && CanMove())
                     {
                         SetState(HorizontalState.Walking);
                     }
-                    if (Input.GetKey(sprintAction.SprintKey) && (Input.GetKey(rightKey) || Input.GetKey(leftKey)))
+                    if (Input.GetKey(sprintAction.SprintKey) && (Input.GetKey(rightKey) || Input.GetKey(leftKey)) && CanMove())
                     {
                         SetState(HorizontalState.Sprinting);
                     }

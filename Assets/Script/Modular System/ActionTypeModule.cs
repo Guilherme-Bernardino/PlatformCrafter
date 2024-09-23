@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace PlatformCrafterModularSystem
 {
@@ -16,6 +17,11 @@ namespace PlatformCrafterModularSystem
         private float cooldownTimer;
         private bool isWielding;
         private float wieldDurationTimer;
+        private float specialEffectTimer;
+        private bool isSpecialEffectActive;
+
+        private bool specialEffectAnimationPlaying;
+        public bool SpecialEffectAnimationPlaying => specialEffectAnimationPlaying;
 
         private enum ActionType
         {
@@ -52,6 +58,8 @@ namespace PlatformCrafterModularSystem
             cooldownTimer = 0;
             wieldDurationTimer = 0;
             isWielding = false;
+            specialEffectTimer = 0f;
+            isSpecialEffectActive = false;
         }
 
         public override void UpdateModule()
@@ -82,6 +90,16 @@ namespace PlatformCrafterModularSystem
                 }
                 else
                     UpdateWieldPosition();
+            }
+
+            if (isSpecialEffectActive)
+            {
+                specialEffectTimer += Time.deltaTime;
+
+                if (specialEffectTimer >= specialEffectTypeSettings.ActionTime)
+                {
+                    StopSpecialEffect();
+                }
             }
         }
 
@@ -241,16 +259,18 @@ namespace PlatformCrafterModularSystem
 
         private void ExecuteSpecialEffect()
         {
-            if (specialEffectTypeSettings.UsesAnimation)
+            specialEffectTimer = 0f;
+            isSpecialEffectActive = true;
+
+            if (specialEffectTypeSettings.AnimationSettings.UsesAnimation)
             {
                 ExecuteAnimation();
             }
-            if (specialEffectTypeSettings.UseSoundEffect)
+            if (specialEffectTypeSettings.SoundEffectSettings.UseSoundEffect)
             {
                 ExecuteSoundEffect();
             }
-
-            if (specialEffectTypeSettings.UseParticleEffect)
+            if (specialEffectTypeSettings.ParticlesSettings.UseParticleEffect)
             {
                 ExecuteParticles();
             }
@@ -258,9 +278,10 @@ namespace PlatformCrafterModularSystem
 
         private void ExecuteAnimation()
         {
+            specialEffectAnimationPlaying = true;
+
             modularBrain.Animator.Play(specialEffectTypeSettings.AnimationSettings.TriggerName);
         }
-
 
         private void ExecuteSoundEffect()
         {
@@ -282,12 +303,40 @@ namespace PlatformCrafterModularSystem
             modularBrain.AudioSource.loop = specialEffectTypeSettings.SoundEffectSettings.Loop;
             modularBrain.AudioSource.pitch = specialEffectTypeSettings.SoundEffectSettings.Pitch;
 
-            modularBrain.AudioSource.Play();
+            modularBrain.AudioSource.Play(); 
         }
 
-        public void ExecuteParticles()
+        private void ExecuteParticles()
         {
-            Debug.Log("part");
+            ParticleSystem ps = modularBrain.GetParticleSystemByName(specialEffectTypeSettings.ParticlesSettings.SelectedParticleSystem);
+
+            if (ps == null)
+            {
+                Debug.LogWarning("No Particle System with that name found on ModularBrain.");
+                return;
+            }
+
+            if (isSpecialEffectActive)
+            {
+                ps.Play();
+            }
+        }
+
+        private void StopSpecialEffect()
+        {
+            isSpecialEffectActive = false;
+            specialEffectAnimationPlaying = false;
+
+            ParticleSystem ps = modularBrain.GetParticleSystemByName(specialEffectTypeSettings.ParticlesSettings.SelectedParticleSystem);
+
+            if (modularBrain.AudioSource.isPlaying)
+            {
+                modularBrain.AudioSource.Stop();
+                modularBrain.SoundEffectTypeModule.OnHorizontalStateChange(modularBrain.HorizontalMovementTypeModule.CurrentState);
+            }
+
+            if (ps != null && ps.isPlaying)
+                ps.Stop();
         }
 
         public override void FixedUpdateModule()
@@ -394,21 +443,25 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct SpecialEffectType
     {
-        [SerializeField] private bool usesSoundEffect;
+        [SerializeField] private float actionTime;
+
         [SerializeField] private SoundFX soundEffectSettings;
 
-        [SerializeField] private bool usesAnimation;
         [SerializeField] private AnimationFX animationSettings;
 
-        [SerializeField] private bool usesParticleEffect;
         [SerializeField] private ParticlesFX particlesSettings;
 
-        public bool UseSoundEffect => usesSoundEffect;
+        public float ActionTime => actionTime;
+
         public AnimationFX AnimationSettings => animationSettings;
-        public bool UsesAnimation => usesAnimation;
+
         public SoundFX SoundEffectSettings => soundEffectSettings;
-        public bool UseParticleEffect => usesParticleEffect;
-        public ParticlesFX ParticlesSettings => particlesSettings;
+
+        public ParticlesFX ParticlesSettings
+        {
+            get => particlesSettings;
+            set => particlesSettings = value;
+        }
     }
 
     // Special Effect Group Settings
@@ -416,6 +469,7 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct SoundFX
     {
+        [SerializeField] private bool usesSoundEffect;
         [SerializeField] private AudioClip audioClip;
         [Range(0f, 1f)]
         [SerializeField] private float volume;
@@ -424,6 +478,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private float pitch;
         [SerializeField] private float cooldown;
 
+        public bool UseSoundEffect => usesSoundEffect;
         public AudioClip AudioClip => audioClip;
         public float Volume => volume;
         public bool Loop => loop;
@@ -434,14 +489,24 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct AnimationFX
     {
+        [SerializeField] private bool usesAnimation;
         [SerializeField] private string triggerName;
 
+        public bool UsesAnimation => usesAnimation;
         public string TriggerName => triggerName;
     }
 
     [System.Serializable]
     public struct ParticlesFX
     {
+        [SerializeField] private bool usesParticleEffect;
+        [SerializeField] private string particleSystemName;
 
+        public bool UseParticleEffect => usesParticleEffect;
+        public string SelectedParticleSystem
+        {
+            get => particleSystemName;
+            set => particleSystemName = value;
+        }
     }
 }

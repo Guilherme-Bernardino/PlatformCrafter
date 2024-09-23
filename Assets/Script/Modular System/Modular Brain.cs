@@ -38,12 +38,14 @@ namespace PlatformCrafterModularSystem
         private Collider2D col;
         private AudioSource audioSource;
         private ShadowEffect shadowEffect;
+        private List<ParticleSystem> particleSystems = new();
         public Rigidbody2D Rigidbody => rb;
         public SpriteRenderer SpriteRenderer => spriteRenderer;
         public Animator Animator => animator;
         public Collider2D Collider => col;
         public AudioSource AudioSource => audioSource;
         public ShadowEffect ShadowEffect => shadowEffect;
+        public List<ParticleSystem> ParticleSystems => particleSystems;
 
         private void Start()
         {
@@ -53,6 +55,7 @@ namespace PlatformCrafterModularSystem
             col = GetComponentInChildren<Collider2D>();
             audioSource = GetComponentInChildren<AudioSource>();
             shadowEffect = GetComponentInChildren<ShadowEffect>();
+            particleSystems = GetComponentsInChildren<ParticleSystem>().ToList();
 
             InitializeModules();
         }
@@ -270,6 +273,11 @@ namespace PlatformCrafterModularSystem
         public InventoryTypeModule GetInventoryTypeModuleByName(string name)
         {
             return inventoryModules.Find(module => module.name == name);
+        }
+
+        public ParticleSystem GetParticleSystemByName(string name)
+        {
+            return particleSystems.Find(u => u.name == name);
         }
 
         [ContextMenu("Toggle Editor Features")]

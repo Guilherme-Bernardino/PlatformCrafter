@@ -44,14 +44,17 @@ MonoBehaviour:
   externalActionTypeSettings:
     externalAction: {fileID: 11400000, guid: d04e3c183d3ae8644b4ec8fd7c78a197, type: 2}
   specialEffectTypeSettings:
-    usesSoundEffect: 1
+    actionTime: 1
     soundEffectSettings:
+      usesSoundEffect: 1
       audioClip: {fileID: 8300000, guid: 5837d1a6249ef47459b1da6b7ee2a7d4, type: 3}
       volume: 1
-      loop: 0
+      loop: 1
       pitch: 1
       cooldown: 0
-    usesAnimation: 1
     animationSettings:
+      usesAnimation: 1
       triggerName: Walking
-    usesParticleEffect: 1
+    particlesSettings:
+      usesParticleEffect: 0
+      particleSystemName: Particles
