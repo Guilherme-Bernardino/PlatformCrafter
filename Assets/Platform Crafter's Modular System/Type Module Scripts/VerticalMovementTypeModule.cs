@@ -16,7 +16,8 @@ namespace PlatformCrafterModularSystem
             Jumping,
             AirJumping,
             Crouching,
-            Climbing
+            Climbing,
+            WallGrab
         }
 
         public VerticalState CurrentState { get; private set; } = VerticalState.Idle;
@@ -32,6 +33,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private AirJump airJumpAction;
         [SerializeField] private Crouch crouchAction;
         [SerializeField] private Climb climbAction;
+        [SerializeField] private WallGrab wallGrabAction;
 
         //Components
         private Rigidbody2D rb;
@@ -167,6 +169,8 @@ namespace PlatformCrafterModularSystem
             {
                 isAirJumping = false;
             }
+
+            Debug.Log(CurrentState);
         }
 
         private void HandleInput()
@@ -180,6 +184,8 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.Crouching);
                     else if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
                         SetState(VerticalState.Climbing);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() && !isGrounded)
+                        SetState(VerticalState.WallGrab);
                     break;
                 case VerticalState.Jumping:
                     if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded && CurrentState != VerticalState.Climbing)
@@ -193,6 +199,8 @@ namespace PlatformCrafterModularSystem
                     }
                     if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
                         SetState(VerticalState.Climbing);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall())
+                        SetState(VerticalState.WallGrab);
                     break;
                 case VerticalState.AirJumping:
                     if (!Input.GetKey(airJumpAction.AirJumpKey) && isGrounded)
@@ -206,6 +214,8 @@ namespace PlatformCrafterModularSystem
                     }
                     if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
                         SetState(VerticalState.Climbing);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall())
+                        SetState(VerticalState.WallGrab);
                     break;
                 case VerticalState.Crouching:
                     if (Input.GetKeyUp(crouchAction.CrouchKey) || !isGrounded || CannotCrawl())
@@ -218,6 +228,17 @@ namespace PlatformCrafterModularSystem
                     if (!CanClimb())
                     {
                         StopClimbing();
+                    }
+                    break;
+                case VerticalState.WallGrab:
+                    if (Input.GetKeyDown(jumpKey) && IsOnWall())
+                    {
+                        SetState(VerticalState.Jumping);
+                    }
+                    if (isGrounded || !Input.GetKey(wallGrabAction.WallGrabKey) && !wallGrabAction.IsAutomatic || !IsOnWall())
+                    {
+                        SetState(VerticalState.Idle);
+                        rb.gravityScale = naturalFallingGravityScale;
                     }
                     break;
             }
@@ -247,6 +268,10 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.AirJumping);
                         airJumpClicked = true;
                     }
+                    if(wallGrabAction.IsAutomatic && IsOnWall())
+                    {
+                        SetState(VerticalState.WallGrab);
+                    }
                     break;
                 case VerticalState.AirJumping:
                     if (airJumpAction.IsAutomatic && !isGrounded)
@@ -255,6 +280,7 @@ namespace PlatformCrafterModularSystem
                         airJumpClicked = true;
                     }
                     break;
+
             }
         }
 
@@ -273,6 +299,9 @@ namespace PlatformCrafterModularSystem
                     break;
                 case VerticalState.Climbing:
                     HandleClimbing();
+                    break;
+                case VerticalState.WallGrab:
+                    HandleWallGrab();
                     break;
             }
         }
@@ -560,6 +589,22 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        private void HandleWallGrab()
+        {
+            if (!isGrounded && (Input.GetKey(wallGrabAction.WallGrabKey) || wallGrabAction.IsAutomatic))
+            {
+                if (wallGrabAction.HoldGrab)
+                {
+                    rb.velocity = Vector2.zero;
+                    rb.gravityScale = 0;
+                }
+                else
+                {
+                    rb.gravityScale = wallGrabAction.GravityScale; 
+                }
+            }
+        }
+
         private void PerformNaturalFall()
         {
             if (rb.velocity.y < 0 && CurrentState == VerticalState.Idle && !isGrounded)
@@ -591,6 +636,29 @@ namespace PlatformCrafterModularSystem
             if ((Input.GetKey(horizontalModule.LeftKey) || Input.GetKey(horizontalModule.RightKey)) && !crouchAction.CanCrawl)
             {
                 return true;
+            }
+            return false;
+        }
+
+        private bool IsOnWall()
+        {
+            Collider2D[] colliders;
+
+            if (modularBrain.Collider is not BoxCollider2D)
+            {
+                colliders = Physics2D.OverlapCapsuleAll(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, groundLayer);
+            }
+            else
+            {
+                colliders = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0f, groundLayer);
+            }
+
+            foreach (Collider2D col in colliders)
+            {
+                if (col.CompareTag(wallGrabAction.WallTag))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -747,6 +815,22 @@ namespace PlatformCrafterModularSystem
         public LayerMask ClimbableLayer { get => climbableLayer; set => climbableLayer = value; }
         public float ClimbCheckRange { get => climbCheckRange; set => climbCheckRange = value; }
         public VerticalClimb VerticalClimbSettings { get => verticalClimbSettings; set => verticalClimbSettings = value; }
+    }
+
+    [Serializable]
+    public struct WallGrab
+    {
+        [SerializeField] private KeyCode wallGrabKey;
+        [SerializeField] private bool isAutomatic;
+        [SerializeField] private float gravityScale;
+        [SerializeField] private bool holdGrab;
+        [SerializeField] private string wallTag;
+
+        public KeyCode WallGrabKey => wallGrabKey;
+        public bool IsAutomatic => isAutomatic;
+        public float GravityScale => gravityScale;
+        public bool HoldGrab => holdGrab;
+        public string WallTag => wallTag;
     }
 
     [System.Serializable]

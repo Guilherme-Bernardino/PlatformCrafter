@@ -73,3 +73,9 @@ MonoBehaviour:
     verticalClimbSettings:
       climbSpeed: 10
       holdClimb: 0
+  wallGrabAction:
+    wallGrabKey: 113
+    isAutomatic: 0
+    gravityScale: 0.5
+    holdGrab: 1
+    wallTag: Wall
