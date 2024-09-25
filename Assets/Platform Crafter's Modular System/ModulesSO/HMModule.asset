@@ -20,7 +20,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  canMoveOnAir: 1
+  canMoveOnAir: 0
   doubleTapThreshold: 0.25
   walkAction:
     isAutomatic: 0

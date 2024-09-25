@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39358687e3dd8384c92afca24ca4acf5, type: 3}
   m_Name: ActionModule
   m_EditorClassIdentifier: 
-  isActive: 1
+  isActive: 0
   actionInput: 323
   actionType: 4
   instantiationTypeSettings:

@@ -75,7 +75,13 @@ MonoBehaviour:
       holdClimb: 0
   wallGrabAction:
     wallGrabKey: 113
-    isAutomatic: 0
-    gravityScale: 0.5
+    isAutomatic: 1
+    grabGravityScale: 0.5
     holdGrab: 1
     wallTag: Wall
+    wallJumpSettings:
+      jumpForce: 20
+      jumpAngle: 45
+      gravityScale: 2
+      fallGravityScale: 4
+      wallJumpDuration: 0.2
