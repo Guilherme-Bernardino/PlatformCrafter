@@ -18,7 +18,8 @@ namespace PlatformCrafterModularSystem
             Crouching,
             Climbing,
             WallGrab,
-            WallJump
+            WallJump,
+            LedgeGrab
         }
 
         public VerticalState CurrentState { get; private set; } = VerticalState.Idle;
@@ -147,14 +148,14 @@ namespace PlatformCrafterModularSystem
             {
                 wallTimer += Time.deltaTime;
 
-                if (wallTimer >= wallGrabAction.WallJumpSettings.wallJumpDuration)
+                if (wallTimer >= wallGrabAction.WallJumpSettings.WallJumpDuration)
                 {
                     jumpedFromWall = false;
                     wallTimer = 0;
                 }
             }
 
-            if (!isJumping && !isAirJumping)
+            if (!isJumping && !isAirJumping && !jumpedFromWall)
             {
                 rb.gravityScale = defaultGravityScale;
             }
@@ -202,6 +203,8 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.Climbing);
                     if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() != 0 && !isGrounded)
                         SetState(VerticalState.WallGrab);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnLedge() != 0 && !isGrounded && wallGrabAction.AllowLedgeGrab)
+                        SetState(VerticalState.LedgeGrab);
                     break;
                 case VerticalState.Jumping:
                     if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded && CurrentState != VerticalState.Climbing)
@@ -215,8 +218,10 @@ namespace PlatformCrafterModularSystem
                     }
                     if ((Input.GetKey(climbAction.ClimbUpKey) || Input.GetKey(climbAction.ClimbDownKey)) && CanClimb())
                         SetState(VerticalState.Climbing);
-                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() != 0 )
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() != 0)
                         SetState(VerticalState.WallGrab);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnLedge() != 0 && wallGrabAction.AllowLedgeGrab)
+                        SetState(VerticalState.LedgeGrab);
                     break;
                 case VerticalState.AirJumping:
                     if (!Input.GetKey(airJumpAction.AirJumpKey) && isGrounded)
@@ -232,6 +237,8 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.Climbing);
                     if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() != 0)
                         SetState(VerticalState.WallGrab);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnLedge() != 0 && wallGrabAction.AllowLedgeGrab)
+                        SetState(VerticalState.LedgeGrab);
                     break;
                 case VerticalState.Crouching:
                     if (Input.GetKeyUp(crouchAction.CrouchKey) || !isGrounded || CannotCrawl())
@@ -261,10 +268,23 @@ namespace PlatformCrafterModularSystem
                 case VerticalState.WallJump:
                     if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() != 0 && !jumpedFromWall)
                         SetState(VerticalState.WallGrab);
+                    if (Input.GetKey(wallGrabAction.WallGrabKey) && IsOnLedge() != 0 && !jumpedFromWall)
+                        SetState(VerticalState.LedgeGrab);
                     if (!Input.GetKey(wallGrabAction.WallGrabKey) && IsOnWall() != 0 || isGrounded)
                         SetState(VerticalState.Idle);
                     break;
-
+                case VerticalState.LedgeGrab:
+                    if (Input.GetKeyDown(jumpKey) && IsOnLedge() != 0)
+                    {
+                        SetState(VerticalState.WallJump);
+                        jumpedFromWall = true;
+                    }
+                    if (isGrounded || !Input.GetKey(wallGrabAction.WallGrabKey) && !wallGrabAction.IsAutomatic || IsOnLedge() == 0)
+                    {
+                        SetState(VerticalState.Idle);
+                        rb.gravityScale = naturalFallingGravityScale;
+                    }
+                    break;
             }
         }
 
@@ -296,6 +316,10 @@ namespace PlatformCrafterModularSystem
                     {
                         SetState(VerticalState.WallGrab);
                     }
+                    if (wallGrabAction.IsAutomatic && IsOnLedge() != 0 && wallGrabAction.AllowLedgeGrab)
+                    {
+                        SetState(VerticalState.LedgeGrab);
+                    }
                     break;
                 case VerticalState.AirJumping:
                     if (airJumpAction.IsAutomatic && !isGrounded)
@@ -306,6 +330,10 @@ namespace PlatformCrafterModularSystem
                     if (wallGrabAction.IsAutomatic && IsOnWall() != 0 && !isGrounded)
                     {
                         SetState(VerticalState.WallGrab);
+                    }
+                    if (wallGrabAction.IsAutomatic && IsOnLedge() != 0 && !isGrounded && wallGrabAction.AllowLedgeGrab)
+                    {
+                        SetState(VerticalState.LedgeGrab);
                     }
                     break;
             }
@@ -328,11 +356,15 @@ namespace PlatformCrafterModularSystem
                     HandleClimbing();
                     break;
                 case VerticalState.WallGrab:
-                    HandleWallGrab();
+                    HandleWallGrab(CurrentState);
+                    break;
+                case VerticalState.LedgeGrab:
+                    HandleWallGrab(CurrentState);
                     break;
                 case VerticalState.WallJump:
                     HandleWallJump();
                     break;
+
             }
         }
 
@@ -619,11 +651,22 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        private void HandleWallGrab()
+        private void HandleWallGrab(VerticalState state)
         {
+            int surfaceCheck = 0;
+
+            if (state == VerticalState.WallGrab)
+            {
+                surfaceCheck = IsOnWall();
+            }
+            if (state == VerticalState.LedgeGrab)
+            {
+                surfaceCheck = IsOnLedge();
+            }
+
             if (!isGrounded && (Input.GetKey(wallGrabAction.WallGrabKey) || wallGrabAction.IsAutomatic))
             {
-                if (wallGrabAction.HoldGrab)
+                if (wallGrabAction.HoldGrab && surfaceCheck != 0)
                 {
                     rb.velocity = Vector2.zero;
                     rb.gravityScale = 0;
@@ -637,24 +680,40 @@ namespace PlatformCrafterModularSystem
 
         private void HandleWallJump()
         {
-            int wallDirection = IsOnWall();
+            if (IsOnWall() == 0 && IsOnLedge() == 0) return;
 
-            if (wallDirection == 0) return;
+            int jumpDirection = 0;
 
-            float jumpDirection = -wallDirection;
+            if (IsOnWall() != 0 && IsOnLedge() == 0)
+            {
+                jumpDirection = -IsOnWall();
+            }
+            if (IsOnWall() == 0 && IsOnLedge() != 0)
+            {
+                jumpDirection = -IsOnLedge();
+            }
 
-            Vector2 wallJumpVector = new Vector2(Mathf.Cos(wallGrabAction.WallJumpSettings.jumpAngle * Mathf.Deg2Rad) * jumpDirection,
-                                                 Mathf.Sin(wallGrabAction.WallJumpSettings.jumpAngle * Mathf.Deg2Rad)) * wallGrabAction.WallJumpSettings.jumpForce;
+            Vector2 wallJumpVector = new Vector2(Mathf.Cos(wallGrabAction.WallJumpSettings.JumpAngle * Mathf.Deg2Rad) * jumpDirection,
+                                                 Mathf.Sin(wallGrabAction.WallJumpSettings.JumpAngle * Mathf.Deg2Rad)) * wallGrabAction.WallJumpSettings.JumpForce;
 
             rb.velocity = wallJumpVector;
 
+            if(wallGrabAction.WallJumpSettings.UpdateDirection && jumpDirection == 1)
+            {
+                modularBrain.HorizontalMovementTypeModule.FlipDirection(true);
+            }
+            else if (wallGrabAction.WallJumpSettings.UpdateDirection && jumpDirection == -1)
+            {
+                modularBrain.HorizontalMovementTypeModule.FlipDirection(false);
+            }
+
             if (rb.velocity.y > 0)
             {
-                rb.gravityScale = wallGrabAction.WallJumpSettings.gravityScale;
+                rb.gravityScale = wallGrabAction.WallJumpSettings.GravityScale;
             }
             else
             { 
-                rb.gravityScale = wallGrabAction.WallJumpSettings.fallGravityScale;
+                rb.gravityScale = wallGrabAction.WallJumpSettings.FallGravityScale;
             }
         }
 
@@ -717,6 +776,37 @@ namespace PlatformCrafterModularSystem
                     else if (col.transform.position.x > modularBrain.transform.position.x)
                     {
                         return 1; 
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        private int IsOnLedge()
+        {
+            Collider2D[] colliders;
+
+            if (modularBrain.Collider is not BoxCollider2D)
+            {
+                colliders = Physics2D.OverlapCapsuleAll(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, groundLayer);
+            }
+            else
+            {
+                colliders = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0f, groundLayer);
+            }
+
+            foreach (Collider2D col in colliders)
+            {
+                if (col.CompareTag(wallGrabAction.LedgeTag))
+                {
+                    if (col.transform.position.x < modularBrain.transform.position.x)
+                    {
+                        return -1;
+                    }
+                    else if (col.transform.position.x > modularBrain.transform.position.x)
+                    {
+                        return 1;
                     }
                 }
             }
@@ -887,6 +977,9 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private bool holdGrab;
         [SerializeField] private string wallTag;
 
+        [SerializeField] private bool allowLedgeGrab;
+        [SerializeField] private string ledgeTag;
+
         [SerializeField] private WallJumpSettings wallJumpSettings;
 
         public KeyCode WallGrabKey => wallGrabKey;
@@ -894,18 +987,27 @@ namespace PlatformCrafterModularSystem
         public float GravityScale => grabGravityScale;
         public bool HoldGrab => holdGrab;
         public string WallTag => wallTag;
-
+        public bool AllowLedgeGrab => allowLedgeGrab;
+        public string LedgeTag => ledgeTag; 
         public WallJumpSettings WallJumpSettings => wallJumpSettings;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct WallJumpSettings
     {
-        public float jumpForce;           // The force applied during the wall jump
-        public float jumpAngle;           // The angle at which the jump is applied
-        public float gravityScale;        // Gravity scale during wall jump
-        public float fallGravityScale;    // Gravity scale after the peak of the jump
-        public float wallJumpDuration;    // Duration of the wall jump before falling
+        [SerializeField] private float jumpForce;           // The force applied during the wall jump
+        [SerializeField] private float jumpAngle;           // The angle at which the jump is applied
+        [SerializeField] private float gravityScale;        // Gravity scale during wall jump
+        [SerializeField] private float fallGravityScale;    // Gravity scale after the peak of the jump
+        [SerializeField] private float wallJumpDuration;    // Duration of the wall jump before falling
+        [SerializeField] private bool updateDirection;
+
+        public float JumpForce => jumpForce;
+        public float JumpAngle => jumpAngle;
+        public float GravityScale => gravityScale;
+        public float FallGravityScale => fallGravityScale;
+        public float WallJumpDuration => wallJumpDuration;
+        public bool UpdateDirection => updateDirection;
     }
 
     [System.Serializable]

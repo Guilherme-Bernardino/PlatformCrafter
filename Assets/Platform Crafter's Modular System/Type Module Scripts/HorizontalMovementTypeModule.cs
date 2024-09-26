@@ -57,7 +57,7 @@ namespace PlatformCrafterModularSystem {
         //Checks
         private bool isGrounded;
         private bool isFacingRight;
-        public bool IsFacingRight { get => isFacingRight;}
+        public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
         private bool isBraking;
         private bool isSprintActive = false;
         private bool isSliding = false;
@@ -265,18 +265,29 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey))
             {
-                isFacingRight = true;
-
-                if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = true;
-                else modularBrain.SpriteRenderer.flipX = false;
+                FlipDirection(true);
             }
             else if (Input.GetKey(leftKey))
             {
-                isFacingRight = false;
+                FlipDirection(false);
+            }
+        }
 
+        public void FlipDirection(bool facingRight)
+        {
+            isFacingRight = facingRight;
+
+            if (facingRight)
+            {
+                if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = true;
+                else modularBrain.SpriteRenderer.flipX = false;
+            }
+            else
+            {
                 if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = false;
                 else modularBrain.SpriteRenderer.flipX = true;
             }
+
         }
 
         public override void FixedUpdateModule()
