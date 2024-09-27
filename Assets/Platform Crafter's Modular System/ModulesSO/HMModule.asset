@@ -16,7 +16,7 @@ MonoBehaviour:
   rightKey: 275
   leftKey: 276
   spriteFacingDirection: 0
-  groundCheck: {x: 0.7, y: 0.15}
+  groundCheck: {x: 0.8, y: 0.15}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -72,12 +72,13 @@ MonoBehaviour:
       slideSpeedReduction: 9.1
     useShadowEffect: 1
   dashAction:
-    dashKey: 0
+    dashKey: 27
     isAutomatic: 0
     allowDoubleTap: 1
     normalDashSettings:
       dashSpeed: 27.5
       dashDistance: 7.8
       cooldown: 3.9
-      dashOnAir: 0
+      dashOnAir: 1
+      alwaysHorizontal: 1
     useShadowEffect: 1

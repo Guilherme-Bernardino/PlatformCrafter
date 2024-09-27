@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 5062749985277867652}
   - component: {fileID: 2020515092114913046}
   - component: {fileID: 7219480713724475650}
-  - component: {fileID: 4584622953334116114}
   - component: {fileID: -3572241586263134104}
+  - component: {fileID: 7553327733951858288}
   m_Layer: 0
   m_Name: SpelunkyPlayer
   m_TagString: Untagged
@@ -58,9 +58,10 @@ MonoBehaviour:
   interactionModules: []
   resourceModules: []
   inventoryModules: []
-  animationModule: {fileID: 11400000, guid: d6543923dcb25224d8d6be0d361796b0, type: 2}
-  soundEffectModule: {fileID: 11400000, guid: cf14a65491a8674479c408c96caaed36, type: 2}
-  customModules: []
+  animationModule: {fileID: 11400000, guid: 966cafad515ef8d4599594d20aa44215, type: 2}
+  soundEffectModule: {fileID: 11400000, guid: 59cb03f76457c5f41a48e65ad5be575b, type: 2}
+  customModules:
+  - {fileID: 11400000, guid: f9eb6c13859147f42baf70a56f410948, type: 2}
 --- !u!212 &5440477859944263683
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -257,7 +258,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!70 &4584622953334116114
+--- !u!114 &-3572241586263134104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5388550066333633782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19717a945efe90a428a138ec895572dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shadow: {fileID: 4351637713240009246, guid: 9740a884883a64c408df19045697ad3e, type: 3}
+  speed: 20
+  _color: {r: 0.6132076, g: 0.5698202, b: 0.5698202, a: 0.84313726}
+--- !u!70 &7553327733951858288
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -289,21 +305,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.5}
-  m_Size: {x: 0.7, y: 0.95}
+  m_Offset: {x: -0.031163692, y: 0.43767285}
+  m_Size: {x: 0.6052599, y: 0.8753457}
   m_Direction: 0
---- !u!114 &-3572241586263134104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5388550066333633782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19717a945efe90a428a138ec895572dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Shadow: {fileID: 4351637713240009246, guid: 9740a884883a64c408df19045697ad3e, type: 3}
-  speed: 20
-  _color: {r: 0.6132076, g: 0.5698202, b: 0.5698202, a: 0.84313726}

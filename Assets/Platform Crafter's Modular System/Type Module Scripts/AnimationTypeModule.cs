@@ -21,6 +21,9 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private string airJumpAnimation;
         [SerializeField] private string climbAnimation;
         [SerializeField] private string crouchAnimation;
+        [SerializeField] private string wallGrabAnimation;
+        [SerializeField] private string ledgeGrabAnimation;
+        [SerializeField] private string wallJumpAnimation;
         [SerializeField] private string crawlAnimation; // Combined animation (Crouch + Walk)
         [SerializeField] private string airDashAnimation; // Combined animation (Jump + Dash)
 
@@ -39,6 +42,9 @@ namespace PlatformCrafterModularSystem
             AirJump,
             Climb,
             Crouch,
+            WallGrab,
+            WallJump,
+            LedgeGrab,
             Crawl, // Combined action (Crouch + Walk)
             AirDash // Combined action (Jump + Dash)
         }
@@ -124,6 +130,18 @@ namespace PlatformCrafterModularSystem
             {
                 DoAnimation(AnimationAction.Climb);
             }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.WallGrab)
+            {
+                DoAnimation(AnimationAction.WallGrab);
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.LedgeGrab)
+            {
+                DoAnimation(AnimationAction.LedgeGrab);
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.WallJump)
+            {
+                DoAnimation(AnimationAction.WallJump);
+            }
             else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
             {
                 DoAnimation(AnimationAction.Walk);
@@ -164,6 +182,9 @@ namespace PlatformCrafterModularSystem
                 case AnimationAction.AirJump: animator.Play(airJumpAnimation); break;
                 case AnimationAction.Climb: animator.Play(climbAnimation); break;
                 case AnimationAction.Crouch: animator.Play(crouchAnimation); break;
+                case AnimationAction.WallGrab: animator.Play(wallGrabAnimation); break;
+                case AnimationAction.LedgeGrab: animator.Play(ledgeGrabAnimation); break;
+                case AnimationAction.WallJump: animator.Play(wallJumpAnimation); break;
                 case AnimationAction.Crawl: animator.Play(crawlAnimation); break;
                 case AnimationAction.AirDash: animator.Play(airDashAnimation); break;
             }

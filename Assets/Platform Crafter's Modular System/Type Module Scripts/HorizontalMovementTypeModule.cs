@@ -624,6 +624,7 @@ namespace PlatformCrafterModularSystem {
                 rb.velocity = new Vector2(-dashAction.DashSettings.DashSpeed, rb.velocity.y);
             else
                 rb.velocity = new Vector2(isFacingRight ? dashAction.DashSettings.DashSpeed : -dashAction.DashSettings.DashSpeed, rb.velocity.y);
+
         }
 
         private void UpdateDash()
@@ -631,6 +632,11 @@ namespace PlatformCrafterModularSystem {
             if (dashAction.UseShadowEffect && shadowEffect != null)
             {
                 shadowEffect.ShadowSkill();
+            }
+
+            if (dashAction.DashSettings.AlwaysHorizontal)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
             }
 
             if (Time.time - dashStartTime >= dashDuration)
@@ -915,11 +921,13 @@ namespace PlatformCrafterModularSystem {
         [Range(0.0f, 100.0f)]
         [SerializeField] private float cooldown;
         [SerializeField] private bool dashOnAir;
+        [SerializeField] private bool alwaysHorizontal;
 
         public float DashSpeed => dashSpeed;
         public float DashDistance => dashDistance;
         public float Cooldown => cooldown;
         public bool DashOnAir => dashOnAir;
+        public bool AlwaysHorizontal => alwaysHorizontal;
     }
 
     public enum AutomaticMode

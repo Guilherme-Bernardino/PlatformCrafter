@@ -52,7 +52,7 @@ MonoBehaviour:
     crouchKey: 274
     isAutomatic: 0
     canCrawl: 0
-    crouchMode: 0
+    crouchMode: 1
     normalCrouchSettings:
       crouchHeightReduction: 50.6
       linearDrag: 10
@@ -73,16 +73,17 @@ MonoBehaviour:
     verticalClimbSettings:
       climbSpeed: 10
       holdClimb: 0
-  wallGrabAction:
+  wallGrabAndWallJumpAction:
     wallGrabKey: 113
     isAutomatic: 0
-    grabGravityScale: 0.5
-    holdGrab: 1
+    grabGravityScale: 4
+    holdGrabOnWall: 0
     wallTag: Wall
     allowLedgeGrab: 1
     ledgeTag: Ledge
+    alignColliderOn: 0
     wallJumpSettings:
-      jumpForce: 20
+      jumpForce: 10
       jumpAngle: 45
       gravityScale: 2
       fallGravityScale: 4
