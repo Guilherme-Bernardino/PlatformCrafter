@@ -19,11 +19,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   naturalFallingGravityScale: 5
+  haveFallBeAState: 1
   jumpAction:
     isAutomatic: 0
     jumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 4.6
+      jumpHeight: 6.5
       gravityScale: 3.1
       fallGravityScale: 3.8
     derivativeHeightJumpSettings:
@@ -39,7 +40,7 @@ MonoBehaviour:
     timeBetweenJumps: 0.3
     airJumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 3.9
+      jumpHeight: 3.7
       gravityScale: 3.1
       fallGravityScale: 3.8
     derivativeHeightJumpSettings:

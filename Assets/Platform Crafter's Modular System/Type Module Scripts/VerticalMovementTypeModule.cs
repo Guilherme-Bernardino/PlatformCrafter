@@ -1,9 +1,7 @@
 using NaughtyAttributes;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 namespace PlatformCrafterModularSystem
 {
@@ -20,7 +18,8 @@ namespace PlatformCrafterModularSystem
             Climbing,
             WallGrab,
             WallJump,
-            LedgeGrab
+            LedgeGrab,
+            Falling
         }
 
         public VerticalState CurrentState { get; private set; } = VerticalState.Idle;
@@ -30,6 +29,7 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float naturalFallingGravityScale = 1f; //Gravity Scale related to falling of paltforms, without performing any action.
+        [SerializeField] private bool haveFallBeAState;
 
         //VM Actions
         [SerializeField] private Jump jumpAction;
@@ -88,12 +88,13 @@ namespace PlatformCrafterModularSystem
                 originalOffset = collider.offset;
             }
 
+            isJumping = false;
+            isAirJumping = false;
             jumpTime = 0;
             airJumpTime = 0;
             lastAirJumpTime = 0;
             dropTimer = 0;
             crouchTime = 0;
-            lastAirJumpTime = 0;
             wallTimer = 0;
             airJumpClicked = false;
             jumpedFromWall = false;
@@ -193,6 +194,7 @@ namespace PlatformCrafterModularSystem
                 rb.gravityScale = wallGrabAndWallJumpAction.WallJumpSettings.FallGravityScale;
             }
 
+
             Debug.Log(CurrentState);
         }
 
@@ -211,6 +213,10 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.WallGrab);
                     if (Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) && IsOnLedge() != 0 && !isGrounded && wallGrabAndWallJumpAction.AllowLedgeGrab)
                         SetState(VerticalState.LedgeGrab);
+                    if (rb.velocity.y <= -0.1f && !isGrounded && haveFallBeAState)
+                    {
+                        SetState(VerticalState.Falling);
+                    }
                     break;
                 case VerticalState.Jumping:
                     if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded && CurrentState != VerticalState.Climbing)
@@ -218,7 +224,7 @@ namespace PlatformCrafterModularSystem
                         airJumpClicked = true;
                         SetState(VerticalState.AirJumping);
                     }
-                    if (!Input.GetKey(jumpKey) && isGrounded)
+                    if (!Input.GetKey(jumpKey) && isGrounded && rb.velocity.y <= 0)
                     {
                         SetState(VerticalState.Idle);
                     }
@@ -228,9 +234,13 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.WallGrab);
                     if (Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) && IsOnLedge() != 0 && wallGrabAndWallJumpAction.AllowLedgeGrab)
                         SetState(VerticalState.LedgeGrab);
+                    if (rb.velocity.y <= -0.1f && !isGrounded && haveFallBeAState)
+                    {
+                        SetState(VerticalState.Falling);
+                    }
                     break;
                 case VerticalState.AirJumping:
-                    if (!Input.GetKey(airJumpAction.AirJumpKey) && isGrounded)
+                    if (!Input.GetKey(airJumpAction.AirJumpKey) && isGrounded && rb.velocity.y <= 0)
                     {
                         SetState(VerticalState.Idle);
                     }
@@ -245,6 +255,16 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.WallGrab);
                     if (Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) && IsOnLedge() != 0 && wallGrabAndWallJumpAction.AllowLedgeGrab)
                         SetState(VerticalState.LedgeGrab);
+                    if (rb.velocity.y <= -0.1f && !isGrounded && haveFallBeAState)
+                    {
+                        float count =+ Time.deltaTime;
+
+                        if(count >= 0.5f)
+                        {
+                            SetState(VerticalState.Falling);
+                        }
+                           
+                    }
                     break;
                 case VerticalState.Crouching:
                     if (Input.GetKeyUp(crouchAction.CrouchKey) || !isGrounded || CannotCrawl())
@@ -289,6 +309,17 @@ namespace PlatformCrafterModularSystem
                     {
                         SetState(VerticalState.Idle);
                         rb.gravityScale = naturalFallingGravityScale;
+                    }
+                    break;
+                case VerticalState.Falling:
+                    if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded && CurrentState != VerticalState.Climbing)
+                    {
+                        airJumpClicked = true;
+                        SetState(VerticalState.AirJumping);
+                    }
+                    if (isGrounded && haveFallBeAState)
+                    {
+                        SetState(VerticalState.Idle);
                     }
                     break;
             }
@@ -429,7 +460,7 @@ namespace PlatformCrafterModularSystem
 
         private void HandleConstantHeightJump()
         {
-            if (isGrounded)
+            if (isGrounded && rb.velocity.y <= 0)
             { 
                 rb.gravityScale = jumpAction.ConstantHeightJumpSettings.GravityScale;
                 float jumpForce = Mathf.Sqrt(jumpAction.ConstantHeightJumpSettings.JumpHeight * (Physics2D.gravity.y * rb.gravityScale) * -2) * rb.mass;
@@ -451,7 +482,7 @@ namespace PlatformCrafterModularSystem
 
         private void HandleDerivativeHeightJump()
         {
-            if (isGrounded)
+            if (isGrounded && rb.velocity.y <= 0)
             {
                 jumpTime = 0;
                 rb.velocity = new Vector2(rb.velocity.x, jumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
@@ -480,14 +511,17 @@ namespace PlatformCrafterModularSystem
         {
             if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
 
-            if (remainingJumps > 0 && airJumpClicked)
+            if (remainingJumps > 0 && airJumpClicked && rb.velocity.y <= 0)
             {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+
                 rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.GravityScale;
                 float jumpForce = Mathf.Sqrt(airJumpAction.ConstantHeightJumpSettings.JumpHeight * (Physics2D.gravity.y * rb.gravityScale) * -2) * rb.mass;
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 remainingJumps--;
                 lastAirJumpTime = Time.time;
                 airJumpClicked = false;
+                isAirJumping = true;
             }
 
             if (isAirJumping)
@@ -505,10 +539,12 @@ namespace PlatformCrafterModularSystem
 
         private void HandleDerivativeHeightAirJump()
         {
-            if (remainingJumps > 0 && airJumpClicked)
+            if (remainingJumps > 0 && airJumpClicked && rb.velocity.y <= 0)
             {
                 if (Time.time - lastAirJumpTime >= airJumpAction.TimeBetweenJumps)
                 {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+
                     airJumpTime = 0;
                     rb.velocity = new Vector2(rb.velocity.x, airJumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
                     remainingJumps--;
@@ -793,7 +829,7 @@ namespace PlatformCrafterModularSystem
 
         private void PerformNaturalFall()
         {
-            if (rb.velocity.y < 0 && CurrentState == VerticalState.Idle && !isGrounded)
+            if (rb.velocity.y < 0 && (CurrentState == VerticalState.Idle || CurrentState == VerticalState.Falling) && !isGrounded)
             {
                 rb.gravityScale = naturalFallingGravityScale;
             }

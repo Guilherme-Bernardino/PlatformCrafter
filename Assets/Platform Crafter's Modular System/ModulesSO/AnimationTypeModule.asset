@@ -20,8 +20,12 @@ MonoBehaviour:
   dashAnimation: 
   brakeAnimation: 
   jumpAnimation: Jumping
-  airJumpAnimation: 
+  airJumpAnimation: Jumping
   climbAnimation: 
   crouchAnimation: 
+  wallGrabAnimation: 
+  ledgeGrabAnimation: 
+  wallJumpAnimation: 
   crawlAnimation: 
   airDashAnimation: 
+  fallAnimation: Running
