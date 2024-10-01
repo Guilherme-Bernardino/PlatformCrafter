@@ -285,7 +285,7 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.WallJump);
                         jumpedFromWall = true;
                     }
-                    if (isGrounded || Input.GetKeyUp(wallGrabAndWallJumpAction.WallGrabKey) && !wallGrabAndWallJumpAction.IsAutomatic || IsOnWall() == 0)
+                    if (isGrounded || Input.GetKeyUp(wallGrabAndWallJumpAction.WallGrabKey) || IsOnWall() == 0)
                     {
                         SetState(VerticalState.Idle);
                         rb.gravityScale = naturalFallingGravityScale;
@@ -317,6 +317,10 @@ namespace PlatformCrafterModularSystem
                         airJumpClicked = true;
                         SetState(VerticalState.AirJumping);
                     }
+                    if (Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) && IsOnWall() != 0 && !jumpedFromWall)
+                        SetState(VerticalState.WallGrab);
+                    if (Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) && IsOnLedge() != 0 && !jumpedFromWall)
+                        SetState(VerticalState.LedgeGrab);
                     if (isGrounded && haveFallBeAState)
                     {
                         SetState(VerticalState.Idle);
@@ -349,11 +353,7 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.AirJumping);
                         airJumpClicked = true;
                     }
-                    //if(wallGrabAndWallJumpAction.IsAutomatic && IsOnWall() != 0)
-                    //{
-                    //    SetState(VerticalState.WallGrab);
-                    //}
-                    if (wallGrabAndWallJumpAction.IsAutomatic && IsOnLedge() != 0 && wallGrabAndWallJumpAction.AllowLedgeGrab)
+                    if (wallGrabAndWallJumpAction.IsAutomatic && IsOnLedge() != 0 && wallGrabAndWallJumpAction.AllowLedgeGrab && !isGrounded)
                     {
                         SetState(VerticalState.LedgeGrab);
                     }
@@ -364,10 +364,12 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.AirJumping);
                         airJumpClicked = true;
                     }
-                    //if (wallGrabAndWallJumpAction.IsAutomatic && IsOnWall() != 0 && !isGrounded)
-                    //{
-                    //    SetState(VerticalState.WallGrab);
-                    //}
+                    if (wallGrabAndWallJumpAction.IsAutomatic && IsOnLedge() != 0 && !isGrounded && wallGrabAndWallJumpAction.AllowLedgeGrab)
+                    {
+                        SetState(VerticalState.LedgeGrab);
+                    }
+                    break;
+                case VerticalState.Falling:
                     if (wallGrabAndWallJumpAction.IsAutomatic && IsOnLedge() != 0 && !isGrounded && wallGrabAndWallJumpAction.AllowLedgeGrab)
                     {
                         SetState(VerticalState.LedgeGrab);
@@ -1066,11 +1068,12 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode wallGrabKey;
         [SerializeField] private bool isAutomatic;
+        [Tag]
+        [SerializeField] private string wallTag;
         [SerializeField] private float grabGravityScale;
         [SerializeField] private bool holdGrabOnWall;
-        [SerializeField] private string wallTag;
-
         [SerializeField] private bool allowLedgeGrab;
+        [Tag]
         [SerializeField] private string ledgeTag;
         [SerializeField] private AlignCollider alignColliderOn;
 
@@ -1090,10 +1093,15 @@ namespace PlatformCrafterModularSystem
     [Serializable]
     public struct WallJumpSettings
     {
+        [Range(0.0f, 50.0f)]
         [SerializeField] private float jumpForce;           // The force applied during the wall jump
+        [Range(-90.0f, 90.0f)]
         [SerializeField] private float jumpAngle;           // The angle at which the jump is applied
+        [Range(0.0f, 50.0f)]
         [SerializeField] private float gravityScale;        // Gravity scale during wall jump
+        [Range(0.0f, 50.0f)]
         [SerializeField] private float fallGravityScale;    // Gravity scale after the peak of the jump
+        [Range(0.1f, 10.0f)]
         [SerializeField] private float wallJumpDuration;    // Duration of the wall jump before falling
         [SerializeField] private bool updateDirection;      // Allow to change sprite and entity orientation when jumping
 
@@ -1181,6 +1189,7 @@ namespace PlatformCrafterModularSystem
     [System.Serializable]
     public struct VerticalClimb
     {
+        [Range(0.0f, 50.0f)]
         [SerializeField] private float climbSpeed;
         [SerializeField] private bool holdClimb;
 
