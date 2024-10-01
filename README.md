@@ -1,9 +1,9 @@
 <p align="center">
- <img width="400px" src="https://github.com/user-attachments/assets/891f62b1-ceca-4a2e-8249-addfa799fb5e" align="center" alt="Icon" />
+ <img width="400px" src="https://github.com/user-attachments/assets/49d4b92f-da57-4856-a2b8-6189994a493b" align="center" alt="Icon" />
 </p>
 <br />
 <p align="center">
- <img src="https://img.shields.io/badge/build-v0.9.3-ffffff" />
+ <img src="https://img.shields.io/badge/build-v0.9.10-ffffff" />
    <a href="https://github/Guilherme-Bernardino/PlatformCrafter/downloads">
     <img alt="Total" src="https://img.shields.io/github/downloads/Guilherme-Bernardino/PlatformCrafter/total.svg" />
    </a>
@@ -19,6 +19,24 @@ Guilherme Bernardino
 
 # Change Log
 All notable changes of the project
+
+## [0.9.10] - 1-10-2024
+### Added
+- Added a new Vertical Module Action named WallGrab & Wall Jump, where you can hold a wall or slowly slide and jump from the wall.
+- Added a new Vertical Module state named Wall Jump, that can only ocurr when Wall Grabbing or Ledge Grabbing, perform a unique jump different from the standard jump action.
+- Added a new Vertical Module state named Ledge Grab on the WallGrab action, with a different tag, allows for grabbing and holding a grab on a ledge.
+- Added automatic mode only for Ledge Grabbing.
+- Added Animation and Sound Effect Modules settings for WallGrab, Ledge Grab and Wall Jump states.
+- Added a Fall State (toggle), that replaces the falling states of the jump actions, like the Jump and AirJump or Natural Fall on Idle.
+- Added the Fall state (toggle) settings on the Animation Module settings.
+- Added Dash option called AlwaysHorizontal, where the Y velocity doen'st affect the dash.
+
+### Changed
+- Changed a few properties for clarity.
+
+### Fixed
+- Fixed Air jump insconsistent jump height.
+- Fixed Jumps through platforms.
 
 ## [0.9.9] - 23-09-2024
 
