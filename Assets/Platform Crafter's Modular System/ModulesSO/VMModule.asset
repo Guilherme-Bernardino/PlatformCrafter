@@ -19,11 +19,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   naturalFallingGravityScale: 5
+  haveFallBeAState: 1
   jumpAction:
     isAutomatic: 0
     jumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 4.6
+      jumpHeight: 6.5
       gravityScale: 3.1
       fallGravityScale: 3.8
     derivativeHeightJumpSettings:
@@ -39,7 +40,7 @@ MonoBehaviour:
     timeBetweenJumps: 0.3
     airJumpMode: 0
     constantHeightJumpSettings:
-      jumpHeight: 3.9
+      jumpHeight: 3.7
       gravityScale: 3.1
       fallGravityScale: 3.8
     derivativeHeightJumpSettings:
@@ -52,7 +53,7 @@ MonoBehaviour:
     crouchKey: 274
     isAutomatic: 0
     canCrawl: 0
-    crouchMode: 0
+    crouchMode: 1
     normalCrouchSettings:
       crouchHeightReduction: 50.6
       linearDrag: 10
@@ -73,3 +74,19 @@ MonoBehaviour:
     verticalClimbSettings:
       climbSpeed: 10
       holdClimb: 0
+  wallGrabAndWallJumpAction:
+    wallGrabKey: 113
+    isAutomatic: 1
+    wallTag: Wall
+    grabGravityScale: 4
+    holdGrabOnWall: 0
+    allowLedgeGrab: 1
+    ledgeTag: Ledge
+    alignColliderOn: 0
+    wallJumpSettings:
+      jumpForce: 20
+      jumpAngle: 45.3
+      gravityScale: 2
+      fallGravityScale: 4
+      wallJumpDuration: 0.2
+      updateDirection: 1

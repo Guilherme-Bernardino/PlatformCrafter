@@ -10,18 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74a83871b3b38f64a814f1513e25ecda, type: 3}
-  m_Name: AnimationTypeModule
+  m_Name: SpelunkyAnimation
   m_EditorClassIdentifier: 
   isActive: 1
   idleAnimation: Idle
-  walkAnimation: Walking
-  sprintAnimation: Running
-  slideAnimation: 
-  dashAnimation: 
-  brakeAnimation: 
-  jumpAnimation: Jumping
-  airJumpAnimation: 
-  climbAnimation: 
-  crouchAnimation: 
-  crawlAnimation: 
-  airDashAnimation: 
+  walkAnimation: walk
+  sprintAnimation: sprint
+  slideAnimation: slide
+  dashAnimation: dash
+  brakeAnimation: brake
+  jumpAnimation: jump
+  airJumpAnimation: airjump
+  climbAnimation: climb
+  crouchAnimation: crouch
+  wallGrabAnimation: wallgrab
+  ledgeGrabAnimation: ledgegrab
+  wallJumpAnimation: walljump
+  crawlAnimation: crouchwalk
+  airDashAnimation: airdash

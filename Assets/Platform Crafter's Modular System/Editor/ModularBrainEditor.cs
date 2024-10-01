@@ -141,15 +141,15 @@ namespace PlatformCrafterModularSystem
             {
                 icons = new Dictionary<string, Texture2D>
             {
-                { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_hm_icon.png") },
-                { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_vm_icon.png") },
-                { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_action_icon.png") },
-                { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_interaction_icon.png") },
-                { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_resource_icon.png") },
-                { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_inventory_icon.png") },
-                { "AnimationModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_animation_icon.png") },
-                { "SoundEffectModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_sfx_icon.png") },
-                { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Script/Modular System/Editor/modular_custom_icon.png") },
+                { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_hm_icon.png") },
+                { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_vm_icon.png") },
+                { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_action_icon.png") },
+                { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_interaction_icon.png") },
+                { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_resource_icon.png") },
+                { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_inventory_icon.png") },
+                { "AnimationModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_animation_icon.png") },
+                { "SoundEffectModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_sfx_icon.png") },
+                { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Platform Crafter's Modular System/Editor/Icons/modular_custom_icon.png") },
             };
             }
         }

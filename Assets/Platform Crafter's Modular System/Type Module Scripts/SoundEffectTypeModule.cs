@@ -33,6 +33,9 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private SoundEffectSettings airJumpSFX;
         [SerializeField] private SoundEffectSettings climbSFX;
         [SerializeField] private SoundEffectSettings crouchSFX;
+        [SerializeField] private SoundEffectSettings wallGrabSFX;
+        [SerializeField] private SoundEffectSettings ledgeGrabSFX;
+        [SerializeField] private SoundEffectSettings wallJumpSFX;
         [SerializeField] private SoundEffectSettings crawlSFX; // Combined sound (Crouch + Walk)
         [SerializeField] private SoundEffectSettings airDashSFX; // Combined sound (Jump + Dash)
 
@@ -51,6 +54,9 @@ namespace PlatformCrafterModularSystem
             AirJump,
             Climb,
             Crouch,
+            WallGrab,
+            WallJump,
+            LedgeGrab,
             Crawl, // Combined action (Crouch + Walk)
             AirDash // Combined action (Jump + Dash)
         }
@@ -118,6 +124,18 @@ namespace PlatformCrafterModularSystem
             {
                 SetSoundEffect(SoundEffectAction.Climb);
             }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.WallGrab)
+            {
+                SetSoundEffect(SoundEffectAction.WallGrab);
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.LedgeGrab)
+            {
+                SetSoundEffect(SoundEffectAction.LedgeGrab);
+            }
+            else if (verticalState == VerticalMovementTypeModule.VerticalState.WallJump)
+            {
+                SetSoundEffect(SoundEffectAction.WallJump);
+            }
             else if (horizontalState == HorizontalMovementTypeModule.HorizontalState.Walking)
             {
                 SetSoundEffect(SoundEffectAction.Walk);
@@ -160,6 +178,9 @@ namespace PlatformCrafterModularSystem
                 case SoundEffectAction.AirJump: sfxSettings = airJumpSFX; break;
                 case SoundEffectAction.Climb: sfxSettings = climbSFX; break;
                 case SoundEffectAction.Crouch: sfxSettings = crouchSFX; break;
+                case SoundEffectAction.WallGrab: sfxSettings = wallGrabSFX; break;
+                case SoundEffectAction.LedgeGrab: sfxSettings = ledgeGrabSFX; break;
+                case SoundEffectAction.WallJump: sfxSettings = wallJumpSFX; break;
                 case SoundEffectAction.Crawl: sfxSettings = crawlSFX; break;
                 case SoundEffectAction.AirDash: sfxSettings = airDashSFX; break;
             }

@@ -57,7 +57,7 @@ namespace PlatformCrafterModularSystem {
         //Checks
         private bool isGrounded;
         private bool isFacingRight;
-        public bool IsFacingRight { get => isFacingRight;}
+        public bool IsFacingRight { get => isFacingRight; set => isFacingRight = value; }
         private bool isBraking;
         private bool isSprintActive = false;
         private bool isSliding = false;
@@ -265,18 +265,29 @@ namespace PlatformCrafterModularSystem {
 
             if (Input.GetKey(rightKey))
             {
-                isFacingRight = true;
-
-                if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = true;
-                else modularBrain.SpriteRenderer.flipX = false;
+                FlipDirection(true);
             }
             else if (Input.GetKey(leftKey))
             {
-                isFacingRight = false;
+                FlipDirection(false);
+            }
+        }
 
+        public void FlipDirection(bool facingRight)
+        {
+            isFacingRight = facingRight;
+
+            if (facingRight)
+            {
+                if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = true;
+                else modularBrain.SpriteRenderer.flipX = false;
+            }
+            else
+            {
                 if (spriteFacingDirection == SpriteFacingDirection.Left) modularBrain.SpriteRenderer.flipX = false;
                 else modularBrain.SpriteRenderer.flipX = true;
             }
+
         }
 
         public override void FixedUpdateModule()
@@ -613,6 +624,7 @@ namespace PlatformCrafterModularSystem {
                 rb.velocity = new Vector2(-dashAction.DashSettings.DashSpeed, rb.velocity.y);
             else
                 rb.velocity = new Vector2(isFacingRight ? dashAction.DashSettings.DashSpeed : -dashAction.DashSettings.DashSpeed, rb.velocity.y);
+
         }
 
         private void UpdateDash()
@@ -620,6 +632,11 @@ namespace PlatformCrafterModularSystem {
             if (dashAction.UseShadowEffect && shadowEffect != null)
             {
                 shadowEffect.ShadowSkill();
+            }
+
+            if (dashAction.DashSettings.AlwaysHorizontal)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
             }
 
             if (Time.time - dashStartTime >= dashDuration)
@@ -904,11 +921,13 @@ namespace PlatformCrafterModularSystem {
         [Range(0.0f, 100.0f)]
         [SerializeField] private float cooldown;
         [SerializeField] private bool dashOnAir;
+        [SerializeField] private bool alwaysHorizontal;
 
         public float DashSpeed => dashSpeed;
         public float DashDistance => dashDistance;
         public float Cooldown => cooldown;
         public bool DashOnAir => dashOnAir;
+        public bool AlwaysHorizontal => alwaysHorizontal;
     }
 
     public enum AutomaticMode

@@ -73,3 +73,18 @@ MonoBehaviour:
     verticalClimbSettings:
       climbSpeed: 5
       holdClimb: 1
+  wallGrabAndWallJumpAction:
+    wallGrabKey: 113
+    isAutomatic: 0
+    grabGravityScale: 4
+    holdGrabOnWall: 0
+    wallTag: Wall
+    allowLedgeGrab: 1
+    ledgeTag: Ledge
+    wallJumpSettings:
+      jumpForce: 30
+      jumpAngle: 45
+      gravityScale: 2
+      fallGravityScale: 4
+      wallJumpDuration: 0.2
+      updateDirection: 1

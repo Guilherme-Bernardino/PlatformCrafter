@@ -2577,7 +2577,7 @@ GameObject:
   - component: {fileID: 1842291817}
   m_Layer: 3
   m_Name: Tilemap
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5792,6 +5792,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4584622953334116114, guid: b41b53ad517c9824480729472af764e3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5388550066333633782, guid: b41b53ad517c9824480729472af764e3, type: 3}
       propertyPath: m_Name
       value: SpelunkyPlayer
