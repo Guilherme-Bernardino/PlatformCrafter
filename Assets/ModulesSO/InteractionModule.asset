@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 382b02ebbd087a14aa8662d920e546c7, type: 3}
-  m_Name: New
+  m_Script: {fileID: 11500000, guid: 9aefb5c483b26684d984fb5b73858377, type: 3}
+  m_Name: InteractionModule
   m_EditorClassIdentifier: 
-  _unityChannelEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _valueToInject: {fileID: 0}
+  isActive: 1
+  automaticInteraction: 0
+  interactionKey: 101
+  interactionChannel: {fileID: 0}
+  interactionRadius: 3.94

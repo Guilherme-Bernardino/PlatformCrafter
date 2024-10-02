@@ -216,7 +216,7 @@ namespace PlatformCrafterModularSystem
                     module is ActionTypeModule || module is InteractionTypeModule ||
                     module is ResourceTypeModule || module is InventoryTypeModule || module is AnimationTypeModule)
                 {
-                    Debug.LogWarning($"Removed predefined module type from Custom Modules list: {module.GetType().Name}. Use the type specific lists to add this specific module type.");
+                    UnityEngine.Debug.LogWarning($"Removed predefined module type from Custom Modules list: {module.GetType().Name}. Use the type specific lists to add this specific module type.");
                     customModules.RemoveAt(i);
                 }
             }

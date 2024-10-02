@@ -1683,7 +1683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cb7e0c9d9617c41935305572cc83f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionChannel: {fileID: 11400000, guid: 7ee3eab8668f65f4fae8ee244e784811, type: 2}
+  interactionChannel: {fileID: 11400000, guid: 0f9f24bd40bef144d8530b9b2d682a60, type: 2}
   actionEvent:
     m_PersistentCalls:
       m_Calls:
@@ -2634,7 +2634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cb7e0c9d9617c41935305572cc83f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionChannel: {fileID: 11400000, guid: 7ee3eab8668f65f4fae8ee244e784811, type: 2}
+  interactionChannel: {fileID: 11400000, guid: 0f9f24bd40bef144d8530b9b2d682a60, type: 2}
   actionEvent:
     m_PersistentCalls:
       m_Calls: []

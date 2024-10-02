@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00563a8dfbfc76145b577faee5b00d20, type: 3}
-  m_Name: Wood
+  m_Script: {fileID: 11500000, guid: 382b02ebbd087a14aa8662d920e546c7, type: 3}
+  m_Name: ExampleChannel
   m_EditorClassIdentifier: 
-  itemName: Wood
-  icon: {fileID: 21300000, guid: afd6b522eb3647e4b8838f9e9162f14b, type: 3}
-  isStackable: 1
-  maxStackSize: 64
+  _unityChannelEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _valueToInject: {fileID: 0}
