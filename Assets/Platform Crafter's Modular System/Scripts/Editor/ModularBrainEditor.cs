@@ -139,19 +139,42 @@ namespace PlatformCrafterModularSystem
         {
             if (icons == null)
             {
+                string[] textures = CatchAllTextures();
+
                 icons = new Dictionary<string, Texture2D>
-            {
-                { "HorizontalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_hm_icon.png") },
-                { "VerticalMovementModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_vm_icon.png") },
-                { "ActionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_action_icon.png") },
-                { "InteractionModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_interaction_icon.png") },
-                { "ResourceModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_resource_icon.png") },
-                { "InventoryModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_inventory_icon.png") },
-                { "AnimationModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_animation_icon.png") },
-                { "SoundEffectModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_sfx_icon.png") },
-                { "CustomModule", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/Platform Crafter's Modular System/Scripts/Editor/Icons/modular_custom_icon.png") },
-            };
+                {
+                    { "HorizontalMovementModule", LoadTextureByFileName("modular_hm_icon.png", textures) },
+                    { "VerticalMovementModule", LoadTextureByFileName("modular_vm_icon.png", textures) },
+                    { "ActionModule", LoadTextureByFileName("modular_action_icon.png", textures) },
+                    { "InteractionModule", LoadTextureByFileName("modular_interaction_icon.png", textures) },
+                    { "ResourceModule", LoadTextureByFileName("modular_resource_icon.png", textures) },
+                    { "InventoryModule", LoadTextureByFileName("modular_inventory_icon.png", textures) },
+                    { "AnimationModule", LoadTextureByFileName("modular_animation_icon.png", textures) },
+                    { "SoundEffectModule", LoadTextureByFileName("modular_sfx_icon.png", textures) },
+                    { "CustomModule", LoadTextureByFileName("modular_custom_icon.png", textures) },
+                };
             }
+        } 
+
+        public string[] CatchAllTextures()
+        {
+            return AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets", "Packages" }); 
+        }
+
+        public Texture2D LoadTextureByFileName(string fileName, string[] guids)
+        {
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                
+                if (Path.GetFileName(path) == fileName && Path.GetExtension(path).Equals(".png", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                }
+            }
+
+            Debug.LogWarning($"Could not find a Texture2D asset with the file name: {fileName}");
+            return null;
         }
 
         public override void OnInspectorGUI()
