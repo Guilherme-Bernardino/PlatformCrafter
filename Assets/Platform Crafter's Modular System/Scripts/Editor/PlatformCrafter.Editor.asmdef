@@ -1,0 +1,16 @@
+{
+    "name": "PlatformCrafter.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5da6afc4d5d9ab74ab7783d2fcb1a8a9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

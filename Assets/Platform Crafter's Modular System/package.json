@@ -1,0 +1,21 @@
+{
+  "name": "com.gb.platformcrafter",
+  "displayName": "PlatformCrafter",
+  "version": "0.9.10",
+  "unity": "2022.3.21f1",
+  "description": "Unity package for 2D platformer and platformer-like games. Meant for unexperienced and experienced game devs that want an easy way to create game experiences.",
+  "keywords": [ "platform","testing", "editor" ],
+  "category": "",
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Testing",
+      "description": "Testing Scene",
+      "path": "Samples/TestingScene"
+    }
+  ],
+  "author": {
+    "name": "Guilherme Bernardino",
+    "url": "https://github.com/Guilherme-Bernardino"
+  }
+}

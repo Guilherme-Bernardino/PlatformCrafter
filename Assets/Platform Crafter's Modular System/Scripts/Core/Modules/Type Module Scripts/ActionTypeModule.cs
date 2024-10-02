@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,23 +33,14 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private ActionType actionType;
 
-        [ShowIf("actionType", ActionType.Instantiate)]
-        [AllowNesting]
         [SerializeField] private InstantiateType instantiationTypeSettings;
 
-        [ShowIf("actionType", ActionType.Wield)]
-        [AllowNesting]
         [SerializeField] private WieldType wieldTypeSettings;
 
-        [ShowIf("actionType", ActionType.Consumption)]
-        [AllowNesting]
         [SerializeField] private ConsumptionType consumptionTypeSettings;
 
-        [ShowIf("actionType", ActionType.ExternalAction)]
-        [SerializeField] private ExternalActionType externalActionTypeSettings; // show than the action settings
+        [SerializeField] private ExternalActionType externalActionTypeSettings;
 
-        [ShowIf("actionType", ActionType.SpecialEffect)]
-        [AllowNesting]
         [SerializeField] private SpecialEffectType specialEffectTypeSettings;
 
         protected override void InitializeModule()
@@ -407,14 +397,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private float cooldown;
 
         [SerializeField] private bool useAnItem;
-        [ShowIf("useAnItem")]
-        [AllowNesting]
         [SerializeField] private string inventoryModuleName;
-        [ShowIf("useAnItem")]
-        [AllowNesting]
         [SerializeField] private InventoryItem item;
-        [ShowIf("useAnItem")]
-        [AllowNesting]
         [SerializeField] private int itemAmount;
 
         public string ResourceName => resourceName;

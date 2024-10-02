@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -708,16 +707,10 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private AutomaticMode isAutomatic;
         [SerializeField] private WalkMovementMode walkMode;
 
-        [SerializeField]
-        [ShowIf("walkMode", WalkMovementMode.ConstantSpeed)]
-        [AllowNesting] private ConstantSpeed walkConstantSpeedSettings;
+        [SerializeField] private ConstantSpeed walkConstantSpeedSettings;
 
-        [ShowIf("walkMode", WalkMovementMode.AccelerationSpeed)]
-        [AllowNesting]
         [SerializeField] private AcceleratingSpeed walkAccelerationSpeedSettings;
 
-        [ShowIf("walkMode", WalkMovementMode.VehicleLike)]
-        [AllowNesting]
         [SerializeField] private VehicleLike walkVehicleLikeSettings;
 
         [SerializeField] private bool transitionToSprint;
@@ -749,15 +742,12 @@ namespace PlatformCrafterModularSystem {
 
         [SerializeField] private KeyCode sprintKey;
         [SerializeField] private AutomaticMode isAutomatic;
-        [Label("Allow Double Tap?")][SerializeField] private bool allowDoubleTap;
+        [SerializeField] private bool allowDoubleTap;
         [SerializeField] private SprintMovementMode sprintMode;
 
-        [ShowIf("sprintMode", SprintMovementMode.ConstantSpeed)]
-        [AllowNesting]
+
         [SerializeField] private ConstantSpeed sprintConstantSpeedSettings;
 
-        [ShowIf("sprintMode", SprintMovementMode.AccelerationSpeed)]
-        [AllowNesting]
         [SerializeField] private AcceleratingSpeed sprintAccelerationSpeedSettings;
 
         [SerializeField] private bool transitionToWalk;
@@ -792,12 +782,8 @@ namespace PlatformCrafterModularSystem {
         [Range(0f, 100f)][SerializeField] private float colliderHeightReduction;
         [SerializeField] private SlideMovementMode slideMode;
 
-        [ShowIf("slideMode", SlideMovementMode.RollSlide)]
-        [AllowNesting]
         [SerializeField] private RollSlide rollSlideSettings;
 
-        [ShowIf("slideMode", SlideMovementMode.LongSlide)]
-        [AllowNesting]
         [SerializeField] private LongSlide longSlideSettings;
 
         [SerializeField] private bool useShadowEffect;

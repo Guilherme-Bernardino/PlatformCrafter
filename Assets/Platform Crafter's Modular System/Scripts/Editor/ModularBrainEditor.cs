@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using PlatformCrafterModularSystem;
-using NaughtyAttributes;
 using System.IO;
 
 namespace PlatformCrafterModularSystem

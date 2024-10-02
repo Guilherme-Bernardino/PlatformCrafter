@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ namespace PlatformCrafterModularSystem
     [Serializable]
     public abstract class Module : ScriptableObject
     {
-        [SerializeReference][ReadOnly]protected bool isActive;
+        [SerializeReference]protected bool isActive;
         protected ModularBrain modularBrain;
 
         public void Initialize(ModularBrain modularBrain)

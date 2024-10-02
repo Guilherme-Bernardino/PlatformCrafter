@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
@@ -195,13 +194,11 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        [Button("Pause Audio")]
         public void PauseAudio()
         {
             soundSource.Pause();
         }
 
-        [Button("Unpause Audio")]
         public void UnpauseAudio()
         {
             soundSource.Play();

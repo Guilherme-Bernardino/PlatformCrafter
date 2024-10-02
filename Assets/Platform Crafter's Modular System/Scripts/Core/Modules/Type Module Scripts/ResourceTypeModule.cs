@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -18,21 +17,15 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private bool togglePassive;
 
-        [ShowIf("togglePassive")]
-        [AllowNesting]
         [Range(0, 50)]
         [SerializeField] private int passiveRecoveryRate;
-        [ShowIf("togglePassive")]
-        [AllowNesting]
+
         [Range(0.0f, 50.0f)]
         [SerializeField] private float passiveRecoveryInterval;
 
-        [ShowIf("togglePassive")]
-        [AllowNesting]
         [Range(0,50)]
         [SerializeField] private int passiveDepletionRate;
-        [ShowIf("togglePassive")]
-        [AllowNesting]
+
         [Range(0.0f, 50.0f)]
         [SerializeField] private float passiveDepletionInterval;
 
@@ -98,19 +91,6 @@ namespace PlatformCrafterModularSystem
         {
             
         }
-
-        //[Button("Test Recover", EButtonEnableMode.Always)]
-        //public void TestRecover()
-        //{
-        //    currentValue += 5;
-        //}
-
-        //[Button("Test Deplete", EButtonEnableMode.Always)]
-        //public void TestDeplete()
-        //{
-        //    currentValue -= 5;
-        //}
-
     }
 
     [CustomEditor(typeof(ResourceTypeModule))]

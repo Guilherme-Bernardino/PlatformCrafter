@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   actionInput: 323
-  actionType: 4
+  actionType: 0
   instantiationTypeSettings:
     prefab: {fileID: 4698182368913120458, guid: 6fbeea92cccf0614799a54c0aa0cad3d, type: 3}
     positionOffset: {x: 0.12, y: 1.71}

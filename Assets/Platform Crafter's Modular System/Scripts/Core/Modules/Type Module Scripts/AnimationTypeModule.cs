@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -198,13 +197,11 @@ namespace PlatformCrafterModularSystem
             }
         }
 
-        [Button("Pause Animation")]
         public void PauseAnimation()
         {
             animator.speed = 0f;
         }
 
-        [Button("Unpause Animation")]
         public void UnpauseAnimation()
         {
             animator.speed = 1f;

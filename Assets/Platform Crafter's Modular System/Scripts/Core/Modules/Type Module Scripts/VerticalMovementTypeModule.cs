@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -961,12 +960,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private bool isAutomatic;
         [SerializeField] private JumpMovementMode jumpMode;
 
-        [ShowIf("jumpMode", JumpMovementMode.ConstantHeightJump)]
-        [AllowNesting]
         [SerializeField] private ConstantHeightJump constantHeightJumpSettings;
 
-        [ShowIf("jumpMode", JumpMovementMode.DerivativeHeightJump)]
-        [AllowNesting]
         [SerializeField] private DerivativeHeightJump derivativeHeightJumpSettings;
 
         [SerializeField] private bool useShadowEffect;
@@ -994,12 +989,8 @@ namespace PlatformCrafterModularSystem
 
         [SerializeField] private AirJumpMovementMode airJumpMode;
 
-        [ShowIf("airJumpMode", AirJumpMovementMode.ConstantHeightJump)]
-        [AllowNesting]
         [SerializeField] private ConstantHeightJump constantHeightJumpSettings;
 
-        [ShowIf("airJumpMode", AirJumpMovementMode.DerivativeHeightJump)]
-        [AllowNesting]
         [SerializeField] private DerivativeHeightJump derivativeHeightJumpSettings;
 
         [SerializeField] private bool useShadowEffect;
@@ -1028,12 +1019,8 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private bool canCrawl;
         [SerializeField] private CrouchMovementMode crouchMode;
 
-        [ShowIf("crouchMode", CrouchMovementMode.NormalCrouch)]
-        [AllowNesting]
         [SerializeField] private NormalCrouch normalCrouchSettings;
 
-        [ShowIf("crouchMode", CrouchMovementMode.PlatformCrouch)]
-        [AllowNesting]
         [SerializeField] private PlatformCrouch platformCrouchSettings;
 
         public KeyCode CrouchKey { get => crouchKey; set => crouchKey = value; }
@@ -1068,12 +1055,11 @@ namespace PlatformCrafterModularSystem
     {
         [SerializeField] private KeyCode wallGrabKey;
         [SerializeField] private bool isAutomatic;
-        [Tag]
         [SerializeField] private string wallTag;
         [SerializeField] private float grabGravityScale;
         [SerializeField] private bool holdGrabOnWall;
         [SerializeField] private bool allowLedgeGrab;
-        [Tag]
+
         [SerializeField] private string ledgeTag;
         [SerializeField] private AlignCollider alignColliderOn;
 
@@ -1171,7 +1157,6 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private float crouchHeightReduction;
         [Range(0.0f, 50.0f)]
         [SerializeField] private float linearDrag;
-        [Tag]
         [SerializeField] private string platformTag;
         [Range(0, 10)]
         [SerializeField] private float platformHoldTime;

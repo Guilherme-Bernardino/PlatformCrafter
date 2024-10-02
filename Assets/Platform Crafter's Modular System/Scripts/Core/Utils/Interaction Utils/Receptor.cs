@@ -1,4 +1,3 @@
-using OI.ScriptableTypes;
 using PlatformCrafterModularSystem;
 using System.Collections;
 using System.Collections.Generic;
