@@ -54,7 +54,7 @@ MonoBehaviour:
   horizontalMovementModule: {fileID: 11400000, guid: 709a60edd51444b4abf4896b2ffff38e, type: 2}
   verticalMovementModule: {fileID: 11400000, guid: 025e630db232f3a49aea6076e3beeee5, type: 2}
   actionModules:
-  - {fileID: 11400000, guid: 1d33fc92eada0ae4a9000a1cd183a421, type: 2}
+  - {fileID: 11400000, guid: 5dd0540781391844abe2005810b700d8, type: 2}
   interactionModules:
   - {fileID: 11400000, guid: 029e40fdb02d3d44487ec4632ee7956d, type: 2}
   resourceModules:

@@ -70,6 +70,10 @@ namespace PlatformCrafterModularSystem
             PlayCombinedAnimation();
         }
 
+        /// <summary>
+        /// Change the Horizontal State on this module based on the current state on the Horizontal Module.
+        /// </summary>
+        /// <param name="newState"></param>
         public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
@@ -84,6 +88,10 @@ namespace PlatformCrafterModularSystem
             PlayCombinedAnimation();
         }
 
+        /// <summary>
+        /// Change the Vertical State on this module based on the current state on the Vertical Module.
+        /// </summary>
+        /// <param name="newState"></param>
         public void OnVerticalStateChange(VerticalMovementTypeModule.VerticalState newState)
         {
             verticalState = newState;
@@ -98,6 +106,9 @@ namespace PlatformCrafterModularSystem
             PlayCombinedAnimation();
         }
 
+        /// <summary>
+        /// Switch between states and play the animation or combined state of animation.
+        /// </summary>
         private void PlayCombinedAnimation()
         {
             if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
@@ -174,6 +185,10 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        ///  Set the settings of the current state onto the Animator.
+        /// </summary>
+        /// <param name="animationName"></param>
         private void DoAnimation(AnimationAction animationName)
         {
             switch (animationName)
@@ -209,12 +224,12 @@ namespace PlatformCrafterModularSystem
 
         public override void FixedUpdateModule()
         {
-            
+            //Empty
         }
 
         public override void LateUpdateModule()
         {
-            
+            //Empty
         }
     }
 }

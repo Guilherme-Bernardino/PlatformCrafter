@@ -11,7 +11,7 @@ namespace PlatformCrafterModularSystem
     [CreateAssetMenu(fileName = "ActionModule", menuName = "Platform Crafter's Modular System/Modules/Type - Action")]
     public class ActionTypeModule : Module
     {
-        [SerializeField] private KeyCode actionInput;
+        [SerializeField] private KeyCode actionInput = KeyCode.Mouse0;
 
         private float cooldownTimer;
         private bool isWielding;
@@ -74,10 +74,9 @@ namespace PlatformCrafterModularSystem
             if (isWielding && wieldDurationTimer > 0)
             {
                 wieldDurationTimer -= Time.deltaTime;
+
                 if (wieldDurationTimer <= 0)
-                {
                     EndWield();
-                }
                 else
                     UpdateWieldPosition();
             }
@@ -93,6 +92,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Instantiate an object like a projectile.
+        /// </summary>
         private void ExecuteInstantiation()
         {
             if (cooldownTimer > 0)
@@ -143,6 +145,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Wield an object that shows up for a limited time.
+        /// </summary>
         private void ExecuteWield()
         {
             if (cooldownTimer > 0 || isWielding)
@@ -173,6 +178,9 @@ namespace PlatformCrafterModularSystem
             isWielding = true;
         }
 
+        /// <summary>
+        /// Update position of the wield dependent on the direction of the entity,
+        /// </summary>
         private void UpdateWieldPosition()
         {
             HorizontalMovementTypeModule horizontalMovementModule = modularBrain.HorizontalMovementTypeModule;
@@ -189,9 +197,13 @@ namespace PlatformCrafterModularSystem
                 wieldTypeSettings.WieldObject.transform.localRotation = Quaternion.identity;
         }
 
+        /// <summary>
+        /// End wield action.
+        /// </summary>
         private void EndWield()
         {
             Collider2D wieldCollider = wieldTypeSettings.WieldObject.GetComponent<Collider2D>();
+
             if (wieldCollider != null)
             {
                 wieldCollider.enabled = false;
@@ -205,12 +217,12 @@ namespace PlatformCrafterModularSystem
             isWielding = false;
         }
 
+        /// <summary>
+        /// Consumes an item (or not) and applies a Resource action dependent on selection.
+        /// </summary>
         private void ExecuteConsumption()
         {
-            if (cooldownTimer > 0)
-            {
-                return;
-            }
+            if (cooldownTimer > 0) return;
 
             InventoryTypeModule inventoryModule = modularBrain.GetInventoryTypeModuleByName(consumptionTypeSettings.InventoryModuleName);
 
@@ -242,11 +254,17 @@ namespace PlatformCrafterModularSystem
             cooldownTimer = consumptionTypeSettings.Cooldown;
         }
 
+        /// <summary>
+        /// Executes an externalized action.
+        /// </summary>
         private void ExecuteExternalAction()
         {
             externalActionTypeSettings.ExternalAction.Execute();
         }
 
+        /// <summary>
+        /// Play a sound, an animation and particles.
+        /// </summary>
         private void ExecuteSpecialEffect()
         {
             specialEffectTimer = 0f;
@@ -266,13 +284,25 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Play the animation.
+        /// </summary>
         private void ExecuteAnimation()
         {
             specialEffectAnimationPlaying = true;
 
+            if (modularBrain.Animator == null)
+            {
+                Debug.LogWarning("No Animator found on ModularBrain.");
+                return;
+            }
+
             modularBrain.Animator.Play(specialEffectTypeSettings.AnimationSettings.TriggerName);
         }
 
+        /// <summary>
+        /// Play the sound effect.
+        /// </summary>
         private void ExecuteSoundEffect()
         {
             if (cooldownTimer > 0)
@@ -296,6 +326,9 @@ namespace PlatformCrafterModularSystem
             modularBrain.AudioSource.Play(); 
         }
 
+        /// <summary>
+        /// Play the particles effect.
+        /// </summary>
         private void ExecuteParticles()
         {
             ParticleSystem ps = modularBrain.GetParticleSystemByName(specialEffectTypeSettings.ParticlesSettings.SelectedParticleSystem);
@@ -312,6 +345,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// End special effect action.
+        /// </summary>
         private void StopSpecialEffect()
         {
             isSpecialEffectActive = false;
@@ -331,27 +367,27 @@ namespace PlatformCrafterModularSystem
 
         public override void FixedUpdateModule()
         {
-            
+            //Empty
         }
 
         public override void LateUpdateModule()
         {
-            
+            //Empty
         }
     }
 
     [System.Serializable]
-    public struct InstantiateType
+    public class InstantiateType
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private Vector2 positionOffset;
         [Range(-90f, 90f)]
-        [SerializeField] private float angle;
+        [SerializeField] private float angle = 0f;
         [Range(0f, 200f)]
-        [SerializeField] private float speed;
-        [SerializeField] private bool useCharacterDirection;
+        [SerializeField] private float speed = 10f;
+        [SerializeField] private bool useCharacterDirection = true;
         [Range(0f, 50f)]
-        [SerializeField] private float cooldown;
+        [SerializeField] private float cooldown = 1f;
         [SerializeField] private bool useMouseToAim;
 
         public GameObject Prefab => prefab;
@@ -364,18 +400,18 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct WieldType
+    public class WieldType
     {
         [SerializeField] private GameObject toolPrefab;
         [Range(0f, 10f)]
-        [SerializeField] private float hitWidth;
+        [SerializeField] private float hitWidth = 2f;
         [Range(0f, 10f)]
-        [SerializeField] private float hitHeight;
+        [SerializeField] private float hitHeight = 0.5f;
         [Range(0f, 5f)]
-        [SerializeField] private float wieldDuration;
+        [SerializeField] private float wieldDuration = 1f;
         [SerializeField] private Vector2 distanceFromEntity;
         [SerializeField] private bool alwaysVisible;
-        [SerializeField] private float cooldown;
+        [SerializeField] private float cooldown = 1f;
 
         [HideInInspector] public GameObject WieldObject;
 
@@ -389,12 +425,12 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct ConsumptionType
+    public class ConsumptionType
     {
         [SerializeField] private string resourceName;
         [SerializeField] private int amount;
         [SerializeField] private ResourceAction action;
-        [SerializeField] private float cooldown;
+        [SerializeField] private float cooldown = 1f;
 
         [SerializeField] private bool useAnItem;
         [SerializeField] private string inventoryModuleName;
@@ -418,7 +454,7 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct ExternalActionType
+    public class ExternalActionType
     {
         [SerializeField] private ExternalAction externalAction;
         public ExternalAction ExternalAction => externalAction; 
@@ -451,16 +487,16 @@ namespace PlatformCrafterModularSystem
     // Special Effect Group Settings
 
     [System.Serializable]
-    public struct SoundFX
+    public class SoundFX
     {
         [SerializeField] private bool usesSoundEffect;
         [SerializeField] private AudioClip audioClip;
         [Range(0f, 1f)]
-        [SerializeField] private float volume;
+        [SerializeField] private float volume = 1f;
         [SerializeField] private bool loop;
         [Range(-3f, 3f)]
-        [SerializeField] private float pitch;
-        [SerializeField] private float cooldown;
+        [SerializeField] private float pitch = 1f;
+        [SerializeField] private float cooldown = 1f;
 
         public bool UseSoundEffect => usesSoundEffect;
         public AudioClip AudioClip => audioClip;
@@ -471,7 +507,7 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct AnimationFX
+    public class AnimationFX
     {
         [SerializeField] private bool usesAnimation;
         [SerializeField] private string triggerName;
@@ -481,7 +517,7 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct ParticlesFX
+    public class ParticlesFX
     {
         [SerializeField] private bool usesParticleEffect;
         [SerializeField] private string particleSystemName;

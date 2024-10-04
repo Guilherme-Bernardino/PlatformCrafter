@@ -10,11 +10,11 @@ namespace PlatformCrafterModularSystem
     public class InteractionTypeModule : Module
     {
         [SerializeField] private bool automaticInteraction;
-        [SerializeField] private KeyCode interactionKey;
+        [SerializeField] private KeyCode interactionKey = KeyCode.E;
         [SerializeField] private InteractionChannel interactionChannel;
 
         [Range(0f,20f)]
-        [SerializeField] private float interactionRadius = 1.0f;
+        [SerializeField] private float interactionRadius = 5.0f;
 
         private GameObject currentInteractable;
         private Collider2D[] interactablesInRange = new Collider2D[10];
@@ -27,11 +27,17 @@ namespace PlatformCrafterModularSystem
             currentInteractable = interactable;
         }
 
+        /// <summary>
+        /// Clear the current interactable.
+        /// </summary>
         public void ClearCurrentInteractable()
         {
             currentInteractable = null;
         }
 
+        /// <summary>
+        /// Send the message through the channel.
+        /// </summary>
         public void Interact()
         {
             if (currentInteractable != null)
@@ -56,12 +62,9 @@ namespace PlatformCrafterModularSystem
                 var receptor = interactablesInRange[i].GetComponent<InteractionReceptor>();
                 if (receptor != null)
                 {
-                    currentInteractable = receptor.gameObject;
-                    if (automaticInteraction)
-                    {
-                        Interact();
-                    }
-                    else if (Input.GetKeyDown(interactionKey))
+                    SetCurrentInteractable(receptor.gameObject);
+
+                    if (automaticInteraction || Input.GetKeyDown(interactionKey))
                     {
                         Interact();
                     }
@@ -74,15 +77,18 @@ namespace PlatformCrafterModularSystem
 
         public override void FixedUpdateModule()
         {
-            
+            //Empty
         }
 
         public override void LateUpdateModule()
         {
-            
+            //Empty
         }
     }
 
+    /// <summary>
+    /// Draw a circle when on runtime.
+    /// </summary>
     public static class DrawCircleDebug
     {
         public static void DrawCircle(Vector3 position, float radius, int segments, Color color)

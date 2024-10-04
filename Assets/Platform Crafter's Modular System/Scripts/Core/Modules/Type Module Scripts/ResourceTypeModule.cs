@@ -10,10 +10,10 @@ namespace PlatformCrafterModularSystem
     [CreateAssetMenu(fileName = "ResourceModule", menuName = "Platform Crafter's Modular System/Modules/Type - Resource")]
     public class ResourceTypeModule : Module
     {
-        [SerializeField] private string resourceName;
-        [SerializeField] private int maxValue;
-        [SerializeField] private int currentValue;
-        [SerializeField] private Color resourceColor;
+        [SerializeField] private string resourceName = "Health";
+        [SerializeField] private int maxValue = 100;
+        [SerializeField] private int currentValue = 100;
+        [SerializeField] private Color resourceColor = Color.red;
 
         [SerializeField] private bool togglePassive;
 
@@ -52,16 +52,27 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Recover a given amount of the resource up until the max capacity.
+        /// </summary>
+        /// <param name="amount"></param>
         public void Recover(int amount)
         {
             currentValue = Mathf.Clamp(currentValue + amount, 0, maxValue);
         }
 
+        /// <summary>
+        /// Deplete a given amount of the resource down to the min capacity.
+        /// </summary>
+        /// <param name="amount"></param>
         public void Deplete(int amount)
         {
             currentValue = Mathf.Clamp(currentValue - amount, 0, maxValue);
         }
 
+        /// <summary>
+        /// Recover a certain amount of resource based on time intervals.
+        /// </summary>
         private void PassiveRecovery()
         {
             passiveRecoveryTimer += Time.deltaTime;
@@ -72,6 +83,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Deplete a certain amount of resource based on time intervals.
+        /// </summary>
         private void PassiveDepletion()
         {
             passiveDepletionTimer += Time.deltaTime;
@@ -84,29 +98,13 @@ namespace PlatformCrafterModularSystem
 
         public override void FixedUpdateModule()
         {
-            
+            //Empty
         }
 
         public override void LateUpdateModule()
         {
-            
+            //Empty
         }
     }
 
-    [CustomEditor(typeof(ResourceTypeModule))]
-    public class ResourceTypeModuleEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            ResourceTypeModule resource = (ResourceTypeModule)target;
-
-            DrawDefaultInspector();
-
-            EditorGUILayout.LabelField("Resource Bar", EditorStyles.boldLabel);
-            Rect rect = GUILayoutUtility.GetRect(18, 18, "TextField");
-            EditorGUI.DrawRect(rect, Color.black);
-            rect.width *= (float)resource.CurrentValue / resource.MaxValue;
-            EditorGUI.DrawRect(rect, resource.ResourceColor);
-        }
-    }
 }

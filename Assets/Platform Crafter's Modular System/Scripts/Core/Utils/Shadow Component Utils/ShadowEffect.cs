@@ -8,7 +8,7 @@ public class ShadowEffect : MonoBehaviour
     [SerializeField] private GameObject Shadow;
     private List<GameObject> pool = new List<GameObject>();
     private float duration;
-    [Range(1f,100f)][SerializeField] private float speed;
+    [Range(1f,100f)][SerializeField] private float speed = 1f;
     [SerializeField] private Color _color;
 
     private void Awake()

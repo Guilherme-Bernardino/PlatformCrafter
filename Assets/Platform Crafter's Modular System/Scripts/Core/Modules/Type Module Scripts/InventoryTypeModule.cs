@@ -26,6 +26,9 @@ namespace PlatformCrafterModularSystem
             //Empty
         }
 
+        /// <summary>
+        /// Start an inventory based onto grid height and grid width.
+        /// </summary>
         public void InitializeInventory()
         {
             inventorySlots.Clear();
@@ -35,15 +38,22 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Add an item and a quantity to a slot of the inventory.
+        /// If the item is stackable, can go onto the same slot, if not, new slot.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="quantity"></param>
+        /// <returns>true if added</returns>
         public bool AddItem(InventoryItem item, int quantity = 1)
         {
-            if (item.isStackable)
+            if (item.IsStackable)
             {
                 foreach (var slot in inventorySlots)
                 {
-                    if (slot.Item == item && slot.Quantity < item.maxStackSize)
+                    if (slot.Item == item && slot.Quantity < item.MaxStackSize)
                     {
-                        int availableSpace = item.maxStackSize - slot.Quantity;
+                        int availableSpace = item.MaxStackSize - slot.Quantity;
                         int amountToAdd = Mathf.Min(quantity, availableSpace);
                         slot.Quantity += amountToAdd;
                         quantity -= amountToAdd;
@@ -69,6 +79,12 @@ namespace PlatformCrafterModularSystem
             return false;
         }
 
+        /// <summary>
+        /// Remove an item and a quantity to a slot of the inventory.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
         public bool RemoveItem(InventoryItem item, int quantity = 1)
         {
             for (int i = 0; i < inventorySlots.Count; i++)
@@ -95,6 +111,12 @@ namespace PlatformCrafterModularSystem
             return false;
         }
 
+        /// <summary>
+        /// Check if inventory has a certain item and a quantity.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="quantity"></param>
+        /// <returns>true if has</returns>
         public bool HasItem(InventoryItem item, int quantity)
         {
             for (int i = 0; i < inventorySlots.Count; i++)
@@ -107,6 +129,10 @@ namespace PlatformCrafterModularSystem
             return false;
         }
 
+        /// <summary>
+        /// Returns the list of Inventory Slots.
+        /// </summary>
+        /// <returns>a list of slots</returns>
         public List<InventorySlot> GetInventorySlots()
         {
             return inventorySlots;
@@ -114,91 +140,28 @@ namespace PlatformCrafterModularSystem
 
         public override void FixedUpdateModule()
         {
-            
+            //Empty
         }
 
         public override void LateUpdateModule()
         {
-            
-        }
-    }
-
-    [CustomEditor(typeof(InventoryTypeModule))]
-    public class InventoryTypeModuleEditor : Editor
-    {
-        private InventoryTypeModule inventoryModule;
-        private SerializedProperty gridWidth;
-        private SerializedProperty gridHeight;
-
-        private void OnEnable()
-        {
-            inventoryModule = (InventoryTypeModule)target;
-            gridWidth = serializedObject.FindProperty("gridWidth");
-            gridHeight = serializedObject.FindProperty("gridHeight");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            EditorGUILayout.PropertyField(gridWidth);
-            EditorGUILayout.PropertyField(gridHeight);
-
-            GUILayout.Label($"Slots: {gridWidth.intValue * gridHeight.intValue}", new GUIStyle(EditorStyles.boldLabel) { fontSize = 12, alignment = TextAnchor.MiddleLeft });
-
-            if (GUILayout.Button("Initialize Inventory"))
-            {
-                inventoryModule.InitializeInventory();
-            }
-
-            DrawInventoryGrid();
-
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        private void DrawInventoryGrid()
-        {
-            int width = gridWidth.intValue;
-            int height = gridHeight.intValue;
-            List<InventorySlot> slots = inventoryModule.GetInventorySlots();
-
-            if (slots == null || slots.Count != width * height)
-            {
-                return;
-            }
-
-            for (int y = 0; y < height; y++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                for (int x = 0; x < width; x++)
-                {
-                    int index = y * width + x;
-                    InventorySlot slot = slots[index];
-
-                    GUILayout.BeginVertical("box", GUILayout.Width(30), GUILayout.Height(50));
-                    if (slot.Item != null)
-                    {
-                        if (slot.Item.icon != null)
-                        {
-                            GUILayout.Label(slot.Item.icon.texture, GUILayout.Width(20), GUILayout.Height(20));
-                        }
-                        GUILayout.Label($"{slot.Item.itemName} ({slot.Quantity})");
-                    }
-                    else
-                    {
-                        GUILayout.Label("Empty");
-                    }
-                    GUILayout.EndVertical();
-                }
-                EditorGUILayout.EndHorizontal();
-            }
+            //Empty
         }
     }
 
     [System.Serializable]
     public class InventorySlot
     {
-        public InventoryItem Item;
-        public int Quantity;
+        private InventoryItem item;
+        private int quantity;
+
+        public InventoryItem Item
+        {
+            get => item; set => item = value;
+        }
+        public int Quantity
+        {
+            get => quantity; set => quantity = value;
+        }
     }
 }

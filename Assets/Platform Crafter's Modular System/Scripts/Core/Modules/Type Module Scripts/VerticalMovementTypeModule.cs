@@ -24,10 +24,10 @@ namespace PlatformCrafterModularSystem
         public VerticalState CurrentState { get; private set; } = VerticalState.Idle;
 
         //General Settings
-        [SerializeField] private KeyCode jumpKey;
-        [SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
+        [SerializeField] private KeyCode jumpKey = KeyCode.UpArrow;
+        [Min(0.01f)][SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
         [SerializeField] private LayerMask groundLayer;
-        [SerializeField] private float naturalFallingGravityScale = 1f; //Gravity Scale related to falling of paltforms, without performing any action.
+        [SerializeField] private float naturalFallingGravityScale = 1f;
         [SerializeField] private bool haveFallBeAState;
 
         //VM Actions
@@ -192,11 +192,11 @@ namespace PlatformCrafterModularSystem
             {
                 rb.gravityScale = wallGrabAndWallJumpAction.WallJumpSettings.FallGravityScale;
             }
-
-
-            Debug.Log(CurrentState);
         }
 
+        /// <summary>
+        /// Handles the inputs for this physics module.
+        /// </summary>
         private void HandleInput()
         {
             switch (CurrentState)
@@ -328,6 +328,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Handles the automatic modes for this module.
+        /// </summary>
         private void HandleAutomatic()
         {
             switch (CurrentState)
@@ -381,31 +384,19 @@ namespace PlatformCrafterModularSystem
         {
             switch (CurrentState)
             {
-                case VerticalState.Jumping:
-                    HandleJump();
-                    break;
-                case VerticalState.AirJumping:
-                    HandleAirJump();
-                    break;
-                case VerticalState.Crouching:
-                    HandleCrouch();
-                    break;
-                case VerticalState.Climbing:
-                    HandleClimbing();
-                    break;
-                case VerticalState.WallGrab:
-                    HandleWallGrab(CurrentState);
-                    break;
-                case VerticalState.LedgeGrab:
-                    HandleWallGrab(CurrentState);
-                    break;
-                case VerticalState.WallJump:
-                    HandleWallJump();
-                    break;
-
+                case VerticalState.Jumping: HandleJump(); break;
+                case VerticalState.AirJumping: HandleAirJump(); break;
+                case VerticalState.Crouching: HandleCrouch(); break;
+                case VerticalState.Climbing: HandleClimbing(); break;
+                case VerticalState.WallGrab: HandleWallGrab(CurrentState); break;
+                case VerticalState.LedgeGrab: HandleWallGrab(CurrentState); break;
+                case VerticalState.WallJump: HandleWallJump(); break;
             }
         }
 
+        /// <summary>
+        /// Handle the jump action by switching between selected mode.
+        /// </summary>
         private void HandleJump()
         {
             switch (jumpAction.JumpMode)
@@ -424,6 +415,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Handle the air jump action by switching between selected mode.
+        /// </summary>
         private void HandleAirJump()
         {
             if (isGrounded) return;
@@ -444,6 +438,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Handle the crouch action by switching between selected mode.
+        /// </summary>
         private void HandleCrouch()
         {
             if (!isGrounded) return;
@@ -459,6 +456,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Jump action functions as a linear and constant upwards movement based on a constant speed.
+        /// </summary>
         private void HandleConstantHeightJump()
         {
             if (isGrounded && rb.velocity.y <= 0)
@@ -470,17 +470,14 @@ namespace PlatformCrafterModularSystem
 
             if (isJumping)
             {
-                if (rb.velocity.y > 0)
-                {
-                    rb.gravityScale = jumpAction.ConstantHeightJumpSettings.GravityScale;
-                }
-                else
-                {
-                    rb.gravityScale = jumpAction.ConstantHeightJumpSettings.FallGravityScale;
-                }
+                ChangeGravity(jumpAction.ConstantHeightJumpSettings.GravityScale,
+                    jumpAction.ConstantHeightJumpSettings.FallGravityScale);
             }
         }
 
+        /// <summary>
+        /// Jump action functions as a derivative upwards movement dependent on time, speed and input.
+        /// </summary>
         private void HandleDerivativeHeightJump()
         {
             if (isGrounded && rb.velocity.y <= 0)
@@ -497,17 +494,13 @@ namespace PlatformCrafterModularSystem
                     rb.velocity = new Vector2(rb.velocity.x, jumpAction.DerivativeHeightJumpSettings.InitialJumpForce);
                 }
 
-                if (rb.velocity.y > 0 && isJumping)
-                {
-                    rb.gravityScale = jumpAction.DerivativeHeightJumpSettings.GravityScale;
-                }
-                else
-                {
-                    rb.gravityScale = jumpAction.DerivativeHeightJumpSettings.FallGravityScale;
-                }
+                ChangeGravity(jumpAction.DerivativeHeightJumpSettings.GravityScale, jumpAction.DerivativeHeightJumpSettings.FallGravityScale);
             }
         }
 
+        /// <summary>
+        /// Air Jump action functions as a linear and constant upwards movement based on a constant speed.
+        /// </summary>
         public void HandleConstantHeightAirJump()
         {
             if (Time.time - lastAirJumpTime < airJumpAction.TimeBetweenJumps) return;
@@ -527,17 +520,14 @@ namespace PlatformCrafterModularSystem
 
             if (isAirJumping)
             {
-                if (rb.velocity.y > 0)
-                {
-                    rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.GravityScale;
-                }
-                else
-                {
-                    rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.FallGravityScale;
-                }
+                ChangeGravity(rb.gravityScale = airJumpAction.ConstantHeightJumpSettings.GravityScale,
+                    airJumpAction.ConstantHeightJumpSettings.FallGravityScale);
             }
         }
 
+        /// <summary>
+        /// Air Jump action functions as a derivative upwards movement dependent on time, speed and input.
+        /// </summary>
         private void HandleDerivativeHeightAirJump()
         {
             if (remainingJumps > 0 && airJumpClicked && rb.velocity.y <= 0)
@@ -568,49 +558,47 @@ namespace PlatformCrafterModularSystem
                     airJumpTime = airJumpAction.DerivativeHeightJumpSettings.MaxJumpDuration;
                 }
 
-                if (rb.velocity.y > 0 && isAirJumping)
-                {
-                    rb.gravityScale = airJumpAction.DerivativeHeightJumpSettings.GravityScale;
-                }
-                else
-                {
-                    rb.gravityScale = airJumpAction.DerivativeHeightJumpSettings.FallGravityScale;
-                }
+                ChangeGravity(airJumpAction.DerivativeHeightJumpSettings.GravityScale, airJumpAction.DerivativeHeightJumpSettings.FallGravityScale);
             }
         }
 
+        /// <summary>
+        /// Switch between gravity values depending on rigidbody's y value.
+        /// </summary>
+        /// <param name="upGravity"></param>
+        /// <param name="downGravity"></param>
+        private void ChangeGravity(float upGravity, float downGravity)
+        {
+            if (rb.velocity.y > 0)
+            {
+                rb.gravityScale = upGravity;
+            }
+            else
+            {
+                rb.gravityScale = downGravity;
+            }
+        }
+
+        /// <summary>
+        /// Crouch action functions as a simple hitbox reducing and movement limiting crouch.
+        /// </summary>
         private void HandleNormalCrouch()
         {
             float heightReduction = originalColliderHeight * (crouchAction.NormalCrouchSettings.CrouchHeightReductionPercentage / 100f);
 
-            if (collider != null)
-            {
-                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
-                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
-            }
-            if (capsuleCollider != null)
-            {
-                capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
-                capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
-            }
+            ReduceCollider(heightReduction);
 
             rb.drag = crouchAction.NormalCrouchSettings.LinearDrag;   
         }
 
+        /// <summary>
+        /// Crouch action functions as a simple hitbox reducing and movement limiting crouch, with the added function where the entity can pass through a platform surface.
+        /// </summary>
         private void HandlePlatformCrouch()
         {
             float heightReduction = originalColliderHeight * (crouchAction.PlatformCrouchSettings.CrouchHeightReductionPercentage / 100f);
 
-            if (collider != null)
-            {
-                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
-                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
-            }
-            if (capsuleCollider != null)
-            {
-                capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
-                capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
-            }
+            ReduceCollider(heightReduction);
 
             rb.drag = crouchAction.PlatformCrouchSettings.LinearDrag;
 
@@ -630,6 +618,27 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Reduces the size of the 2D collider.Can be a box collider or a capsule collider.
+        /// </summary>
+        /// <param name="heightReduction"></param>
+        private void ReduceCollider(float heightReduction)
+        {
+            if (collider != null)
+            {
+                collider.size = new Vector2(collider.size.x, originalColliderHeight - heightReduction);
+                collider.offset = new Vector2(collider.offset.x, originalOffset.y - heightReduction / 2);
+            }
+            if (capsuleCollider != null)
+            {
+                capsuleCollider.size = new Vector2(capsuleCollider.size.x, originalColliderHeight - heightReduction);
+                capsuleCollider.offset = new Vector2(capsuleCollider.offset.x, originalOffset.y - heightReduction / 2);
+            }
+        }
+
+        /// <summary>
+        /// Reset the crouch settings.
+        /// </summary>
         private void ResetCrouch()
         {
             if (collider != null)
@@ -647,6 +656,9 @@ namespace PlatformCrafterModularSystem
             rb.drag = 0;
         }
 
+        /// <summary>
+        /// Handles the climbing of a surface through inputs and speed. If necessary, freeze position on climb surface.
+        /// </summary>
         private void HandleClimbing()
         {
             isClimbing = true;
@@ -682,6 +694,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Stops the climbing. Resets the settings.
+        /// </summary>
         private void StopClimbing()
         {
             if (isClimbing)
@@ -694,6 +709,10 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Handles the wall grab or the ledge grab, depending on the surface type. On a wall, the entity slides vertically, on a ledge, it grabs onto the surface.
+        /// </summary>
+        /// <param name="state"></param>
         private void HandleWallGrab(VerticalState state)
         {
             int surfaceCheck = 0;
@@ -701,8 +720,6 @@ namespace PlatformCrafterModularSystem
             if (state == VerticalState.WallGrab)
             {
                 surfaceCheck = IsOnWall();
-
-
 
                 if (!isGrounded && (Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) || wallGrabAndWallJumpAction.IsAutomatic))
                 {
@@ -735,6 +752,13 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Position the entity on collider height.
+        /// Top aligns both colliders on the top line.
+        /// Center aligns both colliders centers.
+        /// Bottom aligns both colliders on the bottom line.
+        /// </summary>
+        /// <param name="alignment"></param>
         private void PositionEntityToLedge(AlignCollider alignment)
         {
             Collider2D entityCollider = modularBrain.Collider;
@@ -769,30 +793,9 @@ namespace PlatformCrafterModularSystem
             rb.transform.position = new Vector2(rb.transform.position.x, rb.transform.position.y + verticalOffset);
         }
 
-        private Collider2D GetLedgeCollider()
-        {
-            Collider2D[] colliders;
-
-            if (modularBrain.Collider is not BoxCollider2D)
-            {
-                colliders = Physics2D.OverlapCapsuleAll(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, groundLayer);
-            }
-            else
-            {
-                colliders = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0f, groundLayer);
-            }
-
-            foreach (Collider2D col in colliders)
-            {
-                if (col.CompareTag(wallGrabAndWallJumpAction.LedgeTag))
-                {
-                    return col;
-                }
-            }
-
-            return null;
-        }
-
+        /// <summary>
+        /// Handles the wall jump, an angled jump based on the position relative to the surface. Wall jump can only happen when the entity is on a wall or a ledge.
+        /// </summary>
         private void HandleWallJump()
         {
             if (IsOnWall() == 0 && IsOnLedge() == 0) return;
@@ -828,6 +831,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Performs when the entity is on the Idle state or Falling state (if enabled).
+        /// </summary>
         private void PerformNaturalFall()
         {
             if (rb.velocity.y < 0 && (CurrentState == VerticalState.Idle || CurrentState == VerticalState.Falling) && !isGrounded)
@@ -836,6 +842,11 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Sets a new action state for the module. If the new state is the same as the current state, ignore update.
+        /// Also alerts the Animation and SoundEffect modules that there is a state change.
+        /// </summary>
+        /// <param name="newState"></param>
         private void SetState(VerticalState newState)
         {
             if (newState == CurrentState) return;
@@ -844,6 +855,10 @@ namespace PlatformCrafterModularSystem
             modularBrain.SoundEffectTypeModule?.OnVerticalStateChange(newState);
         }
 
+        /// <summary>
+        /// Checks if entity is in range to be able to climb on a surface.
+        /// </summary>
+        /// <returns>true if is on a climbable surface</returns>
         private bool CanClimb()
         {
             RaycastHit2D hit = Physics2D.Raycast(rb.position, Vector2.up, climbAction.ClimbCheckRange, climbAction.ClimbableLayer);
@@ -854,6 +869,10 @@ namespace PlatformCrafterModularSystem
             return hit.collider != null;
         }
 
+        /// <summary>
+        /// Checks if the entity can walk while crouching.
+        /// </summary>
+        /// <returns>true if it is not allowed to crawl</returns>
         private bool CannotCrawl()
         {
             if ((Input.GetKey(horizontalModule.LeftKey) || Input.GetKey(horizontalModule.RightKey)) && !crouchAction.CanCrawl)
@@ -863,6 +882,10 @@ namespace PlatformCrafterModularSystem
             return false;
         }
 
+        /// <summary>
+        /// Checks if the entity is touching a wall, and what side is it grabbing.
+        /// </summary>
+        /// <returns>1 if on the left side of a wall, -1 if on the right side of a wall, 0 if not touching a wall</returns>
         private int IsOnWall()
         {
             foreach (Collider2D col in CollectColliders())
@@ -883,6 +906,10 @@ namespace PlatformCrafterModularSystem
             return 0;
         }
 
+        /// <summary>
+        /// Checks if the entity is touching a ledge, and what side is it grabbing.
+        /// </summary>
+        /// <returns>1 if on the left side of a ledge, -1 if on the right side of a ledge, 0 if not touching a ledge</returns>
         private int IsOnLedge()
         {
             foreach (Collider2D col in CollectColliders())
@@ -903,6 +930,10 @@ namespace PlatformCrafterModularSystem
             return 0;
         }
 
+        /// <summary>
+        /// Checks if the entity is touching (grounded on) a platform.
+        /// </summary>
+        /// <returns>true if touching</returns>
         private bool IsOnPlatform()
         {
             foreach (Collider2D col in CollectColliders())
@@ -915,6 +946,27 @@ namespace PlatformCrafterModularSystem
             return false;
         }
 
+        /// <summary>
+        /// Gets a collider that entity is touching.
+        /// </summary>
+        /// <returns></returns>
+        private Collider2D GetLedgeCollider()
+        {
+            foreach (Collider2D col in CollectColliders())
+            {
+                if (col.CompareTag(wallGrabAndWallJumpAction.LedgeTag))
+                {
+                    return col;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Collects all the ledges collisions.
+        /// </summary>
+        /// <returns></returns>
         private Collider2D[] CollectColliders()
         {
             Collider2D[] colliders;
@@ -931,6 +983,9 @@ namespace PlatformCrafterModularSystem
             return colliders;
         }
 
+        /// <summary>
+        /// Checks if entity is touching the ground through a box check.
+        /// </summary>
         private void UpdateGroundCheck()
         {
             Vector2 boxCenter = rb.position;
@@ -944,12 +999,12 @@ namespace PlatformCrafterModularSystem
 
         public override void LateUpdateModule()
         {
-           
+           //Empty
         }
     }
 
     [Serializable]
-    public struct Jump
+    public class Jump
     {
         public enum JumpMovementMode
         {
@@ -974,7 +1029,7 @@ namespace PlatformCrafterModularSystem
     }
 
     [Serializable]
-    public struct AirJump
+    public class AirJump
     {
         public enum AirJumpMovementMode
         {
@@ -982,10 +1037,10 @@ namespace PlatformCrafterModularSystem
             DerivativeHeightJump
         }
 
-        [SerializeField] private KeyCode airJumpKey;
+        [SerializeField] private KeyCode airJumpKey = KeyCode.UpArrow;
         [SerializeField] private bool isAutomatic;
-        [SerializeField] private int maxExtraJumps;
-        [SerializeField] private float timeBetweenJumps;
+        [SerializeField] private int maxExtraJumps = 2;
+        [SerializeField] private float timeBetweenJumps = 0.3f;
 
         [SerializeField] private AirJumpMovementMode airJumpMode;
 
@@ -1006,7 +1061,7 @@ namespace PlatformCrafterModularSystem
     }
 
     [Serializable]
-    public struct Crouch
+    public class Crouch
     {
         public enum CrouchMovementMode
         {
@@ -1014,13 +1069,12 @@ namespace PlatformCrafterModularSystem
             PlatformCrouch
         }
 
-        [SerializeField] private KeyCode crouchKey;
+        [SerializeField] private KeyCode crouchKey = KeyCode.DownArrow;
         [SerializeField] private bool isAutomatic;
         [SerializeField] private bool canCrawl;
         [SerializeField] private CrouchMovementMode crouchMode;
 
         [SerializeField] private NormalCrouch normalCrouchSettings;
-
         [SerializeField] private PlatformCrouch platformCrouchSettings;
 
         public KeyCode CrouchKey { get => crouchKey; set => crouchKey = value; }
@@ -1032,13 +1086,13 @@ namespace PlatformCrafterModularSystem
     }
 
     [Serializable]
-    public struct Climb 
+    public class Climb 
     {
-        [SerializeField] private KeyCode climbUpKey;
-        [SerializeField] private KeyCode climbDownKey;
+        [SerializeField] private KeyCode climbUpKey = KeyCode.UpArrow;
+        [SerializeField] private KeyCode climbDownKey = KeyCode.DownArrow;
         [SerializeField] private ClimbAutomaticMode isAutomatic;
         [SerializeField] private LayerMask climbableLayer;
-        [SerializeField] private float climbCheckRange;
+        [SerializeField] private float climbCheckRange = 0.15f;
 
         [SerializeField] private VerticalClimb verticalClimbSettings;
 
@@ -1051,15 +1105,14 @@ namespace PlatformCrafterModularSystem
     }
 
     [Serializable]
-    public struct WallGrab
+    public class WallGrab
     {
-        [SerializeField] private KeyCode wallGrabKey;
-        [SerializeField] private bool isAutomatic;
-        [SerializeField] private string wallTag;
-        [SerializeField] private float grabGravityScale;
+        [SerializeField] private KeyCode wallGrabKey = KeyCode.Q;
+        [SerializeField] private bool isAutomatic; 
+        [SerializeField] private string wallTag = "Wall";
+        [SerializeField] private float grabGravityScale = 4f;
         [SerializeField] private bool holdGrabOnWall;
         [SerializeField] private bool allowLedgeGrab;
-
         [SerializeField] private string ledgeTag;
         [SerializeField] private AlignCollider alignColliderOn;
 
@@ -1077,20 +1130,19 @@ namespace PlatformCrafterModularSystem
     }
 
     [Serializable]
-    public struct WallJumpSettings
+    public class WallJumpSettings
     {
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float jumpForce;           // The force applied during the wall jump
+        [SerializeField] private float jumpForce = 20f;             // The force applied during the wall jump
         [Range(-90.0f, 90.0f)]
-        [SerializeField] private float jumpAngle;           // The angle at which the jump is applied
+        [SerializeField] private float jumpAngle = 45;              // The angle at which the jump is applied
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float gravityScale;        // Gravity scale during wall jump
+        [SerializeField] private float gravityScale = 3f;           // Gravity scale during wall jump
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float fallGravityScale;    // Gravity scale after the peak of the jump
+        [SerializeField] private float fallGravityScale = 3f;       // Gravity scale after the peak of the jump
         [Range(0.1f, 10.0f)]
-        [SerializeField] private float wallJumpDuration;    // Duration of the wall jump before falling
-        [SerializeField] private bool updateDirection;      // Allow to change sprite and entity orientation when jumping
-
+        [SerializeField] private float wallJumpDuration = 0.2f;     // Duration of the wall jump before falling
+        [SerializeField] private bool updateDirection = true;       // Allow to change sprite and entity orientation when jumping
 
         public float JumpForce => jumpForce;
         public float JumpAngle => jumpAngle;
@@ -1101,16 +1153,16 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct ConstantHeightJump
+    public class ConstantHeightJump
     {
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float jumpHeight;
+        [SerializeField] private float jumpHeight = 7f;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float gravityScale;
+        [SerializeField] private float gravityScale = 3f;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float fallGravityScale;
+        [SerializeField] private float fallGravityScale = 3f;
 
         public float JumpHeight => jumpHeight;
         public float GravityScale => gravityScale;
@@ -1118,19 +1170,19 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct DerivativeHeightJump
+    public class DerivativeHeightJump
     {
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float initialJumpForce;
+        [SerializeField] private float initialJumpForce = 7f;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float gravityScale;
+        [SerializeField] private float gravityScale = 3f;
 
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float fallGravityScale;
+        [SerializeField] private float fallGravityScale = 3f;
 
-        [Range(0.0f, 2.0f)]
-        [SerializeField] private float maxJumpDuration;
+        [Range(0.1f, 5.0f)]
+        [SerializeField] private float maxJumpDuration = 0.5f;
 
         public float InitialJumpForce => initialJumpForce;
         public float GravityScale => gravityScale;
@@ -1139,30 +1191,29 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct NormalCrouch
+    public class NormalCrouch
     {
-        [Range(0, 100)]
-        [SerializeField] private float crouchHeightReduction;
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float crouchHeightReduction = 50f;
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float linearDrag;
+        [SerializeField] private float linearDrag = 5f;
 
         public float CrouchHeightReductionPercentage => crouchHeightReduction;
         public float LinearDrag => linearDrag;
     }
 
     [System.Serializable]
-    public struct PlatformCrouch
+    public class PlatformCrouch
     {
-        [Range(0, 100)]
-        [SerializeField] private float crouchHeightReduction;
+        [Range(0.0f, 100.0f)]
+        [SerializeField] private float crouchHeightReduction = 50f;
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float linearDrag;
-        [SerializeField] private string platformTag;
+        [SerializeField] private float linearDrag = 5f;
+        [SerializeField] private string platformTag = "Platform";
         [Range(0, 10)]
-        [SerializeField] private float platformHoldTime;
+        [SerializeField] private float platformHoldTime = 1f;
         [Range(0, 10)]
-        [SerializeField] private float platformDropTime;
-
+        [SerializeField] private float platformDropTime = 2f;
 
         public float CrouchHeightReductionPercentage => crouchHeightReduction;
         public float LinearDrag => linearDrag;
@@ -1172,11 +1223,11 @@ namespace PlatformCrafterModularSystem
     }
 
     [System.Serializable]
-    public struct VerticalClimb
+    public class VerticalClimb
     {
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float climbSpeed;
-        [SerializeField] private bool holdClimb;
+        [SerializeField] private float climbSpeed = 10f;
+        [SerializeField] private bool holdClimb = true;
 
         public float ClimbSpeed => climbSpeed;
         public bool HoldClimb => holdClimb;

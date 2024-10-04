@@ -67,9 +67,13 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateModule()
         {
-
+            //Empty
         }
 
+        /// <summary>
+        /// Change the Horizontal State on this module based on the current state on the Horizontal Module.
+        /// </summary>
+        /// <param name="newState"></param>
         public void OnHorizontalStateChange(HorizontalMovementTypeModule.HorizontalState newState)
         {
             horizontalState = newState;
@@ -80,6 +84,10 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Change the Vertical State on this module based on the current state on the Vertical Module.
+        /// </summary>
+        /// <param name="newState"></param>
         public void OnVerticalStateChange(VerticalMovementTypeModule.VerticalState newState)
         {
             verticalState = newState;
@@ -90,6 +98,9 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Switch between states and play the sound or combined state of sound.
+        /// </summary>
         private void PlaySound()
         {
             if (verticalState == VerticalMovementTypeModule.VerticalState.Crouching)
@@ -161,6 +172,10 @@ namespace PlatformCrafterModularSystem
             }
         }
 
+        /// <summary>
+        /// Set the settings of the current state onto the SoundSource.
+        /// </summary>
+        /// <param name="audioClipName"></param>
         private void SetSoundEffect(SoundEffectAction audioClipName)
         {
             SoundEffectSettings sfxSettings = null;
@@ -206,12 +221,12 @@ namespace PlatformCrafterModularSystem
 
         public override void FixedUpdateModule()
         {
-            
+            //Empty
         }
 
         public override void LateUpdateModule()
         {
-            
+            //Empty
         }
     }
 }
