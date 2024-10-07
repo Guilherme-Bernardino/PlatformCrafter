@@ -53,6 +53,9 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateModule()
         {
+            if (!IsActive)
+                return;
+
             interactablesCount = Physics2D.OverlapCircleNonAlloc(modularBrain.transform.position, interactionRadius, interactablesInRange);
 
             DrawCircleDebug.DrawCircle(modularBrain.transform.position, interactionRadius, 32, Color.green);

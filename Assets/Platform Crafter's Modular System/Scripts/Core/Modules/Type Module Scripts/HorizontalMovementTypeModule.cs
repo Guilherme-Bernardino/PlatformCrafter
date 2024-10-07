@@ -32,7 +32,6 @@ namespace PlatformCrafterModularSystem {
         }
 
         public HorizontalState CurrentState { get; private set; } = HorizontalState.Idle;
-        [SerializeField] private HorizontalState currentState;
 
         //General Settings
         [SerializeField] private KeyCode rightKey = KeyCode.RightArrow;
@@ -118,8 +117,6 @@ namespace PlatformCrafterModularSystem {
 
             if (isSprintActive && CurrentState == HorizontalState.Sprinting)
                 MaintainSprint();
-
-            currentState = CurrentState;
         }
 
         /// <summary>
@@ -209,6 +206,15 @@ namespace PlatformCrafterModularSystem {
                 case HorizontalState.Idle:
                     if (walkAction.IsAutomatic != AutomaticMode.No) SetState(HorizontalState.Walking);
                     if (sprintAction.IsAutomatic != AutomaticMode.No) SetState(HorizontalState.Sprinting);
+                    if (slideAction.IsAutomatic != AutomaticMode.No && isGrounded) StartSlide();
+                    if (dashAction.IsAutomatic != AutomaticMode.No && CanDash()) StartDash();
+                    break;
+                case HorizontalState.Walking:
+                    if (sprintAction.IsAutomatic != AutomaticMode.No) SetState(HorizontalState.Sprinting);
+                    if (slideAction.IsAutomatic != AutomaticMode.No && isGrounded) StartSlide();
+                    if (dashAction.IsAutomatic != AutomaticMode.No && CanDash()) StartDash();
+                    break;
+                case HorizontalState.Sprinting:
                     if (slideAction.IsAutomatic != AutomaticMode.No && isGrounded) StartSlide();
                     if (dashAction.IsAutomatic != AutomaticMode.No && CanDash()) StartDash();
                     break;
@@ -699,7 +705,6 @@ namespace PlatformCrafterModularSystem {
             if(newState == CurrentState) return;
 
             CurrentState = newState;
-            currentState = newState;
             modularBrain.AnimationTypeModule?.OnHorizontalStateChange(newState);
             modularBrain.SoundEffectTypeModule?.OnHorizontalStateChange(newState);
         }

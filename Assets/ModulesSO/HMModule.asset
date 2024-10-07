@@ -62,7 +62,7 @@ MonoBehaviour:
   slideAction:
     slideKey: 9
     isAutomatic: 0
-    colliderHeightReduction: 0
+    colliderHeightReduction: 50.1
     slideMode: 0
     rollSlideSettings:
       slideSpeed: 7.1

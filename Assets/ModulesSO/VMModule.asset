@@ -52,13 +52,13 @@ MonoBehaviour:
   crouchAction:
     crouchKey: 274
     isAutomatic: 0
-    canCrawl: 0
-    crouchMode: 1
+    canCrawl: 1
+    crouchMode: 0
     normalCrouchSettings:
       crouchHeightReduction: 50.6
       linearDrag: 10
     platformCrouchSettings:
-      crouchHeightReduction: 0
+      crouchHeightReduction: 49.5
       linearDrag: 9.3
       platformTag: Platform
       platformHoldTime: 0.86
@@ -66,7 +66,7 @@ MonoBehaviour:
   climbAction:
     climbUpKey: 273
     climbDownKey: 274
-    isAutomatic: 0
+    isAutomatic: 1
     climbableLayer:
       serializedVersion: 2
       m_Bits: 16

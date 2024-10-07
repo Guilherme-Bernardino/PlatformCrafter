@@ -31,6 +31,9 @@ namespace PlatformCrafterModularSystem
         /// </summary>
         public void InitializeInventory()
         {
+            if (!IsActive)
+                return;
+
             inventorySlots.Clear();
             for (int i = 0; i < gridWidth * gridHeight; i++)
             {

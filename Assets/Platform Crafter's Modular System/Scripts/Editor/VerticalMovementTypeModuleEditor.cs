@@ -19,20 +19,14 @@ namespace PlatformCrafterModularSystem
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            EditorGUILayout.Space();
+
+            VerticalMovementTypeModule.VerticalState editorState = verticalModule.CurrentState;
+
+            EditorGUILayout.LabelField("Current State: " + editorState, EditorStyles.boldLabel);
+
             DrawDefaultInspector();
-
-            //EditorGUILayout.Space();
-
-            //EditorGUI.BeginChangeCheck();
-
-            //EditorGUI.BeginDisabledGroup(true);
-            //EditorGUILayout.PropertyField(state);
-            //EditorGUI.EndDisabledGroup();
-
-            //if (EditorGUI.EndChangeCheck())
-            //{
-            //    serializedObject.ApplyModifiedProperties();
-            //}
         }
     }
 }

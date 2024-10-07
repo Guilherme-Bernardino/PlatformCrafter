@@ -271,6 +271,12 @@ namespace PlatformCrafterModularSystem
                         ResetCrouch();
                         SetState(VerticalState.Idle);
                     }
+
+                    if (Input.GetKeyDown(jumpKey) && isGrounded && CurrentState != VerticalState.Climbing)
+                    {
+                        ResetCrouch();
+                        SetState(VerticalState.Jumping);
+                    }
                     break;
                 case VerticalState.Climbing:
                     if (!CanClimb())
@@ -297,6 +303,11 @@ namespace PlatformCrafterModularSystem
                         SetState(VerticalState.LedgeGrab);
                     if (!Input.GetKey(wallGrabAndWallJumpAction.WallGrabKey) && (IsOnWall() != 0 || IsOnLedge() != 0 && !Input.GetKey(jumpKey)) || isGrounded)
                         SetState(VerticalState.Idle);
+                    if (Input.GetKeyDown(airJumpAction.AirJumpKey) && !isGrounded && CurrentState != VerticalState.Climbing)
+                    {
+                        airJumpClicked = true;
+                        SetState(VerticalState.AirJumping);
+                    }
                     break;
                 case VerticalState.LedgeGrab:
                     if (Input.GetKey(jumpKey) && IsOnLedge() != 0)
@@ -359,6 +370,7 @@ namespace PlatformCrafterModularSystem
                     {
                         SetState(VerticalState.LedgeGrab);
                     }
+                    if (climbAction.IsAutomatic != ClimbAutomaticMode.No && CanClimb()) SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.AirJumping:
                     if (airJumpAction.IsAutomatic && !isGrounded)
@@ -370,12 +382,14 @@ namespace PlatformCrafterModularSystem
                     {
                         SetState(VerticalState.LedgeGrab);
                     }
+                    if (climbAction.IsAutomatic != ClimbAutomaticMode.No && CanClimb()) SetState(VerticalState.Climbing);
                     break;
                 case VerticalState.Falling:
                     if (wallGrabAndWallJumpAction.IsAutomatic && IsOnLedge() != 0 && !isGrounded && wallGrabAndWallJumpAction.AllowLedgeGrab)
                     {
                         SetState(VerticalState.LedgeGrab);
                     }
+                    if (climbAction.IsAutomatic != ClimbAutomaticMode.No && CanClimb()) SetState(VerticalState.Climbing);
                     break;
             }
         }

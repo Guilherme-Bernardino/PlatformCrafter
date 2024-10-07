@@ -45,6 +45,9 @@ namespace PlatformCrafterModularSystem
 
         public override void UpdateModule()
         {
+            if (!IsActive)
+                return;
+
             if (togglePassive)
             {
                 PassiveRecovery();
@@ -58,6 +61,9 @@ namespace PlatformCrafterModularSystem
         /// <param name="amount"></param>
         public void Recover(int amount)
         {
+            if (!IsActive)
+                return;
+
             currentValue = Mathf.Clamp(currentValue + amount, 0, maxValue);
         }
 
@@ -67,6 +73,9 @@ namespace PlatformCrafterModularSystem
         /// <param name="amount"></param>
         public void Deplete(int amount)
         {
+            if (!IsActive)
+                return;
+
             currentValue = Mathf.Clamp(currentValue - amount, 0, maxValue);
         }
 
