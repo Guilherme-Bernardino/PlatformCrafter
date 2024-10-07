@@ -1133,16 +1133,16 @@ namespace PlatformCrafterModularSystem
     public class WallJumpSettings
     {
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float jumpForce = 20f;             // The force applied during the wall jump
+        [SerializeField] private float jumpForce = 20f;             
         [Range(-90.0f, 90.0f)]
-        [SerializeField] private float jumpAngle = 45;              // The angle at which the jump is applied
+        [SerializeField] private float jumpAngle = 45;              
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float gravityScale = 3f;           // Gravity scale during wall jump
+        [SerializeField] private float gravityScale = 3f;           
         [Range(0.0f, 50.0f)]
-        [SerializeField] private float fallGravityScale = 3f;       // Gravity scale after the peak of the jump
+        [SerializeField] private float fallGravityScale = 3f;       
         [Range(0.1f, 10.0f)]
-        [SerializeField] private float wallJumpDuration = 0.2f;     // Duration of the wall jump before falling
-        [SerializeField] private bool updateDirection = true;       // Allow to change sprite and entity orientation when jumping
+        [SerializeField] private float wallJumpDuration = 0.2f;     
+        [SerializeField] private bool updateDirection = true;       
 
         public float JumpForce => jumpForce;
         public float JumpAngle => jumpAngle;
