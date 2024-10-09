@@ -18,6 +18,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  displayGroundCheckGizmo: 0
   naturalFallingGravityScale: 5
   haveFallBeAState: 1
   jumpAction:

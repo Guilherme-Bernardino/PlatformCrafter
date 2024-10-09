@@ -59,7 +59,7 @@ namespace PlatformCrafterModularSystem
         public AnimationTypeModule AnimationTypeModule => animationModule;
         public SoundEffectTypeModule SoundEffectTypeModule => soundEffectModule;
 
-        private void Start()
+        private void OnEnable()
         {
             rb = GetComponentInChildren<Rigidbody2D>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -68,7 +68,10 @@ namespace PlatformCrafterModularSystem
             audioSource = GetComponentInChildren<AudioSource>();
             shadowEffect = GetComponentInChildren<ShadowEffect>();
             particleSystems = GetComponentsInChildren<ParticleSystem>().ToList();
+        }
 
+        private void Start()
+        {
             InitializeModules();
         }
 
@@ -272,6 +275,24 @@ namespace PlatformCrafterModularSystem
         public ParticleSystem GetParticleSystemByName(string name)
         {
             return particleSystems.Find(u => u.name == name);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (rb != null)
+            {
+                if (horizontalMovementModule.DisplayGroundCheckGizmo)
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawCube(new Vector3(rb.position.x, rb.position.y, 0), new Vector3(horizontalMovementModule.GroundCheck.x, horizontalMovementModule.GroundCheck.y, 0));
+                }
+
+                if (verticalMovementModule.DisplayGroundCheckGizmo)
+                {
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawCube(new Vector3(rb.position.x, rb.position.y, 0), new Vector3(verticalMovementModule.GroundCheck.x, verticalMovementModule.GroundCheck.y, 0));
+                }
+            }
         }
 
         /// <summary>

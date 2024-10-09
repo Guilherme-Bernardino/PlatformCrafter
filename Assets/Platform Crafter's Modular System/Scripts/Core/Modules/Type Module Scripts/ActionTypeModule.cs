@@ -8,7 +8,7 @@ using UnityEngine.Audio;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ActionModule", menuName = "Platform Crafter's Modular System/Modules/Type - Action")]
+    [CreateAssetMenu(fileName = "Action Module", menuName = "Platform Crafter's Modular System/Type Module/Action-Interaction/Action")]
     public class ActionTypeModule : Module
     {
         [SerializeField] private KeyCode actionInput = KeyCode.Mouse0;

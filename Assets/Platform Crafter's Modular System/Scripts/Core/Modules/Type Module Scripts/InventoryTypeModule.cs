@@ -9,7 +9,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "InventoryModule", menuName = "Platform Crafter's Modular System/Modules/Type - Inventory")]
+    [CreateAssetMenu(fileName = "Inventory Module", menuName = "Platform Crafter's Modular System/Type Module/Container/Inventory")]
     public class InventoryTypeModule : Module
     {
         [SerializeField] private int gridWidth = 5;

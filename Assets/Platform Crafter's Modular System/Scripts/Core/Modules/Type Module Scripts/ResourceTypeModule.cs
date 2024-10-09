@@ -7,7 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ResourceModule", menuName = "Platform Crafter's Modular System/Modules/Type - Resource")]
+    [CreateAssetMenu(fileName = "Resource Module", menuName = "Platform Crafter's Modular System/Type Module/Container/Resource")]
     public class ResourceTypeModule : Module
     {
         [SerializeField] private string resourceName = "Health";

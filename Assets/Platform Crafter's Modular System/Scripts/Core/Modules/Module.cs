@@ -8,7 +8,7 @@ namespace PlatformCrafterModularSystem
     [Serializable]
     public abstract class Module : ScriptableObject
     {
-        [SerializeReference] protected bool isActive;
+        [SerializeReference] protected bool isActive = true;
         protected ModularBrain modularBrain;
 
         public void Initialize(ModularBrain modularBrain)

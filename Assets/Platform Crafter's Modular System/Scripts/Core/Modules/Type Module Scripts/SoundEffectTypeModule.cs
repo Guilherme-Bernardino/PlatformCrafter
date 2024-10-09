@@ -8,7 +8,7 @@ using static PlatformCrafterModularSystem.AnimationTypeModule;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "SoundEffectTypeModule", menuName = "Platform Crafter's Modular System/Modules/Type - SFX")]
+    [CreateAssetMenu(fileName = "Sound Effect Module", menuName = "Platform Crafter's Modular System/Type Module/Visuals & Audio/Sound Effect")]
     public class SoundEffectTypeModule : Module
     {
         private AudioSource soundSource;

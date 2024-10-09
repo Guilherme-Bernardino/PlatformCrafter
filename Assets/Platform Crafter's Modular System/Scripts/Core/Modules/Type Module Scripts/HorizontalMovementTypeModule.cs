@@ -12,7 +12,7 @@ using UnityEngine;
 namespace PlatformCrafterModularSystem {
 
     [Serializable]
-    [CreateAssetMenu(fileName = "HMModule", menuName = "Platform Crafter's Modular System/Modules/Type - HM")]
+    [CreateAssetMenu(fileName = "HM Module", menuName = "Platform Crafter's Modular System/Type Module/Physics/Horizontal Movement")]
     public class HorizontalMovementTypeModule : Module
     {
         public enum HorizontalState
@@ -42,8 +42,12 @@ namespace PlatformCrafterModularSystem {
         [SerializeField] private SpriteFacingDirection spriteFacingDirection;
         [Min(0.01f)][SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
         [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private bool displayGroundCheck = true;
         [SerializeField] private bool canMoveOnAir; // Allows for horizontal input off ground
         [Range(0.1f, 2f)][SerializeField] private float doubleTapThreshold = 0.25f;
+
+        public Vector2 GroundCheck => groundCheck;
+        public bool DisplayGroundCheckGizmo => displayGroundCheck;
 
         //HM Actions
         [SerializeField] private Walk walkAction;

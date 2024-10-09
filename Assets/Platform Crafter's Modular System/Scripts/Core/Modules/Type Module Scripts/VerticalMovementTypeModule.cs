@@ -1,11 +1,10 @@
 using System;
 using UnityEngine;
 
-
 namespace PlatformCrafterModularSystem
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "VMModule", menuName = "Platform Crafter's Modular System/Modules/Type - VM")]
+    [CreateAssetMenu(fileName = "VM Module", menuName = "Platform Crafter's Modular System/Type Module/Physics/Vertical Movement")]
     public class VerticalMovementTypeModule : Module
     {
         public enum VerticalState
@@ -27,8 +26,12 @@ namespace PlatformCrafterModularSystem
         [SerializeField] private KeyCode jumpKey = KeyCode.UpArrow;
         [Min(0.01f)][SerializeField] private Vector2 groundCheck = new Vector2(0.5f, 0.15f);
         [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private bool displayGroundCheckGizmo = true;
         [SerializeField] private float naturalFallingGravityScale = 1f;
         [SerializeField] private bool haveFallBeAState;
+
+        public Vector2 GroundCheck => groundCheck;
+        public bool DisplayGroundCheckGizmo => displayGroundCheckGizmo;
 
         //VM Actions
         [SerializeField] private Jump jumpAction;

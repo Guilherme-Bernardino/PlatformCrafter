@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: HMModule
   m_EditorClassIdentifier: 
   isActive: 1
-  currentState: 0
   rightKey: 275
   leftKey: 276
   spriteFacingDirection: 0
@@ -21,6 +20,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  displayGroundCheck: 1
   canMoveOnAir: 0
   doubleTapThreshold: 0.25
   walkAction:

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace PlatformCrafterModularSystem
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "InteractionModule", menuName = "Platform Crafter's Modular System/Modules/Type - Interaction")]
+    [CreateAssetMenu(fileName = "Interaction Module", menuName = "Platform Crafter's Modular System/Type Module/Action-Interaction/Interaction")]
     public class InteractionTypeModule : Module
     {
         [SerializeField] private bool automaticInteraction;
